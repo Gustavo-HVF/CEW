@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/equivalencias_api.schema.json",
+  "title": "config/equivalencias_api.json (global) e projects/<p>/codigo/equivalencias.json (projeto) - APIs do original -> equivalente no motor",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["equivalencias"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "observacoes": { "type": "string" },
+    "equivalencias": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["origem", "plataforma", "destino"], "additionalProperties": false,
+        "properties": {
+          "origem": { "type": "array", "minItems": 1, "items": { "type": "string" }, "description": "nomes (ou prefixos terminados em *) das chamadas no codigo original" },
+          "plataforma": { "type": "string" },
+          "papel": { "type": "string" },
+          "destino": {
+            "type": "object", "minProperties": 1,
+            "propertyNames": { "enum": ["javascript", "typescript", "gdscript", "csharp", "eventos", "phaser", "pixijs", "threejs", "babylonjs", "playcanvas"] },
+            "additionalProperties": { "type": "string" }
+          },
+          "nota": { "type": "string" }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

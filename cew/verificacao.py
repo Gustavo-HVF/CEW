@@ -222,6 +222,30 @@ def verificar_cenas(p: Projeto, r: Relatorio) -> None:
               metricas={"entidades": len(ents), "sem_asset": est.get("sem_asset", 0), "removidas_por_regra": est.get("removidas_por_regra", 0)})
 
 
+def verificar_traducao(p: Projeto, r: Relatorio) -> None:
+    """Plano de traducao valido; casos de equivalencia rodados de novo (obrigatorios onde existem)."""
+    arq = p.pasta / "codigo" / "plano_traducao.json"
+    if not arq.is_file():
+        return
+    from . import codigo
+
+    e = erros_esquema(json.loads(arq.read_text(encoding="utf-8")), "plano_traducao")
+    r.add("esquema:codigo/plano_traducao.json", "esquema", "codigo/plano_traducao.json", not e, "valido" if not e else "; ".join(e[:3]))
+    if e:
+        return
+    for res in codigo.testar(p):
+        r.add(f"traducao:{res['nome']}", "traducao", res["nome"], res["aprovado"], res["detalhes"], obrigatorio=not res.get("manual"),
+              metricas={"casos": res.get("casos", 0), "aprovados": res.get("aprovados", 0)})
+    pl = codigo.ler_plano(p)
+    vivas = [u for u in pl["unidades"] if u["estado"] != "descartada"]
+    alta = [u for u in vivas if u["prioridade"] == "alta"]
+    feitas = [u for u in alta if u["estado"] in ("traduzida", "testada")]
+    r.add("traducao:cobertura", "traducao", "codigo/plano_traducao.json", True,
+          f"{len(feitas)}/{len(alta)} unidades de prioridade alta traduzidas ({sum(1 for u in alta if u['estado'] == 'testada')} testadas); "
+          f"{len(vivas)} unidades no total, {pl['resumo'].get('descartada', 0)} descartadas (runtime)", obrigatorio=False,
+          metricas={"alta": len(alta), "alta_traduzidas": len(feitas), "total": len(vivas)})
+
+
 def _npm(app: Path, args: list[str], tempo: int = 900) -> subprocess.CompletedProcess:
     npx = shutil.which("npm")
     if not npx:
@@ -372,6 +396,7 @@ def executar(p: Projeto, web: bool = True, instalar: bool = False, gemini: bool 
     if p.existe("manifesto"):
         verificar_assets(p, r)
         verificar_cenas(p, r)
+    verificar_traducao(p, r)
     if web:
         verificar_web(p, r, instalar, chromium)
         verificar_capturas(p, r, gemini)

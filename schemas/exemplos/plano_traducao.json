@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "projeto": "codigo",
+  "motor": "phaser",
+  "linguagem_destino": "javascript",
+  "pasta_destino": "app/src/logica",
+  "gerado_em": "2026-11-21T17:31:28Z",
+  "resumo": {
+    "descartada": 14,
+    "testada": 1,
+    "prioridade_alta": 1
+  },
+  "unidades": [
+    {
+      "id": "u_6f435b88b9d8bfc7",
+      "programa": "jogo-8f46bb",
+      "nome": "fopen@plt",
+      "nome_destino": "fopen",
+      "origem": {
+        "arquivo": "codigo/original/jogo-8f46bb/00000000000010f0_fopen_plt.c",
+        "endereco": "0x10f0",
+        "linhas": 4
+      },
+      "linguagem_origem": "pseudo_c",
+      "papel": "biblioteca",
+      "prioridade": "baixa",
+      "estado": "descartada",
+      "chama": [],
+      "chamada_por": [
+        "main"
+      ],
+      "distancia_entrada": 1,
+      "equivalencias": [
+        "fopen -> const dados = new Uint8Array(await (await fetch(manifesto.url(manifesto.get(ID)))).arrayBuffer())"
+      ],
+      "destino": "app/src/logica/jogo-8f46bb/fopen.js",
+      "hash_origem": "128d64b70ea803e2b5e541f140467cdc0c6b7fa758f465bb77ed569e00e6da99",
+      "hash_destino": null,
+      "motivo": "runtime/biblioteca do sistema: use a API equivalente do motor (config/equivalencias_api.json)"
+    },
+    {
+      "id": "u_78f23c5eb92a2bdf",
+      "programa": "jogo-8f46bb",
+      "nome": "_start",
+      "nome_destino": "_start",
+      "origem": {
+        "arquivo": "codigo/original/jogo-8f46bb/0000000000001100_start.c",
+        "endereco": "0x1100",
+        "linhas": 8
+      },
+      "linguagem_origem": "pseudo_c",
+      "papel": "biblioteca",
+      "prioridade": "baixa",
+      "estado": "descartada",
+      "chama": [],
+      "chamada_por": [],
+      "distancia_entrada": null,
+      "equivalencias": [],
+      "destino": "app/src/logica/jogo-8f46bb/_start.js",
+      "hash_origem": "59c529e1fd40d9711f42c2da2bf0c03d2ec423352a2f917086903c6cf0b63289",
+      "hash_destino": null,
+      "motivo": "runtime/biblioteca do sistema: use a API equivalente do motor (config/equivalencias_api.json)"
+    },
+    {
+      "id": "u_7ff6d9765557c202",
+      "programa": "jogo-8f46bb",
+      "nome": "main",
+      "nome_destino": "main",
+      "origem": {
+        "arquivo": "codigo/original/jogo-8f46bb/00000000000011e9_main.c",
+        "endereco": "0x11e9",
+        "linhas": 36
+      },
+      "linguagem_origem": "pseudo_c",
+      "papel": "carregador",
+      "prioridade": "alta",
+      "estado": "testada",
+      "chama": [
+        "__printf_chk@plt",
+        "__stack_chk_fail@plt",
+        "fclose@plt",
+        "fopen@plt",
+        "fread@plt",
+        "memcmp@plt"
+      ],
+      "chamada_por": [],
+      "distancia_entrada": 0,
+      "equivalencias": [
+        "__printf_chk -> console.log (somente depuracao; o teste de marco reprova erros no console)",
+        "fclose -> const dados = new Uint8Array(await (await fetch(manifesto.url(manifesto.get(ID)))).arrayBuffer())",
+        "fopen -> const dados = new Uint8Array(await (await fetch(manifesto.url(manifesto.get(ID)))).arrayBuffer())",
+        "fread -> const dados = new Uint8Array(await (await fetch(manifesto.url(manifesto.get(ID)))).arrayBuffer())",
+        "memcmp -> dst.set(src.subarray(i, j)); buf.fill(v); comparacao byte a byte em Uint8Array"
+      ],
+      "destino": "app/src/logica/jogo-8f46bb/main.js",
+      "hash_origem": "883d95e3f47bdf465e1364c15ab49790a195d81568603424bd2887c15be65a11",
+      "hash_destino": "d15a8ec696cad641336d5d6d2dc398f5ab3cc74ac047b38ae6c20c979dac4695",
+      "testes": {
+        "arquivo": "codigo/testes/u_7ff6d9765557c202.json",
+        "casos": 4,
+        "aprovados": 4,
+        "aprovado": true,
+        "em": "2026-11-21T17:33:39Z"
+      }
+    }
+  ]
+}

@@ -46,7 +46,7 @@ for (const ex of exemplos) {
   const nome = path.relative(pastaEx, ex).replace(/\\/g, '/').replace(/\.json$/, '');
   if (!validar(ex, nome)) falhas++;
 }
-for (const [arq, nome] of [['formats/registry.json', 'registry'], ['config/gemini.json', 'config_gemini'], ['config/versoes.json', 'config_versoes']]) {
+for (const [arq, nome] of [['formats/registry.json', 'registry'], ['config/gemini.json', 'config_gemini'], ['config/versoes.json', 'config_versoes'], ['config/cew.json', 'config_cew'], ['config/equivalencias_api.json', 'equivalencias_api']]) {
   if (!validar(path.join(RAIZ, arq), nome)) falhas++;
 }
 console.log(`ajv: ${esquemas.length} esquemas, ${exemplos.length} exemplos + registro e configs; ${falhas} falhas`);

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/gemini/resposta_traducao.schema.json",
+  "title": "Resposta Gemini: rascunho de traducao (revisado pela IA principal; nunca aplicado sozinho)",
+  "type": "object",
+  "properties": {
+    "schema_version": { "type": "string", "enum": ["1.0"] },
+    "gerado_por": { "type": "string", "enum": ["cew-gemini-worker"] },
+    "codigo": { "type": "string", "description": "modulo completo na linguagem de destino" },
+    "explicacao": { "type": "string" },
+    "dependencias": { "type": "array", "items": { "type": "string" }, "description": "funcoes do original que esta traducao chama" },
+    "casos_sugeridos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": { "entrada": { "type": "string", "description": "argumentos em JSON" }, "saida": { "type": "string", "description": "resultado esperado em JSON" }, "raciocinio": { "type": "string" } },
+        "required": ["entrada", "saida", "raciocinio"]
+      }
+    },
+    "duvidas": { "type": "array", "items": { "type": "string" } },
+    "confianca": { "type": "number", "minimum": 0, "maximum": 1 }
+  },
+  "required": ["schema_version", "gerado_por", "codigo", "explicacao", "dependencias", "duvidas", "confianca"]
+}

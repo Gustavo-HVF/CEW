@@ -125,6 +125,12 @@ def etapa_engenharia(p: Projeto, a: argparse.Namespace) -> str:
     if not a.dry_run:
         plano.montar(p)
     rel = engenharia.executar(p, dry_run=a.dry_run, usar_ghidra=not a.sem_ghidra, usar_craft=not a.sem_craft)
+    if not a.sem_codigo:
+        from . import codigo
+
+        idx = codigo.descompilar(p, dry_run=a.dry_run)
+        for g in idx["programas"]:
+            print(f"codigo: {g['id']} ({g['tipo_codigo']}) {g['estado']}, {len(g['unidades'])} unidades em {g['pasta']}")
     for av in rel["avisos"]:
         print("aviso:", av)
     if a.dry_run:
@@ -186,6 +192,11 @@ def etapa_reconstrucao(p: Projeto, a: argparse.Namespace) -> str:
     if m not in reconstrucao.COM_MODELO:
         raise Bloqueio(f"o CEW nao gera projeto para {m}: siga skills/05 e crie app/ manualmente, depois rode 'cew check'")
     arqs = reconstrucao.gerar(p, m, dry_run=a.dry_run, modelo_marcos=a.modelo_marcos)
+    if not a.dry_run and (p.pasta / "codigo" / "original" / "indice.json").is_file():
+        from . import codigo
+
+        pl = codigo.planejar(p, m)
+        print(f"traducao: {pl['linguagem_destino']} em {pl['pasta_destino']} - {pl['resumo']} (cew codigo status --projeto {p.nome})")
     print(f"{len(arqs)} arquivos em app/ ({m}); assets lidos de ../web")
     return f"app/ gerado ({m})"
 
@@ -465,6 +476,46 @@ def cmd_cena(a: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_codigo(a: argparse.Namespace) -> int:
+    from . import codigo
+
+    p = Projeto.abrir(a.projeto, criar=False)
+    if a.acao == "descompilar":
+        idx = codigo.descompilar(p, dry_run=a.dry_run, limite_programas=a.limite)
+        for g in idx["programas"]:
+            print(f"{g['id']:<28} {g['tipo_codigo']:<16} {g['estado']:<12} {len(g['unidades']):>6} unidades  {g['ferramenta']['nome']} ({g['ferramenta'].get('motor') or '-'})  {g.get('mensagem', '')[:80]}")
+        if not idx["programas"]:
+            print("nenhum codigo encontrado no inventario (executavel, assembly .NET, JAR, JavaScript, scripts)")
+        return 0
+    if a.acao == "planejar":
+        pl = codigo.planejar(p, a.motor, a.linguagem)
+        print(f"motor {pl['motor']} -> {pl['linguagem_destino']} em {pl['pasta_destino']}: {pl['resumo']}")
+        return 0
+    if a.acao == "status":
+        pl = codigo.ler_plano(p)
+        print(f"{pl['motor']} -> {pl['linguagem_destino']}: {pl['resumo']}")
+        ordem = {"alta": 0, "media": 1, "baixa": 2}
+        for u in sorted(pl["unidades"], key=lambda u: (u["estado"] == "descartada", ordem[u["prioridade"]], u.get("distancia_entrada") if u.get("distancia_entrada") is not None else 99, u["nome"])):
+            if u["estado"] == "descartada" and not a.todas:
+                continue
+            t = u.get("testes") or {}
+            print(f"  {u['estado']:<10} {u['prioridade']:<5} {u['papel']:<12} {u['nome'][:40]:<40} {u['destino']}" + (f"  testes {t.get('aprovados')}/{t.get('casos')}" if t else ""))
+        return 0
+    if a.acao == "pacote":
+        print(json.dumps(codigo.pacote(p, a.unidade, gemini=a.gemini), ensure_ascii=False, indent=2))
+        return 0
+    if a.acao == "registrar":
+        u = codigo.registrar(p, a.unidade, a.estado, a.motivo or "", a.destino)
+        print(f"{u['nome']}: {u['estado']}")
+        return 0
+    res = codigo.testar(p, a.unidade)
+    for r in res:
+        print(f"  [{'ok' if r['aprovado'] else 'FALHOU'}] {r['nome']:<32} {r['detalhes'][:160]}")
+    if not res:
+        print("nenhum caso de teste em codigo/testes/ (schemas/testes_traducao.schema.json)")
+    return 0 if all(r["aprovado"] for r in res) else 1
+
+
 def cmd_marcos(a: argparse.Namespace) -> int:
     from . import marcos
 
@@ -585,6 +636,7 @@ def parser() -> argparse.ArgumentParser:
         s.add_argument("--chromium", default=os.environ.get("CEW_CHROMIUM"), help="Chromium para o Playwright")
         s.add_argument("--ignorar-ambiente", action="store_true", help="segue mesmo com ferramentas obrigatorias faltando (desenvolvimento)")
         s.add_argument("--modelo-marcos", choices=["jogo", "app"], default="jogo", help="modelo de marcos criado na reconstrucao")
+        s.add_argument("--sem-codigo", action="store_true", help="nao descompila o codigo do jogo na etapa de engenharia")
 
     s = sub.add_parser("setup", help="ambiente, Craft Anything e teste do Gemini")
     s.add_argument("--ssh", action="store_true")
@@ -685,6 +737,18 @@ def parser() -> argparse.ArgumentParser:
     s.add_argument("--remover", action="store_true", help="regra: tira estes elementos da cena")
     s.add_argument("--motivo")
     s.set_defaults(func=cmd_cena)
+    s = sub.add_parser("codigo", help="descompila o codigo do jogo (Craft Anything) e acompanha a traducao para a linguagem do motor")
+    s.add_argument("acao", choices=["descompilar", "planejar", "status", "pacote", "registrar", "testar"])
+    s.add_argument("unidade", nargs="?", help="id u_<hex> ou nome da funcao/tipo (pacote, registrar, testar)")
+    s.add_argument("--motor", help="planejar: motor de destino (padrao: o escolhido no projeto)")
+    s.add_argument("--linguagem", choices=["javascript", "typescript", "gdscript", "csharp", "eventos"], help="planejar: forca a linguagem de destino")
+    s.add_argument("--estado", choices=["pendente", "traduzida", "descartada"], default="traduzida")
+    s.add_argument("--motivo")
+    s.add_argument("--destino", help="registrar: arquivo traduzido (relativo ao projeto)")
+    s.add_argument("--gemini", action="store_true", help="pacote: pede tambem um rascunho ao Gemini (revisar antes de usar)")
+    s.add_argument("--limite", type=int, default=10, help="descompilar: maximo de programas")
+    s.add_argument("--todas", action="store_true", help="status: inclui as descartadas")
+    s.set_defaults(func=cmd_codigo)
     s = sub.add_parser("sandbox", help="roda um rascunho do Gemini isolado")
     s.add_argument("rascunho", help="arquivo .py ou <sha>.resposta.json")
     s.add_argument("--entrada")

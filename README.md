@@ -129,8 +129,30 @@ Para comparar com o original, coloque capturas em `projects/<nome>/referencias/<
 | `cew log-conversor <formato> <passo> --projeto P` | registra pesquisa/amostragem/conferencia em `log_conversores.jsonl` |
 | `cew marcos iniciar\|status --projeto P [--modelo jogo\|app]` | marcos de utilizacao/jogabilidade |
 | `cew cena listar\|mostrar\|ajustar\|regra --projeto P` | elementos dos mapas: ver, reposicionar, reorganizar por regra |
+| `cew codigo descompilar\|planejar\|status\|pacote\|registrar\|testar --projeto P` | codigo do jogo: descompilar (Craft Anything) e traduzir para a linguagem do motor |
 
 Cada conversor tambem roda sozinho: `python cookbook/nintendo/tpl_to_png.py --help`.
+
+## Codigo do jogo: descompilar e traduzir para o motor
+
+O Craft Anything descompila o codigo de funcionamento do jogo e o CEW organiza a traducao para a
+linguagem do motor escolhido (Three.js/Babylon.js/Phaser/PixiJS/PlayCanvas -> JavaScript; Godot ->
+GDScript; Unity WebGL -> C#; Construct 3/GDevelop -> especificacao de eventos):
+
+| Codigo original | Ferramenta do Craft Anything | Saida |
+|---|---|---|
+| nativo (EXE/ELF/Mach-O/ROM) | `native-source-folder-write` (lifter proprio; Ghidra no modo Deep) | pseudo-C, um arquivo por funcao |
+| .NET (Unity Mono, XNA/FNA/MonoGame) | `managed-ilspy-decompile` (precisa de `ilspycmd`) | C#, um arquivo por tipo |
+| Java/JAR | `java-vineflower-decompile` | Java |
+| JavaScript empacotado (Electron/web) | `js-sources-restore` | modulos legiveis |
+| scripts (Lua, GDScript, Python...) | - | copiados |
+
+Descompilar nao e traduzir: o resultado e aproximado e cheio de chamadas do sistema. Por isso o CEW
+monta um plano por funcao/tipo (descarta runtime, ordena pelo que o jogo alcanca a partir de
+`main`/`Update`, sugere equivalencias de API em `config/equivalencias_api.json`), entrega ao agente um
+pacote de contexto por unidade (com rascunho opcional do Gemini) e roda **testes de equivalencia**
+(entradas -> saidas esperadas do original) contra o codigo traduzido; reprovacao aparece em `cew check`.
+Fluxo detalhado: skill 09.
 
 ## Elementos dos mapas (cenas)
 
@@ -177,7 +199,7 @@ converters/generico/ conversores genericos (fonte "generico")
 cookbook/<familia>/  receitas opcionais e testadas (fonte "cookbook")
 tests/               pytest (+ tests/js para ajv e glTF Validator) e amostras sinteticas em tests/fixtures/
 docs/                DECISOES.md, formatos/, especificacoes/
-skills/              oito skills para o agente no VS Code
+skills/              nove skills para o agente no VS Code
 projects/<nome>/     criado pelo CEW (estrutura do Craft Anything + JSONs do CEW + conversores/ do agente, formatos.json, marcos.json)
 ```
 

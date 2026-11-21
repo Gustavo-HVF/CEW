@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/testes_traducao.schema.json",
+  "title": "projects/<p>/codigo/testes/<unidade>.json - casos de equivalencia entre o original e a traducao",
+  "description": "Cada caso: argumentos -> resultado esperado do original. Bytes como {\"$bytes\": \"hex\"}. A origem do valor esperado precisa ser declarada.",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["unidade", "funcao", "casos"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "unidade": { "type": "string", "pattern": "^u_[0-9a-f]{16}$" },
+    "funcao": { "type": "string", "description": "nome exportado pelo modulo traduzido" },
+    "tolerancia": { "type": "number", "minimum": 0, "description": "diferenca absoluta aceita em numeros de ponto flutuante" },
+    "casos": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "required": ["entrada", "saida", "origem"], "additionalProperties": false,
+        "properties": {
+          "nome": { "type": "string" },
+          "entrada": { "type": "array" },
+          "saida": {},
+          "origem": { "type": "string", "enum": ["execucao_original", "rastreamento", "pseudo_c", "documentacao", "manual"], "description": "de onde veio o valor esperado" },
+          "nota": { "type": "string" }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -39,6 +39,8 @@ def test_todo_esquema_principal_tem_exemplo():
 def test_configs_e_registro():
     esquemas.ler_json(RAIZ / "config" / "gemini.json", "config_gemini")
     esquemas.ler_json(RAIZ / "config" / "versoes.json", "config_versoes")
+    esquemas.ler_json(RAIZ / "config" / "cew.json", "config_cew")
+    esquemas.ler_json(RAIZ / "config" / "equivalencias_api.json", "equivalencias_api")
     reg = esquemas.ler_json(RAIZ / "formats" / "registry.json", "registry")
     ids = [f["id"] for f in reg["formatos"]]
     assert len(ids) == len(set(ids))

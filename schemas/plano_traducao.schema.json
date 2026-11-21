@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/plano_traducao.schema.json",
+  "title": "projects/<p>/codigo/plano_traducao.json - traducao do codigo original para a linguagem do motor escolhido",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["projeto", "motor", "linguagem_destino", "gerado_em", "resumo", "unidades"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "projeto": { "type": "string" },
+    "motor": { "type": "string" },
+    "linguagem_destino": { "type": "string", "enum": ["javascript", "typescript", "gdscript", "csharp", "eventos"] },
+    "pasta_destino": { "type": "string" },
+    "gerado_em": { "$ref": "comum.schema.json#/$defs/data_hora" },
+    "resumo": { "type": "object", "additionalProperties": { "type": "integer" } },
+    "unidades": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "programa", "nome", "origem", "linguagem_origem", "papel", "prioridade", "estado", "destino", "hash_origem"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^u_[0-9a-f]{16}$" },
+          "programa": { "type": "string" },
+          "nome": { "type": "string" },
+          "nome_destino": { "type": "string", "description": "identificador valido na linguagem de destino" },
+          "origem": {
+            "type": "object", "required": ["arquivo"], "additionalProperties": false,
+            "properties": { "arquivo": { "type": "string" }, "endereco": { "type": ["string", "null"] }, "linhas": { "type": "integer" } }
+          },
+          "linguagem_origem": { "type": "string" },
+          "papel": { "type": "string", "enum": ["logica", "entrada", "fisica", "ia", "renderizacao", "audio", "carregador", "salvamento", "interface", "rede", "plataforma", "biblioteca"] },
+          "prioridade": { "type": "string", "enum": ["alta", "media", "baixa"] },
+          "estado": { "type": "string", "enum": ["pendente", "traduzida", "testada", "reprovada", "descartada"] },
+          "motivo": { "type": "string" },
+          "chama": { "type": "array", "items": { "type": "string" } },
+          "chamada_por": { "type": "array", "items": { "type": "string" } },
+          "distancia_entrada": { "type": ["integer", "null"], "description": "passos no grafo de chamadas desde main/Update/... (null = nao alcancada)" },
+          "equivalencias": { "type": "array", "items": { "type": "string" }, "description": "chamadas do original com equivalente sugerido em config/equivalencias_api.json" },
+          "destino": { "type": "string", "description": "arquivo traduzido, relativo ao projeto" },
+          "hash_origem": { "$ref": "comum.schema.json#/$defs/sha256" },
+          "hash_destino": { "anyOf": [{ "$ref": "comum.schema.json#/$defs/sha256" }, { "type": "null" }] },
+          "testes": {
+            "type": "object", "required": ["arquivo"], "additionalProperties": false,
+            "properties": { "arquivo": { "type": "string" }, "casos": { "type": "integer" }, "aprovados": { "type": "integer" }, "aprovado": { "type": "boolean" }, "em": { "$ref": "comum.schema.json#/$defs/data_hora" } }
+          },
+          "rascunho_gemini": { "type": ["string", "null"] }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

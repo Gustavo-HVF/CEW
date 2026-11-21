@@ -1,0 +1,470 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "observacoes": "Orientacao para a traducao feita pelo agente: chamada do original -> equivalente no motor/linguagem de destino. Nao e traducao automatica. Projetos acrescentam entradas em projects/<p>/codigo/equivalencias.json.",
+  "equivalencias": [
+    {
+      "origem": [
+        "fopen",
+        "fread",
+        "fclose",
+        "fseek",
+        "ftell",
+        "CreateFileA",
+        "CreateFileW",
+        "ReadFile",
+        "SDL_RWFromFile",
+        "SDL_RWread"
+      ],
+      "plataforma": "libc/Win32/SDL",
+      "papel": "carregador",
+      "destino": {
+        "javascript": "const dados = new Uint8Array(await (await fetch(manifesto.url(manifesto.get(ID)))).arrayBuffer())",
+        "gdscript": "FileAccess.get_file_as_bytes(\"res://...\")",
+        "csharp": "UnityWebRequest.Get(url) (ou Resources.Load)"
+      },
+      "nota": "Arquivos do jogo viram assets do manifesto (ids estaveis); o formato ja foi convertido pelo CEW: leia o asset convertido, nao o binario original."
+    },
+    {
+      "origem": [
+        "fwrite",
+        "fprintf",
+        "WriteFile",
+        "SDL_RWwrite"
+      ],
+      "plataforma": "libc/Win32/SDL",
+      "papel": "salvamento",
+      "destino": {
+        "javascript": "localStorage.setItem(chave, JSON.stringify(estado)) (ou IndexedDB para dados grandes)",
+        "gdscript": "FileAccess.open(\"user://save.json\", FileAccess.WRITE)",
+        "csharp": "PlayerPrefs.SetString(chave, JsonUtility.ToJson(estado))"
+      },
+      "nota": "Salvamento na web e por origem do site; use JSON com esquema."
+    },
+    {
+      "origem": [
+        "malloc",
+        "calloc",
+        "realloc",
+        "free",
+        "operator new",
+        "operator delete",
+        "HeapAlloc",
+        "HeapFree"
+      ],
+      "plataforma": "libc/C++/Win32",
+      "papel": "biblioteca",
+      "destino": {
+        "javascript": "objetos/arrays JS ou new ArrayBuffer(n) + DataView para estruturas binarias",
+        "gdscript": "PackedByteArray / objetos",
+        "csharp": "new T[] / classes (GC)"
+      },
+      "nota": "Gerencia de memoria some; ponteiros viram referencias ou indices em typed arrays."
+    },
+    {
+      "origem": [
+        "memcpy",
+        "memmove",
+        "memset",
+        "memcmp"
+      ],
+      "plataforma": "libc",
+      "papel": "biblioteca",
+      "destino": {
+        "javascript": "dst.set(src.subarray(i, j)); buf.fill(v); comparacao byte a byte em Uint8Array",
+        "gdscript": "PackedByteArray.slice / fill",
+        "csharp": "Array.Copy / Span<byte>.SequenceEqual"
+      }
+    },
+    {
+      "origem": [
+        "strlen",
+        "strcmp",
+        "strncmp",
+        "strcpy",
+        "strncpy",
+        "strcat",
+        "sprintf",
+        "snprintf",
+        "atoi",
+        "atof",
+        "strtol"
+      ],
+      "plataforma": "libc",
+      "papel": "biblioteca",
+      "destino": {
+        "javascript": "String: length, ===, localeCompare, template strings, Number.parseInt/parseFloat; texto de arquivo com TextDecoder",
+        "gdscript": "String e String.to_int()/to_float()",
+        "csharp": "string, int.Parse, string.Format"
+      }
+    },
+    {
+      "origem": [
+        "printf",
+        "puts",
+        "OutputDebugStringA",
+        "OutputDebugStringW",
+        "__printf_chk"
+      ],
+      "plataforma": "libc/Win32",
+      "papel": "biblioteca",
+      "destino": {
+        "javascript": "console.log (somente depuracao; o teste de marco reprova erros no console)",
+        "gdscript": "print()",
+        "csharp": "Debug.Log"
+      }
+    },
+    {
+      "origem": [
+        "sin",
+        "cos",
+        "tan",
+        "atan2",
+        "sqrt",
+        "pow",
+        "fabs",
+        "floor",
+        "ceil",
+        "fmod",
+        "sinf",
+        "cosf",
+        "sqrtf",
+        "atan2f"
+      ],
+      "plataforma": "libc math",
+      "papel": "biblioteca",
+      "destino": {
+        "javascript": "Math.sin/cos/tan/atan2/sqrt/pow/abs/floor/ceil e % (atencao: % em JS segue o sinal do dividendo, como fmod)",
+        "gdscript": "sin/cos/atan2/sqrt/pow/abs/floor/ceil/fmod",
+        "csharp": "Mathf.*"
+      },
+      "nota": "float de 32 bits do original: use Math.fround onde a precisao importar para reproduzir o comportamento."
+    },
+    {
+      "origem": [
+        "rand",
+        "srand",
+        "random"
+      ],
+      "plataforma": "libc",
+      "papel": "logica",
+      "destino": {
+        "javascript": "gerador com semente proprio (ex.: o mesmo LCG do original: x = (x * 1103515245 + 12345) & 0x7fffffff) para reproduzir sequencias; Math.random() nao aceita semente",
+        "gdscript": "RandomNumberGenerator com seed",
+        "csharp": "new System.Random(seed)"
+      },
+      "nota": "Se a logica depende da sequencia aleatoria (geracao de mundo), reimplemente o gerador exato do original e teste a sequencia."
+    },
+    {
+      "origem": [
+        "time",
+        "clock",
+        "GetTickCount",
+        "GetTickCount64",
+        "QueryPerformanceCounter",
+        "timeGetTime",
+        "SDL_GetTicks",
+        "SDL_GetTicks64",
+        "glfwGetTime"
+      ],
+      "plataforma": "libc/Win32/SDL/GLFW",
+      "papel": "logica",
+      "destino": {
+        "javascript": "performance.now() (ms) ou o dt do laco do motor",
+        "phaser": "update(time, delta) da Scene",
+        "threejs": "THREE.Clock().getDelta() / renderer.setAnimationLoop",
+        "babylonjs": "engine.getDeltaTime()",
+        "gdscript": "_process(delta) / Time.get_ticks_msec()",
+        "csharp": "Time.deltaTime"
+      }
+    },
+    {
+      "origem": [
+        "Sleep",
+        "usleep",
+        "nanosleep",
+        "SDL_Delay"
+      ],
+      "plataforma": "libc/Win32/SDL",
+      "papel": "plataforma",
+      "destino": {
+        "javascript": "nao bloqueie: use o laco do motor (requestAnimationFrame) ou await new Promise(r => setTimeout(r, ms))",
+        "gdscript": "await get_tree().create_timer(s).timeout",
+        "csharp": "coroutine com WaitForSeconds"
+      }
+    },
+    {
+      "origem": [
+        "CreateThread",
+        "_beginthreadex",
+        "pthread_create",
+        "std::thread",
+        "SDL_CreateThread"
+      ],
+      "plataforma": "Win32/POSIX/SDL",
+      "papel": "plataforma",
+      "destino": {
+        "javascript": "Web Worker (sem memoria compartilhada por padrao) ou reescrever como tarefa no laco principal",
+        "gdscript": "Thread / WorkerThreadPool",
+        "csharp": "na WebGL do Unity nao ha threads: coroutines"
+      },
+      "nota": "Threads quase sempre podem virar etapas no laco principal na versao web."
+    },
+    {
+      "origem": [
+        "SDL_PollEvent",
+        "SDL_GetKeyboardState",
+        "GetAsyncKeyState",
+        "GetKeyState",
+        "PeekMessageA",
+        "PeekMessageW",
+        "DirectInput8Create",
+        "XInputGetState",
+        "glfwGetKey"
+      ],
+      "plataforma": "SDL/Win32/DirectInput/XInput/GLFW",
+      "papel": "entrada",
+      "destino": {
+        "javascript": "window.addEventListener('keydown'/'keyup') e navigator.getGamepads()",
+        "phaser": "this.input.keyboard.createCursorKeys() / addKey; this.input.gamepad",
+        "pixijs": "eventos de teclado do DOM",
+        "threejs": "eventos de teclado do DOM",
+        "babylonjs": "scene.onKeyboardObservable",
+        "gdscript": "Input.is_action_pressed(\"acao\")",
+        "csharp": "Input.GetKey(KeyCode.X)"
+      },
+      "nota": "Mapeie as teclas originais para acoes; exponha o resultado em window.__CEW_ESTADO para o teste do marco 'entrada'."
+    },
+    {
+      "origem": [
+        "SDL_CreateWindow",
+        "CreateWindowExA",
+        "CreateWindowExW",
+        "glfwCreateWindow",
+        "SDL_Init",
+        "RegisterClassA",
+        "RegisterClassW",
+        "ShowWindow"
+      ],
+      "plataforma": "SDL/Win32/GLFW",
+      "papel": "plataforma",
+      "destino": {
+        "javascript": "o motor cria o canvas (app/src/main.js); remova",
+        "gdscript": "remova (janela do projeto)",
+        "csharp": "remova (janela do player)"
+      }
+    },
+    {
+      "origem": [
+        "glDrawArrays",
+        "glDrawElements",
+        "glBindTexture",
+        "glTexImage2D",
+        "IDirect3DDevice9_DrawPrimitive",
+        "DrawIndexedPrimitive",
+        "SDL_RenderCopy",
+        "SDL_RenderCopyEx",
+        "SDL_BlitSurface"
+      ],
+      "plataforma": "OpenGL/Direct3D/SDL",
+      "papel": "renderizacao",
+      "destino": {
+        "javascript": "nao traduza chamada a chamada: crie sprites/malhas do motor a partir dos assets do manifesto",
+        "phaser": "this.add.image/sprite(x, y, id)",
+        "pixijs": "new Sprite(await Assets.load(url))",
+        "threejs": "GLTFLoader / Mesh + material",
+        "babylonjs": "SceneLoader / MeshBuilder",
+        "gdscript": "Sprite2D / MeshInstance3D",
+        "csharp": "SpriteRenderer / MeshRenderer"
+      },
+      "nota": "O desenho e reconstruido no motor; traduza a LOGICA que decide o que desenhar e onde."
+    },
+    {
+      "origem": [
+        "SpriteBatch.Draw",
+        "SpriteBatch.Begin",
+        "SpriteBatch.End",
+        "GraphicsDevice.Clear"
+      ],
+      "plataforma": "XNA/MonoGame/FNA",
+      "papel": "renderizacao",
+      "destino": {
+        "phaser": "this.add.image/sprite; camera.setBackgroundColor",
+        "pixijs": "Sprite em Container; app.renderer.background",
+        "javascript": "sprites do motor 2D escolhido",
+        "gdscript": "Sprite2D / draw_texture",
+        "csharp": "SpriteRenderer"
+      }
+    },
+    {
+      "origem": [
+        "Game.Update",
+        "Game.Draw",
+        "Microsoft.Xna.Framework.Game",
+        "Initialize",
+        "LoadContent",
+        "UnloadContent"
+      ],
+      "plataforma": "XNA/MonoGame/FNA",
+      "papel": "logica",
+      "destino": {
+        "phaser": "Scene.create (Initialize/LoadContent) e Scene.update(time, delta) (Update)",
+        "pixijs": "app.ticker.add((t) => ...)",
+        "threejs": "renderer.setAnimationLoop",
+        "babylonjs": "scene.onBeforeRenderObservable",
+        "javascript": "laco do motor",
+        "gdscript": "_ready() e _process(delta)",
+        "csharp": "Start() e Update()"
+      }
+    },
+    {
+      "origem": [
+        "Keyboard.GetState",
+        "GamePad.GetState",
+        "Mouse.GetState",
+        "KeyboardState.IsKeyDown"
+      ],
+      "plataforma": "XNA/MonoGame/FNA",
+      "papel": "entrada",
+      "destino": {
+        "phaser": "this.input.keyboard.addKey(...).isDown",
+        "javascript": "estado de teclas mantido por keydown/keyup",
+        "gdscript": "Input.is_key_pressed",
+        "csharp": "Input.GetKey"
+      }
+    },
+    {
+      "origem": [
+        "ContentManager.Load",
+        "Content.Load"
+      ],
+      "plataforma": "XNA/MonoGame/FNA",
+      "papel": "carregador",
+      "destino": {
+        "javascript": "manifesto.get(id) -> URL do asset convertido (PNG/GLB/OGG/JSON)",
+        "gdscript": "load(\"res://...\")",
+        "csharp": "Resources.Load<T>"
+      },
+      "nota": "Os .xnb ja foram convertidos pelo CEW; mapeie o nome do Content para o id do manifesto."
+    },
+    {
+      "origem": [
+        "SoundEffect.Play",
+        "MediaPlayer.Play",
+        "Mix_PlayChannel",
+        "Mix_PlayMusic",
+        "PlaySoundA",
+        "PlaySoundW",
+        "alSourcePlay",
+        "IXAudio2SourceVoice_Start"
+      ],
+      "plataforma": "XNA/SDL_mixer/Win32/OpenAL/XAudio2",
+      "papel": "audio",
+      "destino": {
+        "javascript": "classe Audio de src/manifesto.js (respeita metadados.loop)",
+        "phaser": "this.sound.play(id) ou Audio do CEW",
+        "gdscript": "AudioStreamPlayer.play()",
+        "csharp": "AudioSource.Play()"
+      }
+    },
+    {
+      "origem": [
+        "MonoBehaviour.Update",
+        "MonoBehaviour.Start",
+        "MonoBehaviour.FixedUpdate",
+        "MonoBehaviour.Awake"
+      ],
+      "plataforma": "Unity",
+      "papel": "logica",
+      "destino": {
+        "phaser": "Scene.update / create",
+        "threejs": "renderer.setAnimationLoop",
+        "babylonjs": "scene.onBeforeRenderObservable",
+        "javascript": "laco do motor",
+        "gdscript": "_process / _ready / _physics_process",
+        "csharp": "o mesmo metodo (Unity WebGL)"
+      }
+    },
+    {
+      "origem": [
+        "Input.GetKey",
+        "Input.GetKeyDown",
+        "Input.GetAxis",
+        "Input.GetButton"
+      ],
+      "plataforma": "Unity",
+      "papel": "entrada",
+      "destino": {
+        "javascript": "estado de teclas por keydown/keyup",
+        "phaser": "this.input.keyboard",
+        "gdscript": "Input.is_action_pressed / Input.get_axis",
+        "csharp": "o mesmo (Unity WebGL)"
+      }
+    },
+    {
+      "origem": [
+        "Time.deltaTime",
+        "Time.time"
+      ],
+      "plataforma": "Unity",
+      "papel": "logica",
+      "destino": {
+        "javascript": "dt do laco do motor (segundos = ms / 1000)",
+        "gdscript": "delta / Time.get_ticks_msec()",
+        "csharp": "o mesmo (Unity WebGL)"
+      }
+    },
+    {
+      "origem": [
+        "Physics.Raycast",
+        "Rigidbody.AddForce",
+        "b2World_Step",
+        "dWorldStep",
+        "btDiscreteDynamicsWorld"
+      ],
+      "plataforma": "Unity/Box2D/ODE/Bullet",
+      "papel": "fisica",
+      "destino": {
+        "phaser": "Arcade Physics ou Matter.js (this.physics / this.matter)",
+        "babylonjs": "Havok/Ammo pelo plugin de fisica",
+        "threejs": "biblioteca externa (ex.: cannon-es, rapier)",
+        "javascript": "reimplementar a fisica do original se o comportamento exato importar",
+        "gdscript": "RigidBody2D/3D, RayCast",
+        "csharp": "o mesmo (Unity WebGL)"
+      },
+      "nota": "Se a sensacao do jogo depende dos numeros do original, traduza a fisica dele (constantes em dados/configuracoes.json) em vez de trocar por outro motor de fisica."
+    },
+    {
+      "origem": [
+        "socket",
+        "connect",
+        "send",
+        "recv",
+        "WSAStartup",
+        "SDLNet_TCP_Open"
+      ],
+      "plataforma": "BSD sockets/Winsock/SDL_net",
+      "papel": "rede",
+      "destino": {
+        "javascript": "WebSocket ou WebRTC (o navegador nao abre socket TCP/UDP direto); precisa de servidor",
+        "gdscript": "WebSocketPeer / WebRTCPeerConnection",
+        "csharp": "WebSocket por plugin JS na WebGL"
+      }
+    },
+    {
+      "origem": [
+        "exit",
+        "abort",
+        "ExitProcess",
+        "PostQuitMessage"
+      ],
+      "plataforma": "libc/Win32",
+      "papel": "plataforma",
+      "destino": {
+        "javascript": "voltar ao menu / parar o laco; nao feche a pagina",
+        "gdscript": "get_tree().quit() (no navegador, voltar ao menu)",
+        "csharp": "Application.Quit nao funciona na WebGL: voltar ao menu"
+      }
+    }
+  ]
+}

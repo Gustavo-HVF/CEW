@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/gemini/tarefa_traducao.schema.json",
+  "title": "Tarefa Gemini: rascunho de traducao de uma funcao descompilada para a linguagem do motor",
+  "type": "object",
+  "required": ["schema_version", "gerado_por", "tarefa", "unidade", "linguagem_origem", "linguagem_destino", "motor", "codigo", "instrucoes"],
+  "properties": {
+    "schema_version": { "$ref": "../comum.schema.json#/$defs/schema_version" },
+    "gerado_por": { "const": "cew" },
+    "tarefa": { "const": "traducao" },
+    "unidade": { "type": "string", "pattern": "^u_[0-9a-f]{16}$" },
+    "nome": { "type": "string" },
+    "nome_destino": { "type": "string" },
+    "linguagem_origem": { "type": "string" },
+    "linguagem_destino": { "type": "string" },
+    "motor": { "type": "string" },
+    "codigo": { "type": "string", "maxLength": 16000 },
+    "chamadas": { "type": "array", "items": { "type": "string" }, "maxItems": 60 },
+    "equivalencias": { "type": "array", "items": { "type": "string" }, "maxItems": 40 },
+    "instrucoes": { "type": "string" }
+  },
+  "additionalProperties": false
+}

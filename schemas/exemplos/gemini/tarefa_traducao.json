@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "tarefa": "traducao",
+  "unidade": "u_7ff6d9765557c202",
+  "nome": "main",
+  "nome_destino": "main",
+  "linguagem_origem": "pseudo_c",
+  "linguagem_destino": "javascript",
+  "motor": "phaser",
+  "codigo": "// main at 0x11e9, from jogo.elf. Approximate pseudo-C from the built-in decompiler.\nint64_t main()\n{\n    rax = fs:[0x28];\n    stack_48 = rax;\n    eax = 0;\n    rax = fopen@plt(\"desconhecido/misterio.xyz\", &data_2004);\n    if (rax == 0) {\n        edx = 0xffffffff;\n    } else {\n        rbx = rax;\n        rax = fread@plt(rsp, 1, 0x40, rax);\n        fclose@plt(rbx);\n        if (rbp <= 11 /* unsigned */) {\n            edx = 0xfffffffe;\n        } else {\n            rax = memcmp@plt(rsp, \"QZX1\", 4);\n            if (eax != 0) {\n                edx = 0xfffffffe;\n            } else {\n                edx = stack_8;\n                eax = stack_a;\n                edx *= eax;\n            }\n        }\n    }\n    eax = 0;\n    __printf_chk@plt(2, &data_2026);\n    rax = stack_48;\n    rax -= fs:[0x28];\n    if (rax != 0) {\n        __stack_chk_fail@plt();\n    } else {\n        eax = 0;\n        return rax;\n    }\n}\n\n",
+  "chamadas": [
+    "__printf_chk@plt",
+    "__stack_chk_fail@plt",
+    "fclose@plt",
+    "fopen@plt",
+    "fread@plt",
+    "memcmp@plt"
+  ],
+  "equivalencias": [
+    "__printf_chk -> console.log (somente depuracao; o teste de marco reprova erros no console)",
+    "fclose -> const dados = new Uint8Array(await (await fetch(manifesto.url(manifesto.get(ID)))).arrayBuffer())",
+    "fopen -> const dados = new Uint8Array(await (await fetch(manifesto.url(manifesto.get(ID)))).arrayBuffer())",
+    "fread -> const dados = new Uint8Array(await (await fetch(manifesto.url(manifesto.get(ID)))).arrayBuffer())",
+    "memcmp -> dst.set(src.subarray(i, j)); buf.fill(v); comparacao byte a byte em Uint8Array"
+  ],
+  "instrucoes": "Traduza o comportamento desta funcao para um modulo completo na linguagem de destino, exportando a funcao com nome_destino."
+}

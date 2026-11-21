@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "observacoes": "Exemplo de projects/<p>/codigo/equivalencias.json: APIs proprias do jogo/motor original.",
+  "equivalencias": [
+    {
+      "origem": [
+        "Engine_PlaySfx",
+        "Snd*"
+      ],
+      "plataforma": "motor proprio do jogo",
+      "papel": "audio",
+      "destino": {
+        "javascript": "audio.tocar(manifesto.get(id), url) (src/manifesto.js)",
+        "phaser": "this.sound.play(id)"
+      },
+      "nota": "descoberto em analise/carregadores.json"
+    }
+  ]
+}

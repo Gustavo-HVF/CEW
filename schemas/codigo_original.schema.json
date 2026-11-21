@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/codigo_original.schema.json",
+  "title": "projects/<p>/codigo/original/indice.json - codigo do jogo descompilado (Craft Anything / Ghidra)",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["projeto", "gerado_em", "programas"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "projeto": { "type": "string" },
+    "gerado_em": { "$ref": "comum.schema.json#/$defs/data_hora" },
+    "programas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "caminho", "sha256", "tipo_codigo", "linguagem_origem", "ferramenta", "pasta", "estado", "unidades"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9._-]+$" },
+          "item_inventario": { "$ref": "comum.schema.json#/$defs/id_inventario" },
+          "caminho": { "type": "string" },
+          "sha256": { "$ref": "comum.schema.json#/$defs/sha256" },
+          "tipo_codigo": { "type": "string", "enum": ["nativo", "dotnet", "java", "javascript", "fonte", "python_bytecode", "android"] },
+          "linguagem_origem": { "type": "string", "description": "linguagem do codigo produzido: pseudo_c, csharp, java, javascript, lua, gdscript, python..." },
+          "ferramenta": {
+            "type": "object", "required": ["nome", "operacao"], "additionalProperties": false,
+            "properties": { "nome": { "type": "string" }, "versao": { "type": ["string", "null"] }, "operacao": { "type": "string" }, "motor": { "type": ["string", "null"] }, "evidencia_id": { "type": ["string", "null"] } }
+          },
+          "pasta": { "type": "string", "description": "relativa ao projeto" },
+          "estado": { "type": "string", "enum": ["completo", "parcial", "falhou", "indisponivel"] },
+          "mensagem": { "type": "string" },
+          "unidades": {
+            "type": "array",
+            "items": {
+              "type": "object", "required": ["nome", "arquivo", "linhas", "sha256"], "additionalProperties": false,
+              "properties": {
+                "nome": { "type": "string" }, "endereco": { "type": ["string", "null"] }, "arquivo": { "type": "string" },
+                "linhas": { "type": "integer", "minimum": 0 }, "sha256": { "$ref": "comum.schema.json#/$defs/sha256" }, "estruturado": { "type": ["boolean", "null"] }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

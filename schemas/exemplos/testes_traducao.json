@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "unidade": "u_7ff6d9765557c202",
+  "funcao": "main",
+  "tolerancia": 0,
+  "casos": [
+    {
+      "nome": "arquivo ausente",
+      "entrada": [
+        null
+      ],
+      "saida": -1,
+      "origem": "pseudo_c",
+      "nota": "fopen == 0 -> edx = 0xffffffff"
+    },
+    {
+      "nome": "curto demais",
+      "entrada": [
+        {
+          "$bytes": "515a58310300"
+        }
+      ],
+      "saida": -2,
+      "origem": "pseudo_c",
+      "nota": "rbp <= 11 -> 0xfffffffe"
+    },
+    {
+      "nome": "magic errado",
+      "entrada": [
+        {
+          "$bytes": "4142434400000000100010000000"
+        }
+      ],
+      "saida": -2,
+      "origem": "pseudo_c"
+    },
+    {
+      "nome": "16x16",
+      "entrada": [
+        {
+          "$bytes": "515a58310300000010001000"
+        }
+      ],
+      "saida": 256,
+      "origem": "pseudo_c",
+      "nota": "stack_8 * stack_a = u16@8 * u16@10"
+    }
+  ]
+}

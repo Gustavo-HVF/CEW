@@ -34,7 +34,7 @@ include-package-data = true
 include = ["cew*", "converters*", "cookbook*"]
 
 [tool.setuptools.package-data]
-cew = ["modelos_web/**/*"]
+cew = ["modelos_web/**/*", "js/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

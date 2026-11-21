@@ -178,6 +178,31 @@ relacao ao prompt original e o que ainda e hipotese. Datas no formato AAAA-MM-DD
 42. **Babylon.js** passa a usar `scene.useRightHandedSystem = true`, para posicoes e quaternions das cenas
     (e do glTF) valerem sem conversao extra.
 
+## Descompilacao e traducao do codigo do jogo
+
+43. **Craft Anything descompila; nao traduz entre linguagens.** Conferido nos tools reais: nativo
+    (`native_source_folder_write`, executado aqui: 15 funcoes do binario de teste, estado em
+    `craft-pseudocode-export.json`, motor "clean-room lifter" porque o Ghidra do Craft Anything nao estava
+    configurado), .NET (`managed_ilspy_decompile` com ilspycmd: resultado `output`/`total_lines` paginado;
+    operacoes `decompile`, `il`, `list_types`), Java (`java_vineflower_decompile`: `sources` e, por classe,
+    `source`/`total_lines`), JS (`js_sources_restore`), Python compilado (`formats_bytecode_show`). A
+    traducao para a linguagem do motor e feita pela IA principal, uma unidade por vez, com testes.
+44. **Nao testado com ferramenta real:** ILSpy (`ilspycmd` ausente no ambiente de construcao; o formato
+    exato da linha de `-l cisde` nao foi visto - o CEW pega o ultimo token com cara de nome de tipo),
+    Vineflower e `js-sources-restore` (os testes simulam o Craft Anything com os formatos de resultado
+    lidos no codigo-fonte dele).
+45. **Deteccao de .NET** por heuristica: PE com a assinatura de metadados da CLI ("BSJB") nos primeiros
+    8 MB. O Craft Anything confirma ao descompilar (recusa PE nao gerenciado).
+46. **Prioridade de traducao** (nativo): distancia no grafo de chamadas extraido do proprio codigo
+    descompilado a partir de `main`, `WinMain`, `Update`, `Draw`, `Initialize`, `LoadContent`, `Start`...;
+    ate 2 passos = alta. Runtime (PLT, `_start`, `frame_dummy`, `__*`...) = descartada. Desenho e janela nunca
+    ficam em alta (sao reconstruidos no motor). Codigo gerenciado: por papel (logica/fisica/entrada/IA/carregador = alta).
+47. **Testes de equivalencia** automaticos so para JavaScript (`cew/js/testar_traducao.mjs`, bytes como
+    `{"$bytes": "hex"}`, tolerancia para float); GDScript e C# ficam como "manual". Cada caso declara a
+    origem do valor esperado; o CEW nao executa o binario original para obter esses valores.
+48. **Andamento preservado** ao replanejar; traducao editada depois de `testada` volta a `traduzida`;
+    codigo original diferente (novo binario) devolve a unidade para revisao.
+
 ## Hipoteses tecnicas nos conversores (a conferir com arquivos reais)
 
 - **MD2:** ordem das faces invertida por padrao (o glquake desenha com `glCullFace(GL_FRONT)`, ou

@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "projeto": "codigo",
+  "gerado_em": "2026-11-21T17:31:28Z",
+  "programas": [
+    {
+      "id": "jogo-8f46bb",
+      "item_inventario": "i_8f46bb1099aaea8c",
+      "caminho": "jogo.elf",
+      "sha256": "3842e21efe56df967f310db287835fee98bee3264d7b7cac21799c0396d529af",
+      "tipo_codigo": "nativo",
+      "linguagem_origem": "pseudo_c",
+      "pasta": "codigo/original/jogo-8f46bb",
+      "ferramenta": {
+        "nome": "Craft Anything",
+        "versao": "0.6.1",
+        "operacao": "native_source_folder_write",
+        "motor": "clean-room lifter",
+        "evidencia_id": "ev_70fc04131ba30b680ad7ae664282a3689471b0e7749b6013ff840b9bc568fea2"
+      },
+      "estado": "completo",
+      "unidades": [
+        {
+          "nome": "fopen@plt",
+          "endereco": "0x10f0",
+          "arquivo": "codigo/original/jogo-8f46bb/00000000000010f0_fopen_plt.c",
+          "linhas": 4,
+          "sha256": "128d64b70ea803e2b5e541f140467cdc0c6b7fa758f465bb77ed569e00e6da99",
+          "estruturado": true
+        },
+        {
+          "nome": "_start",
+          "endereco": "0x1100",
+          "arquivo": "codigo/original/jogo-8f46bb/0000000000001100_start.c",
+          "linhas": 8,
+          "sha256": "59c529e1fd40d9711f42c2da2bf0c03d2ec423352a2f917086903c6cf0b63289",
+          "estruturado": true
+        },
+        {
+          "nome": "main",
+          "endereco": "0x11e9",
+          "arquivo": "codigo/original/jogo-8f46bb/00000000000011e9_main.c",
+          "linhas": 36,
+          "sha256": "883d95e3f47bdf465e1364c15ab49790a195d81568603424bd2887c15be65a11",
+          "estruturado": true
+        }
+      ]
+    }
+  ]
+}
