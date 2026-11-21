@@ -20,7 +20,7 @@ from converters.comum.imagem import png_bytes
 from converters.comum.texturas import decodificar_bc, decodificar_linear
 
 INFO = {
-    "arquivo": "converters/generico/dds_to_png.py",
+    "arquivo": "cookbook/generico/dds_to_png.py",
     "descricao": "Converte DDS (BC1/BC2/BC3 e RGB/RGBA sem compressao) para PNG.",
     "formatos_entrada": ["generico.dds"],
     "destino": "png",

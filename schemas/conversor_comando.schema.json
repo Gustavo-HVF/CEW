@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/conversor_comando.schema.json",
+  "title": "Conversor de comando externo (projects/<p>/conversores/**/<nome>.json)",
+  "description": "Embrulha uma ferramenta existente. Marcadores: {entrada}, {saida} (pasta), {saida_arquivo:<nome>}, {opcao:<nome>}, {python}, {projeto}.",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["tipo", "descricao", "formatos_entrada", "destino", "comando", "saidas"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "tipo": { "const": "comando" },
+    "descricao": { "type": "string" },
+    "formatos_entrada": { "type": "array", "minItems": 1, "items": { "$ref": "comum.schema.json#/$defs/id_formato" } },
+    "destino": { "type": "string" },
+    "papel": { "type": "string", "enum": ["conversor", "extrator", "descompactador"] },
+    "versao": { "type": "string" },
+    "ferramenta": {
+      "type": "object", "required": ["nome"], "additionalProperties": false,
+      "properties": { "nome": { "type": "string" }, "versao": { "type": "string" }, "url": { "type": "string" }, "verificar": { "type": "array", "items": { "type": "string" }, "description": "comando que imprime a versao, ex.: [\"vgmstream-cli\", \"-V\"]" } }
+    },
+    "comando": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "opcoes_padrao": { "type": "object" },
+    "tempo_limite_s": { "type": "number", "minimum": 1 },
+    "codigos_ok": { "type": "array", "items": { "type": "integer" } },
+    "saidas": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "required": ["padrao", "tipo", "formato"], "additionalProperties": false,
+        "properties": {
+          "padrao": { "type": "string", "description": "glob relativo a pasta de saida, ex.: *.png" },
+          "tipo": { "type": "string", "enum": ["modelo", "textura", "animacao", "audio", "video", "mapa", "dados", "fonte", "outro", "arquivo_extraido"] },
+          "formato": { "type": "string" },
+          "obrigatoria": { "type": "boolean" }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

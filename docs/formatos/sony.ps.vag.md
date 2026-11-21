@@ -4,7 +4,7 @@
 - Extensoes: .vag
 - Ordem de bytes: big
 - Tipo: audio
-- Conversor: `converters/sony/vag_to_wav.py`
+- Conversor (receita do cookbook): `cookbook/sony/vag_to_wav.py`
 - Estado no registro: `fixtures_sinteticas` - conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia
 
 ## Campos

@@ -70,7 +70,15 @@ export function painelAudio(manifesto, audio) {
   }
 }
 
+// Contrato com os testes de marco: o app mantem em window.__CEW_ESTADO o que pode ser observado
+// (posicao do jogador, tela atual, pontuacao...). Use estado({...}) sempre que algo mudar.
+export function estado(parcial) {
+  window.__CEW_ESTADO = { ...(window.__CEW_ESTADO || {}), ...parcial };
+  return window.__CEW_ESTADO;
+}
+
 export function pronto(texto) {
   document.getElementById('status').textContent = texto;
+  estado({ assets_carregados: true });
   window.__CEW_PRONTO = true;
 }

@@ -1,22 +1,134 @@
 {
   "version": "0.2.0",
   "inputs": [
-    { "id": "projeto", "type": "promptString", "description": "Projeto", "default": "meu-jogo" },
-    { "id": "alvo", "type": "promptString", "description": "Arquivo ou pasta alvo" },
-    { "id": "conversor", "type": "pickString", "description": "Conversor", "options": [
-      "converters/nintendo/yaz0_to_bin.py", "converters/nintendo/u8_to_dir.py", "converters/nintendo/sarc_to_dir.py", "converters/nintendo/tpl_to_png.py",
-      "converters/sony/tim_to_png.py", "converters/sony/vag_to_wav.py", "converters/idtech/pak_to_dir.py", "converters/idtech/md2_to_glb.py",
-      "converters/valve/vpk_to_dir.py", "converters/generico/dds_to_png.py", "converters/generico/tga_to_png.py", "converters/generico/wav_to_ogg.py",
-      "converters/generico/zip_to_dir.py", "converters/generico/copiar_web.py", "converters/dados/texto_to_json.py"] },
-    { "id": "entrada", "type": "promptString", "description": "Arquivo de entrada do conversor", "default": "tests/fixtures/amostras/nintendo/texturas.tpl" }
+    {
+      "id": "projeto",
+      "type": "promptString",
+      "description": "Projeto",
+      "default": "meu-jogo"
+    },
+    {
+      "id": "alvo",
+      "type": "promptString",
+      "description": "Arquivo ou pasta alvo"
+    },
+    {
+      "id": "conversor",
+      "type": "pickString",
+      "description": "Conversor",
+      "options": [
+        "converters/dados/texto_to_json.py",
+        "converters/generico/copiar_web.py",
+        "converters/generico/wav_to_ogg.py",
+        "converters/generico/zip_to_dir.py",
+        "cookbook/generico/dds_to_png.py",
+        "cookbook/generico/tga_to_png.py",
+        "cookbook/idtech/md2_to_glb.py",
+        "cookbook/idtech/pak_to_dir.py",
+        "cookbook/nintendo/sarc_to_dir.py",
+        "cookbook/nintendo/tpl_to_png.py",
+        "cookbook/nintendo/u8_to_dir.py",
+        "cookbook/nintendo/yaz0_to_bin.py",
+        "cookbook/sony/tim_to_png.py",
+        "cookbook/sony/vag_to_wav.py",
+        "cookbook/valve/vpk_to_dir.py"
+      ]
+    },
+    {
+      "id": "entrada",
+      "type": "promptString",
+      "description": "Arquivo de entrada do conversor",
+      "default": "tests/fixtures/amostras/nintendo/texturas.tpl"
+    }
   ],
   "configurations": [
-    { "name": "CEW: menu", "type": "debugpy", "request": "launch", "program": "${workspaceFolder}/scripts/orchestrator.py", "console": "integratedTerminal", "cwd": "${workspaceFolder}" },
-    { "name": "CEW: run (projeto + alvo)", "type": "debugpy", "request": "launch", "program": "${workspaceFolder}/scripts/orchestrator.py", "args": ["run", "--projeto", "${input:projeto}", "--alvo", "${input:alvo}"], "console": "integratedTerminal", "cwd": "${workspaceFolder}" },
-    { "name": "CEW: run --dry-run", "type": "debugpy", "request": "launch", "program": "${workspaceFolder}/scripts/orchestrator.py", "args": ["run", "--dry-run", "--projeto", "${input:projeto}", "--alvo", "${input:alvo}"], "console": "integratedTerminal", "cwd": "${workspaceFolder}" },
-    { "name": "CEW: check", "type": "debugpy", "request": "launch", "program": "${workspaceFolder}/scripts/orchestrator.py", "args": ["check", "--projeto", "${input:projeto}"], "console": "integratedTerminal", "cwd": "${workspaceFolder}" },
-    { "name": "CEW: depurar um conversor", "type": "debugpy", "request": "launch", "program": "${workspaceFolder}/${input:conversor}", "args": ["${input:entrada}", "-o", "${workspaceFolder}/build/depuracao", "--dry-run"], "console": "integratedTerminal", "cwd": "${workspaceFolder}" },
-    { "name": "CEW: servidor MCP (stdio)", "type": "debugpy", "request": "launch", "program": "${workspaceFolder}/scripts/mcp_server.py", "console": "integratedTerminal", "cwd": "${workspaceFolder}" },
-    { "name": "CEW: pytest (arquivo aberto)", "type": "debugpy", "request": "launch", "module": "pytest", "args": ["${file}", "-x", "-q"], "console": "integratedTerminal", "cwd": "${workspaceFolder}", "justMyCode": false }
+    {
+      "name": "CEW: menu",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/orchestrator.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "CEW: run (projeto + alvo)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/orchestrator.py",
+      "args": [
+        "run",
+        "--projeto",
+        "${input:projeto}",
+        "--alvo",
+        "${input:alvo}"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "CEW: run --dry-run",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/orchestrator.py",
+      "args": [
+        "run",
+        "--dry-run",
+        "--projeto",
+        "${input:projeto}",
+        "--alvo",
+        "${input:alvo}"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "CEW: check",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/orchestrator.py",
+      "args": [
+        "check",
+        "--projeto",
+        "${input:projeto}"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "CEW: depurar um conversor",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/${input:conversor}",
+      "args": [
+        "${input:entrada}",
+        "-o",
+        "${workspaceFolder}/build/depuracao",
+        "--dry-run"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "CEW: servidor MCP (stdio)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/mcp_server.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "CEW: pytest (arquivo aberto)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": [
+        "${file}",
+        "-x",
+        "-q"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "justMyCode": false
+    }
   ]
 }

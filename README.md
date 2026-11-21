@@ -13,8 +13,14 @@ Ele junta tres pecas:
   conversor e segunda opiniao visual, sempre com saida em JSON validado.
 
 A IA principal e o agente de programacao no VS Code (Claude Code, Codex ou outro): ela decide a
-arquitetura, revisa todo codigo gerado e e a unica que grava no repositorio. As skills em `skills/`
-dizem a ela o que fazer em cada etapa.
+arquitetura, **escreve os conversores do app que a pessoa quer converter**, revisa todo codigo gerado
+e e a unica que grava no repositorio. As skills em `skills/` dizem a ela o que fazer em cada etapa.
+
+**Modelo "o agente cria os conversores".** O CEW nao tenta trazer um conversor pronto para cada formato
+do mundo. Ele traz o kit (esqueleto, biblioteca de leitura binaria/texturas/audio/glTF, harness de testes,
+sandbox, registro de formatos e verificacao) e o agente da pessoa escreve - ou embrulha uma ferramenta
+existente - os conversores do alvo dela, dentro do projeto. Os conversores especificos que ja existiam
+viraram receitas opcionais em `cookbook/`.
 
 > Use o CEW em software que voce possui ou tem permissao para examinar. O CEW nao decifra conteudo
 > protegido (DRM, pacotes cifrados): ele identifica, registra e segue com o que estiver legivel.
@@ -92,10 +98,10 @@ cew check --projeto meu-jogo
 | 2 alvo | escolhe arquivo ou pasta | alvo acessivel | Estudar |
 | 3 inventario | abre conteineres, SHA-256, assinatura, entropia, ordem de bytes, formato | `inventario.json` valido | Estudar |
 | 4 engenharia | Craft Anything `triage` + Ghidra headless -> `analise/`, hipoteses, especificacoes | evidencia para cada formato a converter | Estudar |
-| 5 conversao | `plano_conversao.json`, tarefas do Gemini, conversores -> `web/asset_manifest.json` | sem itens em erro, testes passando | Construir |
+| 5 conversao | `plano_conversao.json` com cobertura por formato; o agente cria os conversores que faltam (skill 04) -> `web/asset_manifest.json` | sem erros; formato de prioridade alta sem conversor so com decisao; conversores do projeto aprovados no harness | Construir |
 | 6 motor | notas 0-10 por motor -> `recomendacao_motor.json`; voce escolhe | escolha registrada | Construir |
-| 7 reconstrucao | gera `app/` (Three.js, Babylon.js, Phaser ou PixiJS) | projeto carregando o manifesto | Construir |
-| 8 verificacao | esquemas, determinismo, glTF Validator, texturas, audio, build, Playwright, capturas | `relatorio_verificacao.json` aprovado | Verificar |
+| 7 reconstrucao | gera `app/` (Three.js, Babylon.js, Phaser ou PixiJS) e `marcos.json`; o agente reconstroi a logica marco a marco (skill 07) | projeto carregando o manifesto | Construir |
+| 8 verificacao | esquemas, determinismo, glTF Validator, texturas, audio, build, Playwright, capturas, **testes de marco** e **cobertura de conteudo** | `relatorio_verificacao.json` aprovado (marcos obrigatorios inclusive) | Verificar |
 | 9 pronto | `npm run dev` / `npm run preview` em `app/` | - | Pronto |
 
 Para comparar com o original, coloque capturas em `projects/<nome>/referencias/<cena>.png`.
@@ -116,25 +122,30 @@ Para comparar com o original, coloque capturas em `projects/<nome>/referencias/<
 | `cew sandbox <rascunho.py\|sha.resposta.json> --entrada <amostra>` | roda rascunho do Gemini isolado |
 | `cew validar <arquivo.json> [--esquema nome]` | valida um JSON |
 | `cew skills instalar` | copia as skills para `.claude/skills/` |
+| `cew novo-conversor <formato> --projeto P [--tipo python\|comando] [--destino png]` | esqueleto de conversor no projeto |
+| `cew conversor-testar <ref> --projeto P [--entrada A]` | harness: executa, determinismo, robustez, dry-run, ajuda, tempo/memoria |
+| `cew formato-registrar <formato> --projeto P [--extensao] [--assinatura] [--conversor] [--decisao]` | registro do projeto (`formatos.json`) |
+| `cew conversor-copiar <cookbook/...> --projeto P` | traz uma receita do cookbook para adaptar |
+| `cew log-conversor <formato> <passo> --projeto P` | registra pesquisa/amostragem/conferencia em `log_conversores.jsonl` |
+| `cew marcos iniciar\|status --projeto P [--modelo jogo\|app]` | marcos de utilizacao/jogabilidade |
 
-Cada conversor tambem roda sozinho: `python converters/nintendo/tpl_to_png.py --help`.
+Cada conversor tambem roda sozinho: `python cookbook/nintendo/tpl_to_png.py --help`.
 
-## O que ja converte
+## Conversores: tres fontes
 
-| Origem | Formato | Destino |
+A ordem de busca fica em `config/cew.json` (`fontes_conversores`, padrao `projeto -> cookbook -> generico`):
+
+| Fonte | Onde | O que e |
 |---|---|---|
-| Nintendo | Yaz0/SZS, U8 (.arc), SARC | pasta (recursivo) |
-| Nintendo | TPL (I4, I8, IA4, IA8, RGB565, RGB5A3, RGBA32, C4, C8, C14X2, CMPR) | PNG |
-| Sony | TIM (4/8/16/24 bpp, CLUT) | PNG |
-| Sony | VAG (PS-ADPCM, com loop) | WAV -> OGG |
-| id Software | PAK; MD2 (frames -> morph targets + animacoes) | pasta; GLB |
-| Valve | VPK v1/v2 | pasta |
-| PC | DDS (BC1/2/3, RGB/RGBA), TGA, WAV, ZIP/APK/PK3 | PNG, OGG/WAV, pasta |
-| Texto | tabelas Shift-JIS/UTF-16/Latin-1 | `dados/dialogos.json` |
+| projeto | `projects/<nome>/conversores/` | escritos pelo agente para o alvo da pessoa: modulo Python ou comando externo declarado em JSON (embrulha vgmstream-cli, ffmpeg, um binario proprio...). Rodam em subprocesso com tempo e memoria limitados |
+| cookbook | `cookbook/` | receitas testadas e opcionais: Yaz0, U8, SARC, TPL (GX), TIM, VAG, PAK, MD2->GLB, VPK, DDS, TGA. Tire `cookbook` da lista para o agente escrever tudo no projeto |
+| generico | `converters/` | o que quase todo alvo precisa: arquivos que a web ja le, ZIP/APK/PK3, WAV->OGG, tabelas de texto->JSON |
 
-O registro (`formats/registry.json`) tem 89 formatos com assinatura, ordem de bytes, destino web e
-ferramentas de referencia; os que ainda nao tem conversor ficam `aguardando_conversor` no plano e o
-fluxo de delegacao (skill 04) cria o conversor com o Gemini + revisao.
+O registro global (`formats/registry.json`, 89 formatos) continua completo, porque identificar e barato e
+ajuda todo mundo; o registro do projeto (`projects/<nome>/formatos.json`) completa ou substitui entradas
+(ex.: o agente registra a assinatura do `.xnb` e o conversor que escreveu). Formato sem conversor aparece no
+plano como `falta_conversor`, com prioridade pelo impacto; a pessoa pode decidir `ignorar`, `substituir`
+ou `bloqueado`.
 
 ## Estrutura
 
@@ -144,12 +155,13 @@ cew/modelos_web/     modelos de projeto web por motor
 scripts/             orchestrator.py, setup_craft_anything.py, mcp_server.py, ghidra/ExportarCEW.java
 schemas/             JSON Schema 2020-12 de todos os contratos (+ exemplos validos em schemas/exemplos/)
 formats/registry.json  registro de formatos por empresa/motor
-converters/<empresa>/  um conversor por formato (--help, --dry-run, saida JSON validada)
-converters/comum/    leitura binaria defensiva, compressoes, texturas de GPU, audio, glTF, eixos, texto
+converters/comum/    biblioteca para o agente: leitura binaria defensiva, compressoes, texturas de GPU, audio, glTF, eixos, texto
+converters/generico/ conversores genericos (fonte "generico")
+cookbook/<familia>/  receitas opcionais e testadas (fonte "cookbook")
 tests/               pytest (+ tests/js para ajv e glTF Validator) e amostras sinteticas em tests/fixtures/
 docs/                DECISOES.md, formatos/, especificacoes/
-skills/              seis skills para o agente no VS Code
-projects/<nome>/     criado pelo CEW (estrutura do Craft Anything + JSONs do CEW)
+skills/              sete skills para o agente no VS Code
+projects/<nome>/     criado pelo CEW (estrutura do Craft Anything + JSONs do CEW + conversores/ do agente, formatos.json, marcos.json)
 ```
 
 ## Testes

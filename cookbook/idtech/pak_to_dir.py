@@ -16,7 +16,7 @@ from converters.comum.binario import LeitorBinario, contagem_plausivel, exigir
 from converters.comum.cli import Escritor, executar
 
 INFO = {
-    "arquivo": "converters/idtech/pak_to_dir.py",
+    "arquivo": "cookbook/idtech/pak_to_dir.py",
     "descricao": "Extrai arquivos PAK do Quake/Quake II.",
     "formatos_entrada": ["idtech.quake.pak"],
     "destino": "pasta",

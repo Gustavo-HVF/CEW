@@ -1,216 +1,179 @@
-PROMPT - CEW v2: "O AGENTE DA PESSOA CRIA OS CONVERSORES"
-=========================================================
+PROMPT - CEW v2.1: "O AGENTE DA PESSOA CRIA OS CONVERSORES"
+===========================================================
 
 PAPEL
 Atue como arquiteto de software senior e engenheiro de agentes de IA, com experiencia em formatos
 binarios de jogos, engenharia reversa, pipelines de assets e motores graficos para a web.
 
 MISSAO
-Evoluir o repositorio CEW (Convert Everything for the Web) de "biblioteca de conversores prontos" para
-"arcabouco + contrato + verificacao", em que o PROPRIO AGENTE DE IA DA PESSOA (Claude Code, Codex ou outro
-no VS Code) escreve, testa e valida os conversores do app especifico que ela quer levar para a web.
-Objetivo final de cada projeto: o app/jogo RODA NO NAVEGADOR E E JOGAVEL, nao apenas ter os assets
-convertidos.
+Evoluir o CEW (Convert Everything for the Web) de "biblioteca de conversores prontos" para
+"arcabouco + contrato + verificacao", em que o PROPRIO AGENTE DE IA DA PESSOA (Claude Code, Codex ou
+outro no VS Code) escreve, testa e valida os conversores do app especifico que ela quer levar para a
+web. Objetivo final de cada projeto: o app/jogo RODA NO NAVEGADOR E E UTILIZAVEL/JOGAVEL, nao apenas ter
+os assets convertidos.
 
-Exemplo que guia o desenho: o Terraria usa arquivos .xnb. O repositorio NAO traz conversor de XNB. O agente
-da pessoa, ao encontrar .xnb no inventario, le a documentacao do formato, escreve o conversor, testa com os
-arquivos reais da pessoa e so entao o usa. Outra pessoa, com outro jogo, escreve outros conversores.
+Exemplo que guia o desenho: o Terraria usa arquivos .xnb. O repositorio NAO traz conversor de XNB. O
+agente da pessoa, ao encontrar .xnb no inventario, pesquisa o formato, escreve (ou embrulha uma
+ferramenta existente) o conversor, testa com os arquivos reais da pessoa e so entao o usa.
 
 REGRA DE OURO SOBRE FATOS
-Nao invente comandos, flags, formatos ou ferramentas. Antes de usar qualquer ferramenta (Craft Anything,
-Ghidra, ffmpeg, bibliotecas), leia a documentacao real (README, --help, codigo-fonte) e registre a versao
-em docs/DECISOES.md. Se algo deste prompt nao existir na versao real, adapte e registre a diferenca.
-Nunca declare "convertido" ou "jogavel" sem evidencia executada (saida de teste, captura, log).
+Nao invente comandos, flags, formatos ou ferramentas. Leia a documentacao real (README, --help,
+codigo-fonte) antes de usar qualquer ferramenta e registre a versao em docs/DECISOES.md. Se algo deste
+prompt nao existir na versao real, adapte e registre a diferenca. Nunca declare "convertido",
+"utilizavel" ou "jogavel" sem evidencia executada (saida de teste, captura, log).
+
+REVISAO v2.1 (o que mudou em relacao a v2, para ser mais flexivel)
+  R1 Conhecimento nao e codigo: formats/registry.json continua completo (identificar e barato e ajuda
+     todo mundo); so o CODIGO dos conversores especificos sai do nucleo para cookbook/.
+  R2 Cadeia de resolucao configuravel (config/cew.json): projeto -> cookbook -> generico. Nao e preciso
+     copiar receitas do cookbook para usa-las; cada pessoa liga ou desliga as fontes.
+  R3 Dois tipos de conversor com o mesmo contrato: modulo Python OU comando externo declarado em JSON
+     (embrulha vgmstream-cli, ffmpeg, binario Rust, script Node...). O harness testa os dois do mesmo jeito.
+  R4 Conversores do projeto rodam em SUBPROCESSO com tempo e memoria limitados: codigo do agente nunca
+     derruba o orquestrador.
+  R5 Marcos configuraveis por projeto (marcos.json), com modelos "jogo" e "app"; nao ha lista fixa.
+  R6 Contrato de jogabilidade mensuravel: o app web expoe window.__CEW_ESTADO; os testes de marco
+     injetam entradas e conferem mudancas nesse estado. Teste pendente (fixme) = marco nao aprovado.
+  R7 Cobertura de conteudo medida, nao estimada: os testes de navegador registram quais assets do
+     manifesto foram requisitados.
+  R8 Decisao por formato registrada (converter | ignorar | substituir | bloqueado) no registro do
+     projeto; o criterio da etapa de conversao usa essas decisoes.
+  R9 Limites configuraveis (tentativas por formato, tempo, memoria) e idempotencia pelo hash do arquivo
+     E do codigo do conversor.
 
 --------------------------------------------------------------------
 1. PRINCIPIOS
 --------------------------------------------------------------------
-1.1 Conversor e codigo do PROJETO, nao do repositorio. Fica em projects/<nome>/conversores/, versionado com
-    o projeto. O repositorio CEW fornece o kit para escreve-lo bem, nao o conversor pronto.
-1.2 O repositorio garante QUALIDADE por contrato, nao por quantidade de conversores: esquema JSON,
-    leitura binaria defensiva, determinismo, sandbox, testes e portoes de verificacao. Um conversor do
-    agente so e aceito se passar nesses portoes.
-1.3 Menos codigo no repositorio: manter apenas (a) a biblioteca comum, (b) o esqueleto de conversor,
-    (c) 2 ou 3 conversores de REFERENCIA pequenos e bem testados como exemplo de estilo, (d) a
-    infraestrutura (inventario, plano, sandbox, manifesto, verificacao, motores). Os demais conversores
-    atuais (Nintendo, Sony, Valve, id Tech...) migram para um "livro de receitas" opcional
-    (cookbook/), fora do caminho padrao, consultavel pelo agente como exemplo, nunca obrigatorio.
-1.4 Promocao opcional: um conversor de projeto que passou em todos os portoes e foi testado com arquivos
-    reais pode ser promovido ao cookbook/ (com amostra SINTETICA, nunca arquivo comercial) por decisao
-    da pessoa.
-1.5 Gemini continua opcional e secundario (IA para lote, hipoteses de estrutura, comparacao visual). Quem
-    escreve, revisa e grava conversores e a IA principal. Saida do Gemini sempre em JSON com esquema.
-1.6 Sem bloqueio por origem, licenca ou patente do alvo. O CEW nao decifra conteudo protegido (DRM, cifra):
-    identifica, registra e segue com o que estiver legivel. Avisar a pessoa que redistribuir assets
-    originais exige permissao; o CEW trabalha com a copia local dela.
+1.1 Conversor especifico e codigo do PROJETO: projects/<nome>/conversores/, versionado com o projeto.
+1.2 O repositorio garante QUALIDADE por contrato: esquema JSON, leitura binaria defensiva,
+    determinismo, sandbox, testes e portoes de verificacao. Conversor do agente so e aceito se passar.
+1.3 Nucleo enxuto: biblioteca comum, esqueleto de conversor, harness de testes, infraestrutura
+    (inventario, plano, sandbox, manifesto, verificacao, motores) e conversores genericos que quase todo
+    alvo precisa. Conversores especificos de empresa/motor ficam em cookbook/ (receitas opcionais e
+    testadas, usadas automaticamente se a fonte "cookbook" estiver ligada).
+1.4 Promocao opcional: conversor de projeto aprovado no harness e testado com arquivos reais pode virar
+    receita do cookbook (com amostra SINTETICA, nunca arquivo comercial), por decisao da pessoa.
+1.5 Gemini e opcional e secundario (lote, hipoteses de estrutura, comparacao visual), sempre em JSON
+    com esquema. Quem escreve, revisa e grava conversores e a IA principal.
+1.6 Sem bloqueio por origem, licenca ou patente. O CEW nao decifra conteudo protegido (DRM, cifra):
+    identifica, registra e segue com o que estiver legivel. Redistribuir assets originais exige
+    permissao; o CEW trabalha com a copia local da pessoa.
 
 --------------------------------------------------------------------
-2. O KIT PARA O AGENTE ESCREVER CONVERSORES (entregar no repositorio)
+2. O KIT PARA O AGENTE
 --------------------------------------------------------------------
-2.1 cew novo-conversor <formato_id> --projeto P [--entrada ARQUIVO]
-    Gera projects/P/conversores/<empresa>/<formato>_to_<destino>.py a partir do esqueleto, com:
-    INFO (descricao, formatos_entrada, destino, papel), converter(dados, esc, opcoes), --help, --dry-run,
-    saida validada por schemas/conversor_resultado.schema.json, e um arquivo de teste vazio ao lado
-    (test_<formato>.py) ja ligado ao harness.
-2.2 Biblioteca comum (converters/comum/), estavel e documentada, que o agente importa em vez de reescrever:
-    - binario.py (LeitorBinario, exigir, contagem_plausivel, limitar_tamanho),
-    - compressao.py (Yaz0, LZ, zlib, gzip e ponto de extensao para algoritmos novos),
-    - texturas.py (blocos/tiling, formatos de GPU, paletas), imagem.py (PNG deterministico, SSIM),
-    - audio.py (WAV com loop, ADPCM), gltf.py (GLB deterministico), eixos.py, texto.py, cores.py.
-    Cada modulo com docstring de uso e exemplo curto; lacunas encontradas pelo agente viram adicoes a
-    esta biblioteca (com testes), nunca copias locais divergentes.
-2.3 cew conversor-testar <caminho>: roda o conversor do projeto contra as amostras do projeto
-    (referencias/amostras/ ou arquivos do proprio alvo) e executa automaticamente:
-    - determinismo (duas execucoes, mesmo SHA-256),
-    - robustez (truncar e corromper bytes; resultado deve ser ok=false com ErroFormato, nunca excecao,
-      nunca laco infinito, nunca estouro de memoria),
-    - esquema da saida, dry-run sem gravar nada, --help presente,
-    - limite de tempo e de memoria (sandbox).
-2.4 cew conversor-sandbox <caminho> --entrada ARQ: executa o conversor isolado (pasta propria, sem rede,
-    tempo/memoria/arquivo limitados), sempre primeiro com --dry-run. Regra: o agente le o codigo antes
-    de executar; a sandbox do Windows nao e barreira contra codigo hostil.
-2.5 cew formato-registrar <formato_id> --projeto P: grava a entrada do formato em
-    projects/P/formatos.json (registro DO PROJETO, mesmo esquema de formats/registry.json) com
-    assinatura, ordem de bytes, destino_web, conversor, documentacao consultada e estado de
-    verificacao. O inventario passa a consultar primeiro o registro do projeto e depois o global
-    (formats/registry.json, que fica enxuto: so formatos genericos e de referencia).
-2.6 Documentacao do formato: o agente cria projects/P/especificacoes/<formato_id>.md com tabela de
-    campos (offset, tipo, tamanho, descricao, evidencia), exemplo em hex e duvidas. Sem especificacao
-    com evidencia, o conversor nao avanca de etapa.
+2.1 config/cew.json (esquema config_cew): fontes_conversores (ordem), limites do harness (tentativas por
+    formato, tempo e memoria por execucao, variantes corrompidas), executar_conversores_do_projeto_em
+    ("subprocesso" | "processo").
+2.2 cew novo-conversor <formato_id> --projeto P [--tipo python|comando] [--destino png]
+    Gera projects/P/conversores/<familia>/<nome>_to_<destino>.py (ou .json para comando) a partir do
+    esqueleto, com INFO, converter(), --help, --dry-run e saida validada por
+    schemas/conversor_resultado.schema.json.
+2.3 Conversor de comando (schemas/conversor_comando.schema.json): comando com marcadores {entrada},
+    {saida}, {opcao:nome}; extensoes de saida esperadas; tipo/formato de cada saida; tempo limite. O
+    CEW roda, lista as saidas e monta o mesmo resultado JSON de um conversor Python.
+2.4 cew conversor-testar <ref> --projeto P [--entrada ARQ ...]: executa em subprocesso, contra amostras
+    reais do projeto (referencias/amostras/ ou arquivos do alvo) e/ou sinteticas:
+    determinismo, robustez (truncar e corromper bytes: ok=false limpo, nunca excecao ou travamento),
+    esquema da saida, dry-run sem gravar, --help, tempo e memoria. Grava
+    conversores/<...>.teste.json (schemas/conversor_projeto.schema.json) com o hash do codigo.
+2.5 cew sandbox <ref|rascunho> --entrada ARQ: isolado, sem rede, sempre --dry-run primeiro.
+2.6 cew formato-registrar <formato_id> --projeto P [--conversor REF] [--decisao ...] [--motivo ...]:
+    grava em projects/P/formatos.json (mesmo esquema do registro global). O inventario e o plano
+    consultam primeiro o registro do projeto e depois o global.
+2.7 cew conversor-copiar <ref do cookbook> --projeto P: copia uma receita para o projeto para adapta-la.
+2.8 Especificacao do formato em projects/P/especificacoes/<formato_id>.md (campos, hex, evidencias).
+2.9 Todo passo do ciclo vai para projects/P/log_conversores.jsonl (schemas/log_conversor.schema.json).
 
 --------------------------------------------------------------------
-3. FLUXO (etapas) - o que muda e o que e acrescentado
+3. FLUXO
 --------------------------------------------------------------------
-Etapas 1 a 4 (ambiente, alvo, inventario, engenharia reversa) permanecem como no CEW v1.
+Etapas 1-4 (ambiente, alvo, inventario, engenharia reversa) como no CEW v1.
 
 Etapa 5 - Plano e CRIACAO de conversores pelo agente
-  5.1 O plano agrupa os itens do inventario por formato e marca cada grupo:
-      - "coberto": ha conversor no registro do projeto, no cookbook ou na biblioteca generica;
-      - "falta_conversor": nenhum conversor; o item recebe prioridade pelo impacto no jogo
-        (quantidade de arquivos, tipo, dependencias).
-  5.2 Para cada "falta_conversor", o agente executa este ciclo e registra cada passo em
-      projects/P/log_conversores.jsonl:
-      a) PESQUISAR: ler documentacao real do formato (especificacao publica, codigo aberto, ferramentas de
-         referencia do registro) e/ou decodificar o carregador no programa original (Ghidra/Craft
-         Anything). Citar as fontes consultadas.
-      b) AMOSTRAR: escolher 3 a 5 arquivos reais variados do alvo (menor, maior, tipos diferentes);
-         inspecionar cabecalhos em hex; formular hipoteses.
-      c) ESCREVER: cew novo-conversor; implementar com a biblioteca comum e leitura defensiva.
-      d) TESTAR: cew conversor-testar; criar tambem uma amostra SINTETICA minima (montada pela
-         especificacao) para os testes automatizados, pois arquivos comerciais nao entram no git.
-      e) CONFERIR contra uma referencia independente quando existir (ferramenta de referencia,
-         imagem renderizada pelo jogo, duracao/loop do audio), com metrica numerica.
-      f) REGISTRAR: cew formato-registrar + especificacao + decisao em docs/DECISOES.md se divergiu.
-  5.3 Delegacao opcional ao Gemini: pedir hipotese de estrutura (schemas/gemini/tarefa_formato...) e
-      rascunho; a IA principal revisa. Se nao houver chave do Gemini, o ciclo funciona igual, so sem a
-      ajuda secundaria.
-  5.4 Orcamento de tentativas: no maximo N ciclos por formato (padrao 5). Esgotado, marcar o formato como
-      "bloqueado" com o motivo e a evidencia do que foi tentado, e seguir com o resto; nunca fingir
-      sucesso nem converter "no escuro".
-  5.5 Criterio para avancar: nenhum item "falta_conversor" de prioridade alta sem decisao explicita da
-      pessoa (converter, ignorar ou substituir por asset novo); conversores testados e passando.
+  5.1 Cada item do plano tem "cobertura": coberto | falta_conversor | bloqueado | ignorado, e o grupo
+      por formato recebe prioridade pelo impacto (quantidade de arquivos, tipo, dependencias).
+  5.2 Ciclo por formato "falta_conversor" (registrado em log_conversores.jsonl):
+      a) PESQUISAR documentacao real e/ou o carregador no programa original (Ghidra/Craft Anything);
+      b) AMOSTRAR 3-5 arquivos reais variados e formular hipoteses a partir do hex;
+      c) ESCREVER (cew novo-conversor) ou EMBRULHAR uma ferramenta existente (tipo comando);
+      d) TESTAR (cew conversor-testar) com arquivos reais e com uma amostra sintetica minima;
+      e) CONFERIR contra referencia independente quando existir, com metrica numerica;
+      f) REGISTRAR (cew formato-registrar --conversor ...) + especificacao.
+  5.3 Gemini opcional para hipoteses e rascunhos; sem chave, o ciclo funciona igual.
+  5.4 Limite de tentativas por formato (config). Esgotado: decisao "bloqueado" com motivo e evidencia.
+  5.5 Criterio para avancar: nenhum item em erro; nenhum formato "falta_conversor" de prioridade alta
+      sem decisao registrada; conversores do projeto com teste aprovado para o hash atual do codigo.
 
-Etapa 6 - Escolha do motor grafico (como no v1, com um criterio novo: o motor precisa permitir a logica
-  do jogo que o agente reconstruira; registrar a escolha da pessoa).
+Etapa 6 - Motor grafico (como no v1; o motor precisa comportar a logica que sera reconstruida).
 
-Etapa 7 - RECONSTRUCAO DA LOGICA E DO JOGO (nova, central para ser jogavel)
-  7.1 Especificar a logica a partir da engenharia reversa: laco principal, maquina de estados, controles,
-      fisica/colisao, IA, geracao de conteudo, interface, salvamento. Cada regra com evidencia (funcao,
-      endereco, trecho). Saida: especificacoes/logica.md + dados/*.json (tabelas e configuracoes).
-  7.2 Dividir em MARCOS JOGAVEIS, do menor ao maior, cada um com criterio de aceite executavel:
-      M0 abre e mostra a primeira tela com assets reais;
-      M1 entrada de teclado/mouse/toque funciona e um personagem/camera se move;
-      M2 colisao e fisica basica;
-      M3 laco central do jogo (o que o jogador FAZ de mais importante);
-      M4 conteudo e progressao minimos; M5 audio, interface, salvamento; M6 desempenho e celular.
-      Escopo realista: informar a pessoa, no inicio, quais marcos cabem; jogos grandes exigem semanas.
-  7.3 Implementar um marco por vez em projects/P/app/, carregando TUDO pelo asset_manifest.json (ids
-      estaveis). Commit por marco.
+Etapa 7 - Reconstrucao da logica e do app/jogo
+  7.1 Logica especificada com evidencia (especificacoes/logica.md + dados/*.json).
+  7.2 cew marcos iniciar --modelo jogo|app cria marcos.json editavel (schemas/marcos.schema.json) e um
+      teste Playwright por marco em app/tests/marcos/. Modelo "jogo": abre com assets reais; entrada
+      move algo; colisao/fisica; laco central; progressao; audio/interface/salvamento; desempenho e
+      celular. Modelo "app": abre; navega entre telas; acao principal; dados persistem; desempenho.
+      O agente pode remover, renomear e acrescentar marcos; cada um precisa de criterio e teste.
+  7.3 Contrato de estado: o app escreve window.__CEW_PRONTO = true e mantem window.__CEW_ESTADO
+      (objeto JSON com o que o teste precisa observar: posicao, tela atual, pontuacao...).
+  7.4 Um marco por vez, carregando tudo pelo asset_manifest.json (ids estaveis); commit por marco.
 
-Etapa 8 - Verificacao (v1 + jogabilidade)
-  Alem dos portoes do v1 (esquemas, determinismo, glTF Validator, texturas, audio, build, console sem
-  erros, comparacao com capturas por SSIM), acrescentar:
-  8.1 Teste de jogabilidade automatizado (Playwright): script por marco que injeta entradas (teclas,
-      cliques) e afirma resultados observaveis (posicao mudou, estado mudou, pontuacao subiu, sem erro
-      no console, quadros por segundo acima do minimo), salvando capturas.
-  8.2 Relatorio de cobertura de conteudo: quantos assets do inventario sao usados pelo jogo web
-      (por tipo) e quais ficaram de fora e por que.
-  8.3 relatorio_verificacao.json com "aprovado" por item e um campo "marco_jogavel_atingido" (M0..M6).
-      "Jogavel" so e declarado com M3 aprovado por teste automatizado + validacao humana.
-  8.4 Comparacao visual do Gemini continua como segunda opiniao, nunca como prova.
+Etapa 8 - Verificacao (v1 + utilizacao/jogabilidade)
+  8.1 Testes de marco (Playwright) com entradas injetadas e afirmacoes sobre window.__CEW_ESTADO, sem
+      erro no console; resultado em marcos.json e em relatorio_verificacao.json.
+  8.2 cobertura_conteudo.json: assets do manifesto requisitados pelos testes, por tipo, e os que ficaram
+      de fora.
+  8.3 relatorio_verificacao.json ganha "marco_atingido" (ultimo marco consecutivo aprovado). Os marcos
+      com "obrigatorio": true entram no "aprovado" geral.
+  8.4 Comparacao visual do Gemini continua so como segunda opiniao.
 
 --------------------------------------------------------------------
-4. CONTRATOS JSON (acrescentar a schemas/, todos draft 2020-12, com schema_version e gerado_por)
+4. CONTRATOS JSON (draft 2020-12, schema_version e gerado_por, exemplos validos, jsonschema + ajv)
 --------------------------------------------------------------------
-- conversor_projeto.schema.json: metadados de cada conversor do projeto (arquivo, formatos, destino,
-  fontes consultadas, ferramentas de referencia, estado de testes, hash do codigo, quem escreveu).
-- log_conversores (jsonl): passo do ciclo, formato, tentativa, resultado, evidencia.
-- marcos.schema.json: lista de marcos com criterio de aceite, teste associado e estado.
-- cobertura_conteudo.schema.json: uso dos assets do inventario pelo jogo web.
-- Estender relatorio_verificacao.schema.json com marco_jogavel_atingido e itens de jogabilidade.
-- Estender plano_conversao.schema.json com "cobertura": coberto | falta_conversor | bloqueado | ignorado
-  e "tentativas".
-Validar com jsonschema (Python) e ajv (Node) antes de gravar e depois de ler; entregar exemplos validos.
+config_cew, conversor_comando, conversor_projeto (teste.json), log_conversor (linha do jsonl), marcos,
+cobertura_conteudo; extensoes em plano_conversao (cobertura, tentativas, hash_conversor), registry
+(conversor de qualquer fonte, decisao por formato) e relatorio_verificacao (marco_atingido, categorias
+marco e cobertura).
 
 --------------------------------------------------------------------
-5. SKILLS (reescrever/ajustar em skills/, mesmo formato: cabecalho YAML name/description + secoes
-   Gatilho, Entradas, Passos com comandos, Delegacao, Padroes de conversao, Saidas, Criterios para
-   avancar, Erros comuns e o que fazer)
+5. SKILLS (mesmo formato: YAML name/description + Gatilho, Entradas, Passos com comandos, Delegacao,
+   Padroes de conversao, Saidas, Criterios para avancar, Erros comuns e o que fazer)
 --------------------------------------------------------------------
-- 04-delegacao-gemini-e-conversores vira "04-criar-conversores": o ciclo 5.2 completo, com modelo de
-  pesquisa de formato, checklist de leitura defensiva, como criar amostra sintetica, quando parar.
-- nova 07-reconstrucao-da-logica-e-marcos: como extrair logica da engenharia reversa e dividir em marcos.
-- ajustar 06-verificacao para os testes de jogabilidade e a cobertura de conteudo.
-- Cada skill traz um caso trabalhado curto (ex.: um formato fictício pequeno de ponta a ponta) para o
-  agente imitar o nivel de rigor.
+- 04-criar-conversores substitui 04-delegacao-gemini-e-conversores (ciclo 5.2, caso trabalhado com um
+  formato ficticio de ponta a ponta, Python e comando).
+- 07-reconstrucao-da-logica-e-marcos (nova).
+- 02, 03, 05 e 06 ajustadas (registro do projeto, cadeia de fontes, marcos, cobertura).
 
 --------------------------------------------------------------------
 6. SEGURANCA E QUALIDADE
 --------------------------------------------------------------------
-- Todo conversor escrito pelo agente roda primeiro em sandbox, com limite de tempo e memoria e sem rede.
-- Leitura binaria defensiva obrigatoria (limites de offset, contagens plausiveis, limite de tamanho
-  descompactado, protecao contra zip slip e bombas de descompressao).
-- Logs em JSON Lines com nivel, etapa e id do item; nunca a chave do Gemini.
-- Idempotencia: rodar de novo pula o que ja esta pronto (hash do arquivo E hash do codigo do conversor;
-  se o conversor mudou, refaz so os itens dele).
-- Caminhos com espacos e acentos; Windows, macOS e Linux.
-- Arquivos comerciais nunca entram no git (.gitignore de projects/*/referencias, build, extraido);
-  fixtures sao sinteticas.
+Subprocesso com limites para todo conversor do projeto; leitura defensiva; logs JSON Lines sem chave;
+idempotencia por hash de entrada + hash do codigo; caminhos com espacos/acentos em Windows/macOS/Linux;
+arquivos comerciais nunca no git; fixtures sinteticas.
 
 --------------------------------------------------------------------
 7. MIGRACAO DO REPOSITORIO ATUAL
 --------------------------------------------------------------------
-7.1 Mover converters/<empresa>/* para cookbook/<empresa>/* mantendo testes e amostras sinteticas; o
-    orquestrador so os usa se o agente os copiar para o projeto (cew conversor-copiar-do-cookbook) ou se
-    a pessoa ativar "cookbook_automatico" em config.
-7.2 Manter em converters/ (como biblioteca padrao sempre ativa) apenas os genericos que a web ja
-    entende ou que quase todo alvo precisa: copiar_web, zip_to_dir, wav_to_ogg, texto_to_json.
-7.3 Enxugar formats/registry.json: manter formatos genericos e de referencia; o conhecimento por
-    empresa vira docs/formatos/ e cookbook/. Registro do projeto passa a ser a fonte principal.
-7.4 Atualizar tests/, README.md, docs/DECISOES.md e .vscode/tasks.json; nenhum teste existente pode
-    ser removido sem substituto equivalente.
+7.1 converters/{nintendo,sony,idtech,valve} e os especificos de formato de PC (dds, tga) vao para
+    cookbook/ com seus testes; o registro global aponta para cookbook/...
+7.2 Ficam em converters/ (fonte "generico", sempre disponivel): comum/, generico/copiar_web,
+    generico/zip_to_dir, generico/wav_to_ogg, dados/texto_to_json.
+7.3 Testes existentes nao sao removidos: mudam de caminho.
+7.4 README, DECISOES, tasks.json e launch.json atualizados.
 
 --------------------------------------------------------------------
-8. CASO DE ACEITE: TERRARIA (usuario com copia propria; nada do jogo vai ao repositorio)
+8. CASO DE ACEITE (Terraria como exemplo; nada do jogo vai ao repositorio)
 --------------------------------------------------------------------
-Sem nenhum conversor de XNB no repositorio, o agente deve conseguir, seguindo as skills:
-a) inventariar a pasta do jogo e ver os .xnb como "falta_conversor";
-b) pesquisar o formato XNB (cabecalho, flags de compressao, leitores de tipo), decodificar o necessario
-   no programa .NET (ferramentas managed_* do Craft Anything) e escrever o conversor do projeto;
-c) testar com texturas reais da pessoa e com uma amostra sintetica, e conferir numericamente;
-d) repetir para fonte e audio, ou marcar "bloqueado" com motivo;
-e) escolher motor 2D, reconstruir a logica em marcos e chegar a pelo menos M1 (personagem se move)
-   com teste automatizado; informar honestamente ate qual marco foi possivel.
-Esse caso e um criterio de aceite do desenho, nao uma promessa de portar o jogo inteiro.
+Sem conversor de XNB no repositorio, seguindo as skills o agente consegue: ver .xnb como
+"falta_conversor"; pesquisar o formato e decodificar o necessario no programa .NET; escrever ou embrulhar
+o conversor; testar com arquivos reais e uma amostra sintetica; registrar ou marcar "bloqueado"; escolher
+motor 2D, montar marcos e chegar ao menos ao marco "entrada move algo" com teste automatizado, informando
+ate onde foi. E criterio de desenho, nao promessa de portar o jogo inteiro.
+O teste de ponta a ponta do repositorio simula isso com um formato ficticio ausente do registro.
 
 --------------------------------------------------------------------
-9. O QUE ENTREGAR AO TERMINAR
+9. ENTREGA
 --------------------------------------------------------------------
-1. Repositorio migrado (item 7) com o kit (item 2), novos esquemas com exemplos validos (item 4),
-   skills atualizadas (item 5) e README/DECISOES atualizados.
-2. Testes passando: esquemas, biblioteca comum, harness de teste de conversores, sandbox, orquestrador
-   e um teste de ponta a ponta em que o agente (simulado por um conversor escrito no teste) cobre um
-   formato ficticio ausente do registro.
-3. Resumo honesto: o que foi criado, o que foi confirmado na documentacao real das ferramentas, o que
-   ficou como hipotese, o que nao foi testado (por exemplo, Windows, macOS, chave real do Gemini) e os
-   proximos passos.
+1. Repositorio migrado com o kit, esquemas e exemplos, skills, README e DECISOES atualizados.
+2. Testes passando (incluindo o de ponta a ponta do formato ficticio e o harness).
+3. Resumo honesto: criado, confirmado, hipotese, nao testado, proximos passos.

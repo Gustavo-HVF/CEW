@@ -4,7 +4,7 @@
 - Extensoes: .dds
 - Ordem de bytes: little
 - Tipo: textura
-- Conversor: `converters/generico/dds_to_png.py`
+- Conversor (receita do cookbook): `cookbook/generico/dds_to_png.py`
 - Estado no registro: `fixtures_sinteticas` - conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia
 
 Documentacao publica usada:

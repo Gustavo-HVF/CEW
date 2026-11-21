@@ -18,7 +18,7 @@ from converters.comum.binario import ErroFormato, LeitorBinario, contagem_plausi
 from converters.comum.cli import Escritor, executar
 
 INFO = {
-    "arquivo": "converters/nintendo/u8_to_dir.py",
+    "arquivo": "cookbook/nintendo/u8_to_dir.py",
     "descricao": "Extrai um conteiner U8 (.arc) preservando as pastas.",
     "formatos_entrada": ["nintendo.u8"],
     "destino": "pasta",

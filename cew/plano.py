@@ -1,11 +1,12 @@
 """Etapa 5: plano de conversao e delegacao de formatos desconhecidos ao Gemini.
 
-- formato conhecido com conversor no registro -> item "pendente";
+- formato com conversor pela cadeia de fontes (projeto -> cookbook -> generico) -> "pendente";
 - conteiner/compressao ja aberto no inventario -> "concluido" (os filhos entram no plano);
-- formato conhecido sem conversor -> "aguardando_conversor";
-- desconhecido -> tarefa para o Gemini (schemas/gemini/tarefa_formato.schema.json), estado
-  "aguardando_gemini"; a resposta (hipotese + rascunho) fica em tarefas_gemini/ para a IA
-  principal revisar. Nada gerado pelo Gemini entra em converters/ automaticamente.
+- sem conversor (conhecido ou desconhecido) -> "aguardando_conversor", cobertura "falta_conversor":
+  o agente da pessoa cria o conversor no projeto (skill 04) ou registra uma decisao;
+- decisao ignorar/substituir/bloqueado no registro do projeto -> "ignorado";
+- opcional: desconhecidos viram tarefa para o Gemini (schemas/gemini/tarefa_formato.schema.json);
+  a resposta (hipotese + rascunho) fica em tarefas_gemini/ para a IA principal revisar.
 """
 
 from __future__ import annotations
@@ -21,7 +22,7 @@ from .esquemas import gravar_json, validar
 from .gemini import ClienteGemini, ErroGemini, Parte
 from .logs import Log, agora_iso
 from .projeto import Projeto
-from .registro import Registro, registro_padrao
+from .registro import Registro, registro_do_projeto
 
 PRIORIDADE_TIPO = {"compressao": 1, "conteiner": 1, "textura": 2, "imagem": 2, "audio": 2, "modelo": 3, "animacao": 3, "mapa": 4, "dados": 4, "video": 5, "fonte": 5, "codigo": 5}
 TIPOS_SO_ANALISE = {"codigo"}
@@ -35,46 +36,148 @@ def _destino(fmt: dict) -> str | None:
     return re.split(r"[ |(]", valor)[0] or None
 
 
+ESSENCIAIS = {"textura", "imagem", "modelo", "animacao", "audio", "mapa", "dados", "video", "fonte"}
+
+
+def caminho_teste(ref: str, projeto_pasta: Path) -> Path | None:
+    """conversores/x/nome.py -> conversores/x/nome.teste.json (so para conversores do projeto)."""
+    from .conversores import PREFIXO_PROJETO
+
+    if not ref.startswith(PREFIXO_PROJETO):
+        return None
+    arq = projeto_pasta / ref[len(PREFIXO_PROJETO):]
+    return arq.with_name(arq.stem + ".teste.json")
+
+
 def montar(projeto: Projeto, registro: Registro | None = None) -> dict:
-    reg = registro or registro_padrao()
+    from .conversores import ErroConversor, config_cew, hash_codigo, resolver
+
+    reg = registro or registro_do_projeto(projeto.pasta)
     inv = projeto.ler("inventario")
     antigo = {i["id"]: i for i in projeto.ler("plano")["itens"]} if projeto.existe("plano") else {}
     por_id = {i["id"]: i for i in inv["itens"]}
+    hashes: dict[str, str | None] = {}
     itens: list[dict[str, Any]] = []
     for it in inv["itens"]:
         pid = id_estavel("p", it["caminho"])
-        fmt = reg.get(it["formato"]["id"])
+        fid = it["formato"]["id"]
+        fmt = reg.get(fid)
+        fmt_proj = reg.projeto_por_id.get(fid) if fid else None
         base: dict[str, Any] = {
-            "id": pid, "item_inventario": it["id"], "caminho": it["caminho"], "formato_origem": it["formato"]["id"],
-            "conversor": None, "formato_destino": None, "opcoes": {}, "dependencias": [], "prioridade": 3, "estado": "pendente",
-            "tarefa_gemini": None, "hash_entrada": it["sha256"], "saidas": [], "erro": None,
+            "id": pid, "item_inventario": it["id"], "caminho": it["caminho"], "formato_origem": fid,
+            "conversor": None, "fonte_conversor": None, "formato_destino": None, "opcoes": {}, "dependencias": [], "prioridade": 3,
+            "estado": "pendente", "cobertura": "coberto", "tentativas": int((fmt_proj or {}).get("tentativas", 0)),
+            "hash_conversor": None, "tarefa_gemini": None, "hash_entrada": it["sha256"], "saidas": [], "erro": None,
         }
         if it["pai"]:
             base["dependencias"] = [id_estavel("p", por_id[it["pai"]]["caminho"])] if it["pai"] in por_id else []
         if it.get("extraido") or (it.get("compressao") or {}).get("descompactado_em"):
             base.update(estado="concluido", motivo="aberto na etapa de inventario; os arquivos internos estao no plano", prioridade=1, formato_destino="pasta")
         elif fmt is None:
-            base.update(estado="aguardando_gemini", motivo="formato desconhecido: tarefa de analise para o Gemini", prioridade=4)
+            base.update(estado="aguardando_conversor", cobertura="falta_conversor", prioridade=4,
+                        motivo="formato desconhecido: registre-o (cew formato-registrar) e crie o conversor (skill 04); Gemini opcional")
         elif fmt["tipo"] in TIPOS_SO_ANALISE:
-            base.update(estado="ignorado", motivo="codigo executavel: vai para a etapa de engenharia reversa (Ghidra/Craft Anything)", prioridade=5)
-        elif fmt["id"] == "generico.tabela_texto" and it["formato"]["camada"] not in ("contexto", "gemini"):
-            base.update(estado="ignorado", motivo="texto generico identificado so pela extensao: confirme por contexto (analise/contexto.json) para converter", prioridade=5)
-        elif fmt.get("conversor"):
-            base.update(conversor=fmt["conversor"], formato_destino=_destino(fmt), prioridade=PRIORIDADE_TIPO.get(fmt["tipo"], 3))
-            if fmt["tipo"] in ("conteiner", "compressao"):
-                base.update(estado="erro", erro="conteiner nao pode ser aberto no inventario", motivo="; ".join(it.get("observacoes", [])) or "falha ao abrir")
+            base.update(estado="ignorado", cobertura="ignorado", prioridade=5, motivo="codigo executavel: vai para a etapa de engenharia reversa (Ghidra/Craft Anything)")
+        elif fid == "generico.tabela_texto" and it["formato"]["camada"] not in ("contexto", "gemini") and not ((fmt_proj or {}).get("decisao") or {}).get("acao") == "converter":
+            base.update(estado="ignorado", cobertura="ignorado", prioridade=5,
+                        motivo="texto generico identificado so pela extensao: confirme por contexto (analise/contexto.json) ou decisao 'converter' no registro do projeto")
         else:
-            base.update(estado="aguardando_conversor", motivo=f"{fmt['id']} conhecido, mas sem conversor em converters/ (ferramentas de referencia no registro)", formato_destino=_destino(fmt), prioridade=PRIORIDADE_TIPO.get(fmt["tipo"], 3))
+            esc = reg.conversor(fid)
+            base.update(cobertura=esc["cobertura"], formato_destino=_destino(fmt), prioridade=PRIORIDADE_TIPO.get(fmt["tipo"], 3))
+            if esc["cobertura"] == "coberto":
+                ref = esc["ref"]
+                if ref not in hashes:
+                    try:
+                        hashes[ref] = hash_codigo(resolver(ref, projeto.pasta))
+                    except ErroConversor:
+                        hashes[ref] = None
+                base.update(conversor=ref, fonte_conversor=esc["fonte"], hash_conversor=hashes[ref])
+                if hashes[ref] is None:
+                    base.update(estado="erro", erro=f"conversor registrado nao encontrado: {ref}")
+                elif fmt["tipo"] in ("conteiner", "compressao"):
+                    base.update(estado="erro", erro="conteiner nao pode ser aberto no inventario", motivo="; ".join(it.get("observacoes", [])) or "falha ao abrir")
+            elif esc["cobertura"] in ("ignorado", "bloqueado"):
+                d = esc["decisao"]
+                base.update(estado="ignorado", motivo=f"decisao '{d['acao']}': {d['motivo']}")
+            else:
+                base.update(estado="aguardando_conversor", motivo=f"{fid} conhecido, sem conversor nas fontes {config_cew()['fontes_conversores']} (crie no projeto: skill 04)")
         ant = antigo.get(pid)
-        if ant and ant.get("hash_entrada") == it["sha256"] and ant["estado"] == "concluido" and base["estado"] == "pendente":
-            base.update(estado="concluido", saidas=ant.get("saidas", []))  # idempotencia: nada mudou
-        if ant and ant.get("tarefa_gemini") and base["estado"] == "aguardando_gemini":
+        if (ant and ant["estado"] == "concluido" and base["estado"] == "pendente" and ant.get("hash_entrada") == it["sha256"]
+                and ant.get("hash_conversor") == base["hash_conversor"] and ant.get("conversor") == base["conversor"]):
+            base.update(estado="concluido", saidas=ant.get("saidas", []))  # idempotencia: entrada e codigo iguais
+        if ant and ant.get("tarefa_gemini") and base["formato_origem"] is None:
             base["tarefa_gemini"] = ant["tarefa_gemini"]
         itens.append(base)
     doc = {"schema_version": SCHEMA_VERSION, "gerado_por": GERADO_POR, "gerado_em": agora_iso(), "projeto": projeto.nome,
-           "resumo": dict(Counter(i["estado"] for i in itens)), "itens": itens}
+           "resumo": dict(Counter(i["estado"] for i in itens)), "formatos": grupos(itens, inv, reg), "itens": itens}
     projeto.gravar("plano", doc)
     return doc
+
+
+def _chave_grupo(item_plano: dict, item_inv: dict) -> str:
+    if item_plano["formato_origem"]:
+        return item_plano["formato_origem"]
+    ext = PurePosixPath(item_inv["caminho"].split("!/")[-1]).suffix.lower() or "(sem extensao)"
+    return f"desconhecido:{ext}"
+
+
+def grupos(itens: list[dict], inv: dict, reg: Registro) -> list[dict]:
+    """Resumo por formato, com prioridade pelo impacto (quantidade, bytes e tipo)."""
+    from .conversores import config_cew
+
+    minimo = int(config_cew().get("prioridade_alta_min_itens", 5))
+    por_inv = {i["id"]: i for i in inv["itens"]}
+    acc: dict[str, dict] = {}
+    for p in itens:
+        if p["estado"] == "concluido" and p.get("formato_destino") == "pasta":
+            continue
+        it = por_inv[p["item_inventario"]]
+        g = acc.setdefault(_chave_grupo(p, it), {"itens": 0, "bytes": 0, "cobertura": set(), "conversor": p["conversor"], "formato_id": p["formato_origem"]})
+        g["itens"] += 1
+        g["bytes"] += it["tamanho_bytes"]
+        g["cobertura"].add(p["cobertura"])
+    saida = []
+    for chave, g in sorted(acc.items()):
+        cob = next((c for c in ("falta_conversor", "bloqueado", "coberto", "ignorado") if c in g["cobertura"]), "coberto")
+        fmt = reg.get(g["formato_id"]) or {}
+        essencial = fmt.get("tipo") in ESSENCIAIS or g["formato_id"] is None
+        if essencial and (g["itens"] >= minimo or g["bytes"] >= 10 * 1024 * 1024):
+            prio = "alta"
+        elif g["itens"] >= 2 or essencial:
+            prio = "media"
+        else:
+            prio = "baixa"
+        decisao = ((reg.projeto_por_id.get(g["formato_id"]) or {}).get("decisao") or {}).get("acao") if g["formato_id"] else None
+        saida.append({"formato": chave, "itens": g["itens"], "bytes": g["bytes"], "cobertura": cob, "prioridade": prio, "conversor": g["conversor"], "decisao": decisao})
+    return saida
+
+
+def criterio_saida(projeto: Projeto) -> tuple[bool, list[str]]:
+    """Conversao -> Motor: sem erros; sem formato de prioridade alta sem conversor nem decisao;
+    conversores do projeto com teste do harness aprovado para o hash atual do codigo."""
+    import json as _json
+
+    plano = projeto.ler("plano")
+    faltas = [f"erro em {i.get('caminho')}: {i.get('erro')}" for i in plano["itens"] if i["estado"] == "erro"]
+    for g in plano.get("formatos", []):
+        if g["cobertura"] == "falta_conversor" and g["prioridade"] == "alta" and not g.get("decisao"):
+            faltas.append(f"{g['formato']}: {g['itens']} arquivos sem conversor nem decisao (crie o conversor ou registre a decisao)")
+    vistos = set()
+    for i in plano["itens"]:
+        ref = i.get("conversor")
+        if not ref or ref in vistos or i["estado"] not in ("pendente", "concluido"):
+            continue
+        vistos.add(ref)
+        arq = caminho_teste(ref, projeto.pasta)
+        if arq is None:
+            continue
+        if not arq.is_file():
+            faltas.append(f"{ref}: sem teste do harness (cew conversor-testar)")
+            continue
+        t = _json.loads(arq.read_text(encoding="utf-8"))
+        if not t.get("aprovado") or t.get("hash_codigo") != i.get("hash_conversor"):
+            faltas.append(f"{ref}: teste do harness reprovado ou desatualizado (codigo mudou)")
+    return not faltas, faltas
 
 
 # ------------------------------------------------------------------------------ Gemini
@@ -130,7 +233,7 @@ def _validar_resposta_formato(resp: dict) -> list[str]:
 def delegar_desconhecidos(projeto: Projeto, cliente: ClienteGemini | None = None, limite: int = 20, dry_run: bool = False, log: Log | None = None) -> list[dict]:
     """Cria tarefas para os itens desconhecidos (um por SHA-256) e, fora do dry-run, chama o Gemini."""
     log = log or Log("plano")
-    reg = registro_padrao()
+    reg = registro_do_projeto(projeto.pasta)
     inv = projeto.ler("inventario")
     plano = projeto.ler("plano")
     por_item = {i["id"]: i for i in inv["itens"]}
@@ -140,7 +243,7 @@ def delegar_desconhecidos(projeto: Projeto, cliente: ClienteGemini | None = None
     arq_carr = projeto.caminho("analise") / "carregadores.json"
     carregadores = __import__("json").loads(arq_carr.read_text(encoding="utf-8"))["carregadores"] if arq_carr.is_file() else []
     for p in plano["itens"]:
-        if p["estado"] != "aguardando_gemini" or len(relatorio) >= limite:
+        if p["formato_origem"] is not None or p["estado"] != "aguardando_conversor" or len(relatorio) >= limite:
             continue
         item = por_item[p["item_inventario"]]
         if item["sha256"] in vistos or item["tamanho_bytes"] == 0:

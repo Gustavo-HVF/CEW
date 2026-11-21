@@ -58,8 +58,8 @@ def test_mcp_ferramentas(tmp_path, amostras):
         {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2025-06-18", "capabilities": {}, "clientInfo": {"name": "t", "version": "1"}}},
         {"jsonrpc": "2.0", "method": "notifications/initialized"},
         {"jsonrpc": "2.0", "id": 2, "method": "tools/list"},
-        {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "rodar_conversor", "arguments": {"conversor": "converters/sony/tim_to_png.py", "entrada": str(amostras / "sony/imagem4.tim")}}},
-        {"jsonrpc": "2.0", "id": 4, "method": "tools/call", "params": {"name": "rodar_conversor", "arguments": {"conversor": "converters/sony/tim_to_png.py", "entrada": str(amostras / "sony/imagem4.tim"), "saida": str(tmp_path / "fora")}}},
+        {"jsonrpc": "2.0", "id": 3, "method": "tools/call", "params": {"name": "rodar_conversor", "arguments": {"conversor": "cookbook/sony/tim_to_png.py", "entrada": str(amostras / "sony/imagem4.tim")}}},
+        {"jsonrpc": "2.0", "id": 4, "method": "tools/call", "params": {"name": "rodar_conversor", "arguments": {"conversor": "cookbook/sony/tim_to_png.py", "entrada": str(amostras / "sony/imagem4.tim"), "saida": str(tmp_path / "fora")}}},
         {"jsonrpc": "2.0", "id": 5, "method": "tools/call", "params": {"name": "listar_projetos", "arguments": {}}},
         {"jsonrpc": "2.0", "id": 6, "method": "nao/existe"},
     ], env)

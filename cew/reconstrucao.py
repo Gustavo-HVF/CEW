@@ -19,7 +19,7 @@ MODELOS = Path(__file__).resolve().parent / "modelos_web"
 COM_MODELO = ("threejs", "babylonjs", "phaser", "pixijs")
 
 
-def gerar(projeto: Projeto, motor: str, sobrescrever: bool = False, dry_run: bool = False) -> list[str]:
+def gerar(projeto: Projeto, motor: str, sobrescrever: bool = False, dry_run: bool = False, modelo_marcos: str = "jogo") -> list[str]:
     if motor not in COM_MODELO:
         raise ValueError(f"o CEW nao gera modelo para {motor}; veja skills/05-selecao-e-arquitetura-motor-grafico/SKILL.md")
     app = projeto.pasta / "app"
@@ -34,7 +34,7 @@ def gerar(projeto: Projeto, motor: str, sobrescrever: bool = False, dry_run: boo
             gerados.append(f"app/{rel.as_posix()}")
             if dry_run:
                 continue
-            if destino.exists() and not sobrescrever and rel.as_posix() not in ("src/manifesto.js", "tests/cena.spec.js", "vite.config.js", "playwright.config.js"):
+            if destino.exists() and not sobrescrever and rel.as_posix() not in ("src/manifesto.js", "tests/cena.spec.js", "tests/cew_helpers.js", "vite.config.js", "playwright.config.js"):
                 continue  # o codigo do jogo e da IA principal: nao sobrescrever
             texto = arq.read_text(encoding="utf-8")
             for k, v in subst.items():
@@ -43,6 +43,10 @@ def gerar(projeto: Projeto, motor: str, sobrescrever: bool = False, dry_run: boo
             destino.write_text(texto, encoding="utf-8")
     if not dry_run:
         _cenas(projeto)
+        from . import marcos
+
+        doc = marcos.iniciar(projeto, modelo_marcos)  # nao sobrescreve marcos.json nem testes existentes
+        gerados += [f"app/{m['teste']}" for m in doc["marcos"]]
     return gerados
 
 

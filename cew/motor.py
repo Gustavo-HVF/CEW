@@ -12,7 +12,7 @@ from collections import Counter
 from . import GERADO_POR, SCHEMA_VERSION
 from .logs import agora_iso
 from .projeto import Projeto
-from .registro import registro_padrao
+from .registro import registro_do_projeto
 
 MOTORES = {
     "phaser": {"nome": "Phaser (JS/TS)", "base": {"2d": 9.0, "3d": 1.0, "misto": 4.0}, "linguagens": {"javascript", "typescript", "phaser"}, "modelo": True},
@@ -28,7 +28,7 @@ MOTORES = {
 
 
 def perfil_automatico(projeto: Projeto, preferencias: dict | None = None) -> dict:
-    reg = registro_padrao()
+    reg = registro_do_projeto(projeto.pasta)
     inv = projeto.ler("inventario")
     tipos = Counter((reg.get(i["formato"]["id"]) or {}).get("tipo") for i in inv["itens"])
     manifesto = projeto.ler("manifesto") if projeto.existe("manifesto") else {"assets": []}

@@ -207,8 +207,9 @@ class Inventariador:
 
     def _expandir(self, item: dict, fmt: dict | None, disco: Path, logico: str, iid: str, prof: int, dry_run: bool):
         destino = self.p.caminho("extraido") / iid
-        conversor = fmt.get("conversor") if fmt else None
-        usar_conversor = conversor and papel(conversor) in ("extrator", "descompactador")
+        escolha = self.reg.conversor(fmt["id"]) if fmt else {"ref": None}
+        conversor = escolha["ref"]
+        usar_conversor = bool(conversor) and papel(conversor, self.p.pasta) in ("extrator", "descompactador")
         algoritmo = (item.get("compressao") or {}).get("algoritmo")
         if not usar_conversor and not (algoritmo in DESCOMPACTADORES and (item["compressao"]["confianca"] >= 0.5)):
             return []
@@ -231,7 +232,7 @@ class Inventariador:
                 opcoes = {}
                 if fmt and fmt["id"] == "valve.source.vpk" and disco.name.endswith("_dir.vpk"):
                     opcoes = {"pasta_vpk": str(disco.parent), "nome_base": disco.name[: -len("_dir.vpk")]}
-                r = rodar(conversor, disco, destino, opcoes)
+                r = rodar(conversor, disco, destino, opcoes, projeto_pasta=self.p.pasta)
                 if not r["ok"]:
                     raise ErroFormato(r["erro"] or "extracao falhou")
                 for a in r["avisos"]:
@@ -261,9 +262,9 @@ class Inventariador:
 
 
 def inventariar(projeto: Projeto, alvo: Path, dry_run: bool = False, registro: Registro | None = None, limites: Limites | None = None) -> dict:
-    from .registro import registro_padrao
+    from .registro import registro_do_projeto
 
-    return Inventariador(projeto, registro or registro_padrao(), limites).executar(alvo, dry_run)
+    return Inventariador(projeto, registro or registro_do_projeto(projeto.pasta), limites).executar(alvo, dry_run)
 
 
 __all__ = ["inventariar", "Inventariador", "Limites", "LIMIAR_IDENTIFICADO", "TAM_CAUDA"]

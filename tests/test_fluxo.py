@@ -50,7 +50,10 @@ def test_fluxo_ate_verificacao_sem_web(alvo, gemini_falso):
     p.definir_alvo(alvo)
     inventariar(p, alvo)
     pl = plano.montar(p)
-    assert pl["resumo"]["aguardando_gemini"] >= 1
+    assert pl["resumo"]["aguardando_conversor"] >= 1
+    desconhecidos = [g for g in pl["formatos"] if g["formato"].startswith("desconhecido:")]
+    assert desconhecidos and all(g["cobertura"] == "falta_conversor" for g in desconhecidos)
+    assert any(i["fonte_conversor"] == "cookbook" for i in pl["itens"])  # receitas do cookbook usadas pela cadeia
     rel = engenharia.executar(p, usar_ghidra=False, usar_craft=False)
     ok, faltas = engenharia.criterio_saida(p)
     assert ok, faltas

@@ -19,7 +19,7 @@ from converters.comum.binario import LeitorBinario, contagem_plausivel, exigir
 from converters.comum.cli import Escritor, executar
 
 INFO = {
-    "arquivo": "converters/nintendo/sarc_to_dir.py",
+    "arquivo": "cookbook/nintendo/sarc_to_dir.py",
     "descricao": "Extrai um conteiner SARC (.sarc, .pack, .bars...), conferindo o hash de cada nome.",
     "formatos_entrada": ["nintendo.sarc"],
     "destino": "pasta",

@@ -41,10 +41,25 @@ class Identificacao:
 
 
 class Registro:
-    def __init__(self, dados: dict):
+    def __init__(self, dados: dict, projeto: dict | None = None):
+        """`projeto`: conteudo de projects/<p>/formatos.json; suas entradas completam ou substituem as globais."""
         self.dados = dados
-        self.formatos: list[dict] = dados["formatos"]
-        self.por_id = {f["id"]: f for f in self.formatos}
+        self.global_por_id = {f["id"]: f for f in dados["formatos"]}
+        self.projeto_por_id = {f["id"]: f for f in (projeto or {}).get("formatos", [])}
+        mesclados = dict(self.global_por_id)
+        for fid, f in self.projeto_por_id.items():
+            mesclados[fid] = {**mesclados.get(fid, {}), **f}
+        # entradas do projeto primeiro: em empate de assinatura, o conhecimento do projeto vence
+        self.formatos: list[dict] = [mesclados[i] for i in self.projeto_por_id] + [f for i, f in mesclados.items() if i not in self.projeto_por_id]
+        self.por_id = mesclados
+
+    def conversor(self, formato_id: str | None, fontes: list[str] | None = None) -> dict:
+        """Cadeia projeto -> cookbook -> generico (cew.conversores.escolher)."""
+        from .conversores import escolher
+
+        if not formato_id:
+            return {"ref": None, "fonte": None, "cobertura": "falta_conversor", "decisao": None}
+        return escolher(self.global_por_id.get(formato_id), self.projeto_por_id.get(formato_id), fontes)
 
     @classmethod
     def carregar(cls, caminho: Path | None = None) -> "Registro":
@@ -163,6 +178,14 @@ def aplicar_gemini(ident: Identificacao, resposta: dict | None, registro: Regist
 @lru_cache(maxsize=1)
 def registro_padrao() -> Registro:
     return Registro.carregar()
+
+
+def registro_do_projeto(pasta: Path | None) -> Registro:
+    base = registro_padrao()
+    arq = Path(pasta) / "formatos.json" if pasta else None
+    if not arq or not arq.is_file():
+        return base
+    return Registro(base.dados, ler_json(arq, "registry"))
 
 
 def ler_amostras(caminho: Path) -> tuple[bytes, bytes, int]:

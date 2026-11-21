@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/config_cew.schema.json",
+  "title": "config/cew.json - fontes de conversores e limites do harness",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["fontes_conversores", "harness", "executar_conversores_do_projeto_em"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "fontes_conversores": {
+      "type": "array", "minItems": 1, "uniqueItems": true,
+      "items": { "type": "string", "enum": ["projeto", "cookbook", "generico"] },
+      "description": "Ordem de busca de conversores. Tirar 'cookbook' faz o agente escrever tudo no projeto."
+    },
+    "harness": {
+      "type": "object",
+      "required": ["max_tentativas_por_formato", "tempo_limite_s", "memoria_mb", "variantes_corrompidas"],
+      "additionalProperties": false,
+      "properties": {
+        "max_tentativas_por_formato": { "type": "integer", "minimum": 1 },
+        "tempo_limite_s": { "type": "number", "minimum": 1 },
+        "memoria_mb": { "type": "integer", "minimum": 64 },
+        "variantes_corrompidas": { "type": "integer", "minimum": 0 },
+        "semente": { "type": "integer" }
+      }
+    },
+    "executar_conversores_do_projeto_em": { "type": "string", "enum": ["subprocesso", "processo"] },
+    "prioridade_alta_min_itens": { "type": "integer", "minimum": 1, "description": "formato com pelo menos N arquivos ou tipo essencial e prioridade alta" },
+    "observacoes": { "type": "string" }
+  },
+  "additionalProperties": false
+}

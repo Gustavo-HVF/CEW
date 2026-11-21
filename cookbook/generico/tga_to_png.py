@@ -17,7 +17,7 @@ from converters.comum.cores import exp5
 from converters.comum.imagem import Imagem, png_bytes
 
 INFO = {
-    "arquivo": "converters/generico/tga_to_png.py",
+    "arquivo": "cookbook/generico/tga_to_png.py",
     "descricao": "Converte TGA (sem compressao e RLE; cor verdadeira, tons de cinza e paleta) para PNG.",
     "formatos_entrada": ["generico.tga"],
     "destino": "png",

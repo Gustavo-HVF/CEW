@@ -4,7 +4,7 @@
 - Extensoes: .pak
 - Ordem de bytes: little
 - Tipo: conteiner
-- Conversor: `converters/idtech/pak_to_dir.py`
+- Conversor (receita do cookbook): `cookbook/idtech/pak_to_dir.py`
 - Estado no registro: `fixtures_sinteticas` - conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia; estrutura conferida em qcommon/qfiles.h
 
 Documentacao publica usada:

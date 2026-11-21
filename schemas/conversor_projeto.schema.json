@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/conversor_projeto.schema.json",
+  "title": "Resultado do harness para um conversor (conversores/**/<nome>.teste.json)",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["conversor", "tipo", "hash_codigo", "testado_em", "aprovado", "amostras", "verificacoes"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "conversor": { "$ref": "comum.schema.json#/$defs/ref_conversor" },
+    "tipo": { "type": "string", "enum": ["python", "comando"] },
+    "hash_codigo": { "$ref": "comum.schema.json#/$defs/sha256" },
+    "testado_em": { "$ref": "comum.schema.json#/$defs/data_hora" },
+    "aprovado": { "type": "boolean" },
+    "formatos_entrada": { "type": "array", "items": { "type": "string" } },
+    "fontes_consultadas": { "type": "array", "items": { "type": "string" } },
+    "amostras": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "required": ["caminho", "sha256", "origem", "ok"], "additionalProperties": false,
+        "properties": {
+          "caminho": { "type": "string" }, "sha256": { "$ref": "comum.schema.json#/$defs/sha256" },
+          "origem": { "type": "string", "enum": ["real", "sintetica"] }, "ok": { "type": "boolean" },
+          "saidas": { "type": "integer", "minimum": 0 }, "erro": { "type": ["string", "null"] }, "tempo_s": { "type": "number" }
+        }
+      }
+    },
+    "verificacoes": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["id", "aprovado", "detalhes"], "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "enum": ["executa", "esquema", "determinismo", "robustez", "dry_run", "ajuda", "tempo_memoria"] },
+          "aprovado": { "type": "boolean" }, "detalhes": { "type": "string" }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

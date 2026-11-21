@@ -16,8 +16,8 @@ description: Use para escolher o motor grafico web e montar o projeto - "qual mo
 ## Passos com comandos
 1. `cew etapa motor --projeto <p>` -> `recomendacao_motor.json` com nota 0-10, motivos e alertas por motor.
 2. Mostrar a tabela a pessoa; **a escolha e dela**: `cew etapa motor --projeto <p> --motor <id>`.
-3. `cew etapa reconstrucao --projeto <p>` gera `app/` (Three.js, Babylon.js, Phaser ou PixiJS) com Vite,
-   carregador do manifesto e teste Playwright. Depois: `cd projects/<p>/app && npm install && npm run dev`.
+3. `cew etapa reconstrucao --projeto <p> [--modelo-marcos jogo|app]` gera `app/` (Three.js, Babylon.js, Phaser ou PixiJS) com Vite,
+   carregador do manifesto, teste Playwright e `marcos.json` (skill 07). Depois: `cd projects/<p>/app && npm install && npm run dev`.
 4. Implementar o jogo em `app/src/` a partir de `especificacoes/logica.md` e `web/dados/*.json`,
    carregando assets sempre pelo id do manifesto (`manifesto.get(id)`), nunca por caminho solto.
 5. Motores sem modelo automatico: criar o projeto na estrutura oficial (tabela abaixo) e apontar o

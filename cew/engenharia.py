@@ -23,7 +23,7 @@ from .caminhos import slug
 from .esquemas import gravar_json, ler_json
 from .logs import Log
 from .projeto import Projeto
-from .registro import registro_padrao
+from .registro import registro_do_projeto
 
 TIPOS_PROGRAMA = {"codigo"}
 
@@ -36,7 +36,7 @@ def _disco(projeto: Projeto, item: dict, inv: dict) -> Path:
 
 
 def programas(projeto: Projeto, inv: dict, limite: int = 5) -> list[dict]:
-    reg = registro_padrao()
+    reg = registro_do_projeto(projeto.pasta)
     progs = [i for i in inv["itens"] if (reg.get(i["formato"]["id"]) or {}).get("tipo") in TIPOS_PROGRAMA]
     return sorted(progs, key=lambda i: -i["tamanho_bytes"])[:limite]
 
@@ -61,7 +61,7 @@ def carregadores(analises: list[dict], inv: dict) -> list[dict]:
 
 
 def hipoteses_e_specs(projeto: Projeto, inv: dict, plano: dict | None, achados: list[dict]) -> dict:
-    reg = registro_padrao()
+    reg = registro_do_projeto(projeto.pasta)
     por_formato: dict[str, list[dict]] = defaultdict(list)
     for i in inv["itens"]:
         if i["formato"]["id"]:

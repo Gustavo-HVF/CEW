@@ -148,13 +148,16 @@ def etapa_conversao(p: Projeto, a: argparse.Namespace) -> str:
     print(f"convertidos {rel['convertidos']}, erros {rel['erros']}, assets {rel.get('assets', '-')}")
     if a.dry_run:
         return "dry-run"
-    erros = [i for i in p.ler("plano")["itens"] if i["estado"] == "erro"]
-    if erros:
-        raise Bloqueio(f"{len(erros)} itens em erro no plano (ex.: {erros[0].get('caminho')}: {erros[0].get('erro')})")
-    if not a.sem_testes and shutil.which(sys.executable):
+    from .plano import criterio_saida
+
+    ok, faltas = criterio_saida(p)
+    if not ok:
+        raise Bloqueio("; ".join(faltas[:8]) + (" ..." if len(faltas) > 8 else ""))
+    usados = {i["conversor"] for i in p.ler("plano")["itens"] if i.get("conversor") and i["estado"] == "concluido"}
+    if not a.sem_testes and any(not u.startswith("projeto:") for u in usados):
         t = subprocess.run([sys.executable, "-m", "pytest", "-q", "-x", str(raiz_repositorio() / "tests" / "test_conversores.py")], capture_output=True, text=True, cwd=raiz_repositorio())
         if t.returncode != 0:
-            raise Bloqueio("testes dos conversores falharam: " + t.stdout[-600:])
+            raise Bloqueio("testes dos conversores do repositorio falharam: " + t.stdout[-600:])
     return f"{rel['convertidos']} convertidos"
 
 
@@ -182,7 +185,7 @@ def etapa_reconstrucao(p: Projeto, a: argparse.Namespace) -> str:
     m = p.estado()["motor_escolhido"] or a.motor
     if m not in reconstrucao.COM_MODELO:
         raise Bloqueio(f"o CEW nao gera projeto para {m}: siga skills/05 e crie app/ manualmente, depois rode 'cew check'")
-    arqs = reconstrucao.gerar(p, m, dry_run=a.dry_run)
+    arqs = reconstrucao.gerar(p, m, dry_run=a.dry_run, modelo_marcos=a.modelo_marcos)
     print(f"{len(arqs)} arquivos em app/ ({m}); assets lidos de ../web")
     return f"app/ gerado ({m})"
 
@@ -330,11 +333,86 @@ def cmd_identificar(a: argparse.Namespace) -> int:
     return 0
 
 
-def cmd_conversores(a: argparse.Namespace) -> int:
-    from .conversores import listar
+def _pasta(a: argparse.Namespace) -> Path | None:
+    return Projeto.abrir(a.projeto, criar=False).pasta if getattr(a, "projeto", None) else None
 
-    for i in listar():
-        print(f"{i['arquivo']:<44} {', '.join(i['formatos_entrada'])} -> {i['destino']}")
+
+def cmd_conversores(a: argparse.Namespace) -> int:
+    from .conversores import config_cew, listar
+
+    print("fontes ativas (config/cew.json): " + " -> ".join(config_cew()["fontes_conversores"]))
+    for i in listar(_pasta(a)):
+        extra = f"  ERRO: {i['erro']}" if i.get("erro") else ""
+        print(f"[{i['fonte']:<8}] {i['arquivo']:<54} {', '.join(i['formatos_entrada'])} -> {i['destino']}{extra}")
+    return 0
+
+
+def cmd_novo_conversor(a: argparse.Namespace) -> int:
+    from .kit import novo_conversor
+
+    p = Projeto.abrir(a.projeto)
+    arq = novo_conversor(p, a.formato, a.tipo, a.destino, a.nome)
+    ref = "projeto:" + arq.relative_to(p.pasta).as_posix()
+    print(f"criado: {arq}\nreferencia: {ref}\nproximo: implemente, ponha amostras sinteticas em {arq.parent / 'amostras'} e rode:\n"
+          f"  cew conversor-testar {ref} --projeto {p.nome}\n  cew formato-registrar {a.formato} --projeto {p.nome} --conversor {ref}")
+    return 0
+
+
+def cmd_conversor_testar(a: argparse.Namespace) -> int:
+    from .kit import testar
+
+    p = Projeto.abrir(a.projeto, criar=False)
+    doc = testar(p, a.conversor, [Path(e) for e in a.entrada] if a.entrada else None)
+    for v in doc["verificacoes"]:
+        print(f"  [{'ok' if v['aprovado'] else 'FALHOU'}] {v['id']:<14} {v['detalhes'][:150]}")
+    for am in doc["amostras"]:
+        print(f"    {'ok ' if am['ok'] else 'ERR'} {am['origem']:<9} {Path(am['caminho']).name}  {am.get('erro') or ''}"[:200])
+    print("APROVADO" if doc["aprovado"] else "REPROVADO")
+    return 0 if doc["aprovado"] else 1
+
+
+def cmd_formato_registrar(a: argparse.Namespace) -> int:
+    from .kit import registrar_formato
+
+    p = Projeto.abrir(a.projeto, criar=False)
+    f = registrar_formato(p, a.formato, empresa_ou_motor=a.empresa, extensoes=a.extensao, assinatura_hex=a.assinatura, assinatura_offset=a.offset,
+                          ordem_de_bytes=a.ordem, tipo=a.tipo, destino=a.destino, conversor=a.conversor, decisao=a.decisao, motivo=a.motivo,
+                          documentacao=a.documentacao, confianca=a.confianca)
+    print(json.dumps(f, ensure_ascii=False, indent=2))
+    return 0
+
+
+def cmd_conversor_copiar(a: argparse.Namespace) -> int:
+    from .kit import copiar_do_cookbook
+
+    p = Projeto.abrir(a.projeto, criar=False)
+    arq = copiar_do_cookbook(p, a.conversor)
+    print(f"copiado para {arq}\nreferencia: projeto:{arq.relative_to(p.pasta).as_posix()}")
+    return 0
+
+
+def cmd_log_conversor(a: argparse.Namespace) -> int:
+    from .kit import registrar_log
+
+    p = Projeto.abrir(a.projeto, criar=False)
+    print(json.dumps(registrar_log(p, a.formato, a.passo, a.resultado, a.conversor, a.detalhes or "", a.evidencia), ensure_ascii=False))
+    return 0
+
+
+def cmd_marcos(a: argparse.Namespace) -> int:
+    from . import marcos
+
+    p = Projeto.abrir(a.projeto, criar=False)
+    if a.acao == "iniciar":
+        doc = marcos.iniciar(p, a.modelo, a.sobrescrever)
+    else:
+        doc = marcos.ler(p)
+        if doc is None:
+            print("sem marcos.json: rode 'cew marcos iniciar'")
+            return 1
+    for m in doc["marcos"]:
+        print(f"  {m['estado']:<9} {'*' if m['obrigatorio'] else ' '} {m['id']:<28} {m['titulo']}  ({m['teste']})")
+    print("* = obrigatorio para o 'aprovado' geral")
     return 0
 
 
@@ -342,7 +420,7 @@ def cmd_converter(a: argparse.Namespace) -> int:
     from .conversores import rodar
 
     saida = Path(a.saida) if a.saida else Path(a.entrada).with_name(Path(a.entrada).name + ".cew")
-    r = rodar(a.conversor, Path(a.entrada), saida, json.loads(a.opcoes), a.dry_run)
+    r = rodar(a.conversor, Path(a.entrada), saida, json.loads(a.opcoes), a.dry_run, projeto_pasta=_pasta(a))
     print(json.dumps(r, ensure_ascii=False, indent=2))
     return 0 if r["ok"] else 1
 
@@ -440,6 +518,7 @@ def parser() -> argparse.ArgumentParser:
         s.add_argument("--gemini", action="store_true", help="segunda opiniao visual do Gemini na verificacao")
         s.add_argument("--chromium", default=os.environ.get("CEW_CHROMIUM"), help="Chromium para o Playwright")
         s.add_argument("--ignorar-ambiente", action="store_true", help="segue mesmo com ferramentas obrigatorias faltando (desenvolvimento)")
+        s.add_argument("--modelo-marcos", choices=["jogo", "app"], default="jogo", help="modelo de marcos criado na reconstrucao")
 
     s = sub.add_parser("setup", help="ambiente, Craft Anything e teste do Gemini")
     s.add_argument("--ssh", action="store_true")
@@ -474,11 +553,52 @@ def parser() -> argparse.ArgumentParser:
     s = sub.add_parser("conversores")
     s.set_defaults(func=cmd_conversores)
     s = sub.add_parser("converter", help="roda um conversor")
-    s.add_argument("conversor", help="ex.: converters/nintendo/tpl_to_png.py")
+    s.add_argument("conversor", help="ex.: cookbook/nintendo/tpl_to_png.py")
     s.add_argument("entrada")
     s.add_argument("-o", "--saida")
     s.add_argument("--opcoes", default="{}")
     s.set_defaults(func=cmd_converter)
+    s = sub.add_parser("novo-conversor", help="cria o esqueleto de um conversor no projeto (Python ou comando externo)")
+    s.add_argument("formato", help="id do formato, ex.: microsoft.xna.xnb")
+    s.add_argument("--tipo", choices=["python", "comando"], default="python")
+    s.add_argument("--destino", default="png", help="png, glb, ogg, wav, json, pasta...")
+    s.add_argument("--nome", help="nome do arquivo sem extensao")
+    s.set_defaults(func=cmd_novo_conversor)
+    s = sub.add_parser("conversor-testar", help="harness: executa, determinismo, robustez, dry-run, ajuda, tempo/memoria")
+    s.add_argument("conversor", help="referencia: projeto:conversores/..., cookbook/... ou converters/...")
+    s.add_argument("--entrada", action="append", help="amostra (repita); padrao: amostras do inventario + conversores/**/amostras/")
+    s.set_defaults(func=cmd_conversor_testar)
+    s = sub.add_parser("formato-registrar", help="registra formato, conversor ou decisao no registro do projeto")
+    s.add_argument("formato")
+    s.add_argument("--empresa")
+    s.add_argument("--extensao", action="append")
+    s.add_argument("--assinatura", help="bytes em hex, ex.: 584e42")
+    s.add_argument("--offset", type=int, default=0)
+    s.add_argument("--ordem", choices=["big", "little", "nenhuma", "desconhecida"])
+    s.add_argument("--tipo", choices=["conteiner", "compressao", "modelo", "textura", "animacao", "audio", "video", "mapa", "dados", "codigo", "fonte", "imagem"])
+    s.add_argument("--destino")
+    s.add_argument("--conversor")
+    s.add_argument("--decisao", choices=["converter", "ignorar", "substituir", "bloqueado"])
+    s.add_argument("--motivo")
+    s.add_argument("--documentacao", action="append")
+    s.add_argument("--confianca", choices=["documentado", "engenharia_reversa", "hipotese"])
+    s.set_defaults(func=cmd_formato_registrar)
+    s = sub.add_parser("conversor-copiar", help="copia uma receita do cookbook para o projeto, para adaptar")
+    s.add_argument("conversor")
+    s.set_defaults(func=cmd_conversor_copiar)
+    s = sub.add_parser("log-conversor", help="registra um passo do ciclo (pesquisar, amostrar, conferir...) em log_conversores.jsonl")
+    s.add_argument("formato")
+    s.add_argument("passo", choices=["pesquisar", "amostrar", "escrever", "testar", "conferir", "registrar", "decidir"])
+    s.add_argument("--resultado", choices=["ok", "falhou", "info"], default="info")
+    s.add_argument("--conversor")
+    s.add_argument("--detalhes")
+    s.add_argument("--evidencia", action="append")
+    s.set_defaults(func=cmd_log_conversor)
+    s = sub.add_parser("marcos", help="marcos de utilizacao/jogabilidade (marcos.json)")
+    s.add_argument("acao", choices=["iniciar", "status"])
+    s.add_argument("--modelo", choices=["jogo", "app"], default="jogo")
+    s.add_argument("--sobrescrever", action="store_true")
+    s.set_defaults(func=cmd_marcos)
     s = sub.add_parser("sandbox", help="roda um rascunho do Gemini isolado")
     s.add_argument("rascunho", help="arquivo .py ou <sha>.resposta.json")
     s.add_argument("--entrada")

@@ -21,7 +21,7 @@ from converters.comum.imagem import png_bytes
 from converters.comum.texturas import GX_FORMATOS, decodificar_gx, decodificar_paleta_gx, gx_tamanho_dados
 
 INFO = {
-    "arquivo": "converters/nintendo/tpl_to_png.py",
+    "arquivo": "cookbook/nintendo/tpl_to_png.py",
     "descricao": "Converte texturas TPL (I4, I8, IA4, IA8, RGB565, RGB5A3, RGBA32, C4, C8, C14X2, CMPR) para PNG.",
     "formatos_entrada": ["nintendo.gx.tpl"],
     "destino": "png",

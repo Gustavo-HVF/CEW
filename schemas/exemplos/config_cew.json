@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "fontes_conversores": [
+    "projeto",
+    "cookbook",
+    "generico"
+  ],
+  "harness": {
+    "max_tentativas_por_formato": 5,
+    "tempo_limite_s": 120,
+    "memoria_mb": 2048,
+    "variantes_corrompidas": 12,
+    "semente": 1234
+  },
+  "executar_conversores_do_projeto_em": "subprocesso",
+  "prioridade_alta_min_itens": 5,
+  "observacoes": "Tire 'cookbook' de fontes_conversores para o agente escrever todos os conversores no projeto. 'generico' cobre arquivos que a web ja le, ZIP, WAV->OGG e tabelas de texto."
+}

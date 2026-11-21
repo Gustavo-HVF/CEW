@@ -21,7 +21,9 @@ description: Use para selecionar o alvo e mapear seus arquivos - "inventario", "
 3. Identificar um arquivo solto: `cew identificar <arquivo>`.
 4. Para um desconhecido, abrir os bytes: `python -c "print(open('<arq>','rb').read(64).hex(' '))"` e
    comparar com `formats/registry.json`.
-5. Formato novo confirmado (assinatura vista em >= 2 amostras + ferramenta ou especificacao real):
+5. Formato novo e especifico do alvo: registre-o NO PROJETO com `cew formato-registrar <id> --projeto <p> --extensao ... --assinatura ...`
+   (vai para `projects/<p>/formatos.json`, que completa o registro global). Se for de interesse geral e confirmado
+   (assinatura vista em >= 2 amostras + ferramenta ou especificacao real), pode entrar tambem no global:
    - copie `docs/formatos/MODELO.md` para `docs/formatos/<id>.md` e preencha a tabela de campos;
    - acrescente a entrada no registro com `verificacao.estado: "a_verificar"` (ou superior se testado);
    - se precisar, escreva o verificador em `cew/estruturas.py` (`@verificador`) e cite o nome em

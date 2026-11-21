@@ -1,0 +1,1 @@
+"""Receitas genericas de PC."""

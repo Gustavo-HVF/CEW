@@ -17,7 +17,7 @@ from converters.comum.binario import LeitorBinario, exigir
 from converters.comum.cli import Escritor, executar
 
 INFO = {
-    "arquivo": "converters/sony/vag_to_wav.py",
+    "arquivo": "cookbook/sony/vag_to_wav.py",
     "descricao": "Decodifica VAG (PS-ADPCM mono) para WAV PCM 16 bits, guardando os pontos de loop.",
     "formatos_entrada": ["sony.ps.vag"],
     "destino": "wav",

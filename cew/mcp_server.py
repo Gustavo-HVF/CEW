@@ -31,7 +31,7 @@ FERRAMENTAS = [
      "inputSchema": {"type": "object", "properties": {"projeto": {"type": "string"}}, "required": ["projeto"], "additionalProperties": False}},
     {"name": "rodar_conversor", "description": "Roda um conversor de converters/ num arquivo. A saida fica dentro de projects/ (padrao: projects/_mcp/<arquivo>/). Use dry_run para so conferir.",
      "inputSchema": {"type": "object", "properties": {
-         "conversor": {"type": "string", "description": "ex.: converters/nintendo/tpl_to_png.py"},
+         "conversor": {"type": "string", "description": "ex.: cookbook/nintendo/tpl_to_png.py"},
          "entrada": {"type": "string", "description": "caminho do arquivo de entrada"},
          "saida": {"type": "string", "description": "pasta de saida dentro de projects/ (opcional)"},
          "opcoes": {"type": "object"}, "dry_run": {"type": "boolean"}},

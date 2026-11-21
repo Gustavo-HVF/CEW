@@ -4,7 +4,7 @@
 - Extensoes: .arc, .u8
 - Ordem de bytes: big
 - Tipo: conteiner
-- Conversor: `converters/nintendo/u8_to_dir.py`
+- Conversor (receita do cookbook): `cookbook/nintendo/u8_to_dir.py`
 - Estado no registro: `fixtures_sinteticas` - conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia
 
 Documentacao publica usada:

@@ -37,6 +37,8 @@ description: Use para verificar e refinar o resultado - "cew check", relatorio_v
 | build_web | `npm run build` sem erros |
 | navegador | Playwright abre cada cena, sem erros no console, salva `checks/capturas/<cena>.png` |
 | comparacao_visual | SSIM (luminancia, janelas 8x8) entre `referencias/<cena>.png` e a captura, limiar 0,6 |
+| marco | cada `app/tests/marcos/<id>.spec.js`; obrigatorios entram no `aprovado`; `marco_atingido` = ultimo consecutivo aprovado |
+| cobertura | assets do manifesto requisitados nos testes -> `cobertura_conteudo.json` (informativo) |
 
 ## Saidas
 - `relatorio_verificacao.json` (`schemas/relatorio_verificacao.schema.json`), `checks/capturas/*.png`,

@@ -4,7 +4,7 @@
 - Extensoes: .md2
 - Ordem de bytes: little
 - Tipo: modelo
-- Conversor: `converters/idtech/md2_to_glb.py`
+- Conversor (receita do cookbook): `cookbook/idtech/md2_to_glb.py`
 - Estado no registro: `fixtures_sinteticas` - conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia; estrutura conferida em qcommon/qfiles.h; GLB aprovado pelo glTF Validator 2.0.0-dev.3.10
 
 Documentacao publica usada:

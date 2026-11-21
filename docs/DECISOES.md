@@ -113,6 +113,41 @@ relacao ao prompt original e o que ainda e hipotese. Datas no formato AAAA-MM-DD
     repositorio, entao o modo suportado e `pip install -e .` (ou rodar `scripts/orchestrator.py`).
     Uma instalacao nao editavel funciona para os conversores, mas a CLI precisa do repositorio.
 
+## CEW v2.1 - o agente cria os conversores (docs/prompt_cew_agente_cria_conversores.txt)
+
+25. **Revisao do prompt antes de aplicar.** Mudancas em relacao a v2: o registro global NAO foi enxugado
+    (identificar e barato; so o codigo saiu do nucleo); cadeia de fontes configuravel em vez de copia
+    obrigatoria do cookbook; conversor pode ser Python ou comando externo em JSON; conversores do
+    projeto rodam em subprocesso; marcos configuraveis (modelos "jogo" e "app") em vez de M0-M6 fixos;
+    contrato `window.__CEW_ESTADO` para os testes de marco; cobertura de conteudo medida pelas
+    requisicoes do navegador; decisoes por formato no registro do projeto.
+26. **Migracao.** `converters/{nintendo,sony,idtech,valve}` e `dds_to_png`/`tga_to_png` foram para
+    `cookbook/` com `git mv` (historico preservado) e os testes continuam passando nos novos caminhos.
+    Ficaram em `converters/`: `comum/`, `generico/{copiar_web,zip_to_dir,wav_to_ogg}`, `dados/texto_to_json`.
+27. **Referencia de conversor.** `converters/...`, `cookbook/...` ou `projeto:conversores/...(.py|.json)`
+    (relativo a pasta do projeto, para o projeto continuar valido se a pasta mudar de lugar).
+28. **Isolamento.** Conversor de projeto roda em `python -m cew._executor` com RLIMIT_AS/RLIMIT_CPU (POSIX) e
+    tempo limite; no Windows so o tempo limite. Comando externo roda com tempo limite e codigos de saida
+    aceitos declarados. `executar_conversores_do_projeto_em: "processo"` desliga o isolamento (depuracao).
+29. **Harness.** "robustez" aceita `ok=false` com erro de formato; reprova "falha inesperada" (excecao nao
+    tratada) e tempo limite. Para comando externo, sair com erro em arquivo corrompido e aceitavel; travar
+    nao. "ajuda" confere `--help` (Python) ou a presenca/versao da ferramenta (comando).
+30. **Amostras do harness.** Reais: do inventario pelo id ja identificado OU pela extensao registrada (o
+    formato acabou de ser registrado e o inventario ainda nao rodou de novo), escolhendo menor, maior e
+    intermediarias; mais `referencias/amostras/`. Sinteticas: `conversores/<familia>/amostras/<conversor>/`
+    e, filtradas pela extensao do formato, `amostras/` (dois conversores da mesma familia nao se misturam).
+31. **Tentativas.** Cada reprovacao no harness soma 1 em `tentativas` do formato no registro do projeto; no
+    limite (`max_tentativas_por_formato`) o formato vira `bloqueado` com o motivo, e o fluxo segue.
+32. **Prioridade de um formato sem conversor** = alta se for de tipo essencial (textura, modelo, audio,
+    mapa, dados...) ou desconhecido E tiver >= `prioridade_alta_min_itens` arquivos ou >= 10 MB. So
+    prioridade alta bloqueia a etapa; media/baixa ficam visiveis no plano.
+33. **Marcos.** Apenas o primeiro marco ("abre") vem obrigatorio e com teste real; os outros vem como
+    `test.fixme` e o agente os torna obrigatorios conforme o escopo combinado com a pessoa. O Playwright
+    informa o arquivo do teste relativo ao `testDir`; o CEW normaliza para `tests/...` (bug encontrado no
+    teste real e corrigido).
+34. **Exemplo de comando externo** (`schemas/exemplos/conversor_comando.json`): flags do vgmstream-cli
+    (`-o`, `-V`) conferidas em `cli/vgmstream_cli.c` do repositorio oficial (commit 24ffd6c, 2026-11-10).
+
 ## Hipoteses tecnicas nos conversores (a conferir com arquivos reais)
 
 - **MD2:** ordem das faces invertida por padrao (o glquake desenha com `glCullFace(GL_FRONT)`, ou

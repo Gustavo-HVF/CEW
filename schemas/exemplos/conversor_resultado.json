@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "gerado_por": "cew-conversor",
-  "conversor": "converters/sony/vag_to_wav.py",
+  "conversor": "cookbook/sony/vag_to_wav.py",
   "versao_conversor": "1.0",
   "entrada": {
     "caminho": "som.vag",

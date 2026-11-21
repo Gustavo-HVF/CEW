@@ -33,7 +33,7 @@ from converters.comum.eixos import METROS_POR_POLEGADA, converter_ponto
 from converters.comum.gltf import ConstrutorGltf
 
 INFO = {
-    "arquivo": "converters/idtech/md2_to_glb.py",
+    "arquivo": "cookbook/idtech/md2_to_glb.py",
     "descricao": "Converte modelos MD2 (Quake II) em GLB com morph targets e animacoes por sequencia.",
     "formatos_entrada": ["idtech.quake2.md2"],
     "destino": "glb",

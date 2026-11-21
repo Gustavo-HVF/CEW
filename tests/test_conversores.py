@@ -23,19 +23,19 @@ from cew import conversores
 RAIZ = Path(__file__).resolve().parents[1]
 
 CASOS = [
-    ("converters/nintendo/yaz0_to_bin.py", "nintendo/arquivo.szs"),
-    ("converters/nintendo/u8_to_dir.py", "nintendo/arquivo.arc"),
-    ("converters/nintendo/sarc_to_dir.py", "nintendo/pacote.sarc"),
-    ("converters/nintendo/tpl_to_png.py", "nintendo/texturas.tpl"),
-    ("converters/sony/tim_to_png.py", "sony/imagem4.tim"),
-    ("converters/sony/tim_to_png.py", "sony/imagem16.tim"),
-    ("converters/sony/vag_to_wav.py", "sony/som.vag"),
-    ("converters/idtech/pak_to_dir.py", "idtech/pak0.pak"),
-    ("converters/idtech/md2_to_glb.py", "idtech/tetra.md2"),
-    ("converters/valve/vpk_to_dir.py", "valve/pak01_dir.vpk"),
-    ("converters/generico/dds_to_png.py", "generico/rgba.dds"),
-    ("converters/generico/dds_to_png.py", "generico/dxt1.dds"),
-    ("converters/generico/tga_to_png.py", "generico/imagem.tga"),
+    ("cookbook/nintendo/yaz0_to_bin.py", "nintendo/arquivo.szs"),
+    ("cookbook/nintendo/u8_to_dir.py", "nintendo/arquivo.arc"),
+    ("cookbook/nintendo/sarc_to_dir.py", "nintendo/pacote.sarc"),
+    ("cookbook/nintendo/tpl_to_png.py", "nintendo/texturas.tpl"),
+    ("cookbook/sony/tim_to_png.py", "sony/imagem4.tim"),
+    ("cookbook/sony/tim_to_png.py", "sony/imagem16.tim"),
+    ("cookbook/sony/vag_to_wav.py", "sony/som.vag"),
+    ("cookbook/idtech/pak_to_dir.py", "idtech/pak0.pak"),
+    ("cookbook/idtech/md2_to_glb.py", "idtech/tetra.md2"),
+    ("cookbook/valve/vpk_to_dir.py", "valve/pak01_dir.vpk"),
+    ("cookbook/generico/dds_to_png.py", "generico/rgba.dds"),
+    ("cookbook/generico/dds_to_png.py", "generico/dxt1.dds"),
+    ("cookbook/generico/tga_to_png.py", "generico/imagem.tga"),
     ("converters/generico/wav_to_ogg.py", "generico/efeito.wav"),
     ("converters/generico/zip_to_dir.py", "generico/pacote.zip"),
     ("converters/generico/copiar_web.py", "web/pronto.png"),
@@ -61,23 +61,23 @@ def perto(a, b, tol):
 
 # ----------------------------------------------------------------------------- valores
 def test_yaz0_u8_extracao(amostras, tmp_path):
-    r = conv("converters/nintendo/yaz0_to_bin.py", amostras / "nintendo/arquivo.szs", tmp_path / "y")
+    r = conv("cookbook/nintendo/yaz0_to_bin.py", amostras / "nintendo/arquivo.szs", tmp_path / "y")
     assert r["ok"] and r["saidas"][0]["caminho"] == "descompactado.arc"
     assert (tmp_path / "y/descompactado.arc").read_bytes() == (amostras / "nintendo/arquivo.arc").read_bytes()
-    r = conv("converters/nintendo/u8_to_dir.py", amostras / "nintendo/arquivo.arc", tmp_path / "u")
+    r = conv("cookbook/nintendo/u8_to_dir.py", amostras / "nintendo/arquivo.arc", tmp_path / "u")
     assert sorted(s["caminho"] for s in r["saidas"]) == ["dados/vazio/x.bin", "leia.txt", "texturas/fundo.tpl"]
     assert (tmp_path / "u/dados/vazio/x.bin").read_bytes() == b"\x01\x02\x03"
 
 
 def test_sarc(amostras, tmp_path):
-    r = conv("converters/nintendo/sarc_to_dir.py", amostras / "nintendo/pacote.sarc", tmp_path)
+    r = conv("cookbook/nintendo/sarc_to_dir.py", amostras / "nintendo/pacote.sarc", tmp_path)
     assert r["ok"] and not r["avisos"]  # hashes dos nomes conferem
     assert sorted(s["caminho"] for s in r["saidas"]) == ["Model/cubo.bin", "Tex/a.tpl", "leia.txt"]
     assert (tmp_path / "Model/cubo.bin").read_bytes().endswith(b"cubo")
 
 
 def test_tpl_formatos_gx(amostras, tmp_path, referencias):
-    r = conv("converters/nintendo/tpl_to_png.py", amostras / "nintendo/texturas.tpl", tmp_path)
+    r = conv("cookbook/nintendo/tpl_to_png.py", amostras / "nintendo/texturas.tpl", tmp_path)
     assert r["ok"] and r["estatisticas"]["formatos_gx"] == ["RGBA32", "RGB5A3", "RGB565", "IA8", "I8", "I4", "CMPR", "C8"]
     ref = [tuple(p) for p in referencias["imagem_ref_8x8"]]
     opaca = [tuple(p) for p in referencias["imagem_ref_opaca_8x8"]]
@@ -97,21 +97,21 @@ def test_tpl_formatos_gx(amostras, tmp_path, referencias):
 
 
 def test_tim(amostras, tmp_path):
-    r = conv("converters/sony/tim_to_png.py", amostras / "sony/imagem4.tim", tmp_path / "a")
+    r = conv("cookbook/sony/tim_to_png.py", amostras / "sony/imagem4.tim", tmp_path / "a")
     img = png(tmp_path / "a", "imagem.png")
     for y in range(8):
         for x in range(8):
             k = (x + y) % 16
             assert img.pixel(x, y) == ((0, 0, 0, 0) if k == 0 else (exp5(k), 0, exp5(k), 255))
-    r = conv("converters/sony/tim_to_png.py", amostras / "sony/imagem4.tim", tmp_path / "b", {"todas_cluts": True})
+    r = conv("cookbook/sony/tim_to_png.py", amostras / "sony/imagem4.tim", tmp_path / "b", {"todas_cluts": True})
     assert [s["caminho"] for s in r["saidas"]] == ["imagem_clut00.png", "imagem_clut01.png"]
-    conv("converters/sony/tim_to_png.py", amostras / "sony/imagem16.tim", tmp_path / "c")
+    conv("cookbook/sony/tim_to_png.py", amostras / "sony/imagem16.tim", tmp_path / "c")
     img = png(tmp_path / "c", "imagem.png")
     assert img.pixel(3, 5) == (exp5(12), exp5(20), 0, 255)
 
 
 def test_vag_loop(amostras, tmp_path):
-    r = conv("converters/sony/vag_to_wav.py", amostras / "sony/som.vag", tmp_path)
+    r = conv("cookbook/sony/vag_to_wav.py", amostras / "sony/som.vag", tmp_path)
     assert r["ok"] and r["estatisticas"]["loop"] == [56, 140]
     pcm = ler_wav((tmp_path / "audio.wav").read_bytes())
     assert pcm.taxa_hz == 22050 and pcm.quantidade == 140 and pcm.loop == (56, 140)
@@ -121,15 +121,15 @@ def test_vag_loop(amostras, tmp_path):
 
 
 def test_pak_vpk(amostras, tmp_path):
-    r = conv("converters/idtech/pak_to_dir.py", amostras / "idtech/pak0.pak", tmp_path / "p")
+    r = conv("cookbook/idtech/pak_to_dir.py", amostras / "idtech/pak0.pak", tmp_path / "p")
     assert sorted(s["caminho"] for s in r["saidas"]) == ["maps/e1m1.bsp", "progs/tetra.md2"]
-    r = conv("converters/valve/vpk_to_dir.py", amostras / "valve/pak01_dir.vpk", tmp_path / "v")
+    r = conv("cookbook/valve/vpk_to_dir.py", amostras / "valve/pak01_dir.vpk", tmp_path / "v")
     assert r["ok"] and not r["avisos"]  # CRC32 confere
     assert sorted(s["caminho"] for s in r["saidas"]) == ["leia.txt", "materials/brick.vtf", "scripts/game.txt"]
 
 
 def test_md2_glb(amostras, tmp_path):
-    r = conv("converters/idtech/md2_to_glb.py", amostras / "idtech/tetra.md2", tmp_path)
+    r = conv("cookbook/idtech/md2_to_glb.py", amostras / "idtech/tetra.md2", tmp_path)
     doc, binario = ler_glb((tmp_path / "modelo.glb").read_bytes())
     assert doc["asset"]["version"] == "2.0"
     prim = doc["meshes"][0]["primitives"][0]
@@ -145,7 +145,7 @@ def test_md2_glb(amostras, tmp_path):
 
 @pytest.mark.skipif(not shutil.which("node") or not (RAIZ / "node_modules" / "gltf-validator").is_dir(), reason="rode npm install para o glTF Validator")
 def test_md2_glb_validator_oficial(amostras, tmp_path):
-    conv("converters/idtech/md2_to_glb.py", amostras / "idtech/tetra.md2", tmp_path)
+    conv("cookbook/idtech/md2_to_glb.py", amostras / "idtech/tetra.md2", tmp_path)
     p = subprocess.run(["node", str(RAIZ / "tests/js/validar_gltf.mjs"), str(tmp_path / "modelo.glb")], capture_output=True, text=True, cwd=RAIZ)
     res = json.loads(p.stdout)
     assert res["erros"] == 0 and res["resultados"][0]["avisos"] == 0, p.stdout
@@ -153,12 +153,12 @@ def test_md2_glb_validator_oficial(amostras, tmp_path):
 
 def test_dds_tga(amostras, tmp_path, referencias):
     ref = [tuple(p) for p in referencias["imagem_ref_8x8"]]
-    conv("converters/generico/dds_to_png.py", amostras / "generico/rgba.dds", tmp_path / "a")
+    conv("cookbook/generico/dds_to_png.py", amostras / "generico/rgba.dds", tmp_path / "a")
     assert pixels(png(tmp_path / "a", "textura.png")) == ref
-    conv("converters/generico/dds_to_png.py", amostras / "generico/dxt1.dds", tmp_path / "b")
+    conv("cookbook/generico/dds_to_png.py", amostras / "generico/dxt1.dds", tmp_path / "b")
     img = png(tmp_path / "b", "textura.png")
     assert img.pixel(0, 0) == (255, 0, 0, 255) and img.pixel(4, 0) == (255, 255, 0, 255) and img.pixel(4, 4) == (0, 0, 255, 255) and img.pixel(0, 4) == (0, 255, 0, 255)
-    conv("converters/generico/tga_to_png.py", amostras / "generico/imagem.tga", tmp_path / "c")
+    conv("cookbook/generico/tga_to_png.py", amostras / "generico/imagem.tga", tmp_path / "c")
     assert pixels(png(tmp_path / "c", "textura.png")) == ref
 
 

@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "projeto": "ficticio",
+  "gerado_em": "2026-11-21T10:11:23Z",
+  "total": 6,
+  "usados": 6,
+  "por_tipo": {
+    "textura": {
+      "total": 6,
+      "usados": 6
+    }
+  },
+  "nao_usados": [],
+  "cenas": [
+    "cena-principal",
+    "marco-abre",
+    "marco-entrada"
+  ]
+}

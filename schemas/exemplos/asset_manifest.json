@@ -60,7 +60,7 @@
         "item_inventario": "i_18aebf81f6bebcff",
         "caminho": "sony/som.vag",
         "formato": "sony.ps.vag",
-        "conversor": "converters/sony/vag_to_wav.py"
+        "conversor": "cookbook/sony/vag_to_wav.py"
       },
       "metadados": {
         "taxa_amostragem_hz": 22050,
@@ -84,7 +84,7 @@
         "item_inventario": "i_ea228cf6d2c9ba22",
         "caminho": "idtech/tetra.md2",
         "formato": "idtech.quake2.md2",
-        "conversor": "converters/idtech/md2_to_glb.py"
+        "conversor": "cookbook/idtech/md2_to_glb.py"
       },
       "metadados": {
         "escala_metros": 0.0254,
@@ -116,7 +116,7 @@
         "item_inventario": "i_dad777e8ef0d3b06",
         "caminho": "nintendo/pacote.sarc!/Tex/a.tpl",
         "formato": "nintendo.gx.tpl",
-        "conversor": "converters/nintendo/tpl_to_png.py"
+        "conversor": "cookbook/nintendo/tpl_to_png.py"
       },
       "metadados": {
         "largura_px": 8,

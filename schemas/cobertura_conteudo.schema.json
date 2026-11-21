@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/cobertura_conteudo.schema.json",
+  "title": "projects/<p>/cobertura_conteudo.json - assets do manifesto requisitados pelo app nos testes",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["projeto", "gerado_em", "total", "usados", "por_tipo", "nao_usados"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "projeto": { "type": "string" },
+    "gerado_em": { "$ref": "comum.schema.json#/$defs/data_hora" },
+    "total": { "type": "integer", "minimum": 0 },
+    "usados": { "type": "integer", "minimum": 0 },
+    "por_tipo": {
+      "type": "object",
+      "additionalProperties": { "type": "object", "required": ["total", "usados"], "additionalProperties": false, "properties": { "total": { "type": "integer" }, "usados": { "type": "integer" } } }
+    },
+    "nao_usados": { "type": "array", "items": { "type": "object", "required": ["id", "caminho_web", "tipo"], "additionalProperties": false, "properties": { "id": { "type": "string" }, "caminho_web": { "type": "string" }, "tipo": { "type": "string" }, "motivo": { "type": "string" } } } },
+    "cenas": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}

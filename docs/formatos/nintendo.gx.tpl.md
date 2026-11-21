@@ -4,7 +4,7 @@
 - Extensoes: .tpl
 - Ordem de bytes: big
 - Tipo: textura
-- Conversor: `converters/nintendo/tpl_to_png.py`
+- Conversor (receita do cookbook): `cookbook/nintendo/tpl_to_png.py`
 - Estado no registro: `fixtures_sinteticas` - conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia
 
 Documentacao publica usada:

@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "tipo": "comando",
+  "descricao": "Decodifica audio de jogo com o vgmstream-cli e entrega WAV (depois vira OGG pela cadeia do CEW). Flags -o e -V conferidas em cli/vgmstream_cli.c (commit 24ffd6c, 2026-11-10).",
+  "formatos_entrada": [
+    "audiokinetic.wwise.wem"
+  ],
+  "destino": "wav",
+  "papel": "conversor",
+  "versao": "1.0",
+  "ferramenta": {
+    "nome": "vgmstream-cli",
+    "url": "https://github.com/vgmstream/vgmstream",
+    "verificar": [
+      "vgmstream-cli",
+      "-V"
+    ]
+  },
+  "comando": [
+    "vgmstream-cli",
+    "-o",
+    "{saida_arquivo:audio.wav}",
+    "{entrada}"
+  ],
+  "tempo_limite_s": 300,
+  "saidas": [
+    {
+      "padrao": "*.wav",
+      "tipo": "audio",
+      "formato": "wav",
+      "obrigatoria": true
+    }
+  ]
+}

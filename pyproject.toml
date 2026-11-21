@@ -31,7 +31,7 @@ cew = "cew.cli:main"
 include-package-data = true
 
 [tool.setuptools.packages.find]
-include = ["cew*", "converters*"]
+include = ["cew*", "converters*", "cookbook*"]
 
 [tool.setuptools.package-data]
 cew = ["modelos_web/**/*"]

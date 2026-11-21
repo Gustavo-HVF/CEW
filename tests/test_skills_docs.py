@@ -12,10 +12,11 @@ SECOES = ["Gatilho", "Entradas", "Passos com comandos", "Delegacao", "Padroes de
 SKILLS = sorted((RAIZ / "skills").glob("*/SKILL.md"))
 
 
-def test_seis_skills():
+def test_sete_skills():
     assert [p.parent.name for p in SKILLS] == [
         "01-setup-e-validacao-gemini", "02-inventario-e-mapeamento-de-formatos", "03-engenharia-reversa-craft-ghidra",
-        "04-delegacao-gemini-e-conversores", "05-selecao-e-arquitetura-motor-grafico", "06-verificacao-e-refinamento-web"]
+        "04-criar-conversores", "05-selecao-e-arquitetura-motor-grafico", "06-verificacao-e-refinamento-web",
+        "07-reconstrucao-da-logica-e-marcos"]
 
 
 @pytest.mark.parametrize("arq", SKILLS, ids=lambda p: p.parent.name)
@@ -25,7 +26,7 @@ def test_formato_da_skill(arq):
     assert m, "cabecalho YAML com name e description"
     assert len(m.group(2)) > 40
     secoes = re.findall(r"^## (.+)$", texto, flags=re.M)
-    assert secoes == SECOES
+    assert secoes[: len(SECOES)] == SECOES  # secoes extras (ex.: caso trabalhado) so depois das oito
 
 
 def test_comandos_citados_existem():
@@ -33,7 +34,7 @@ def test_comandos_citados_existem():
 
     subs = set(parser()._subparsers._group_actions[0].choices)  # type: ignore[union-attr]
     for arq in SKILLS:
-        for cmd in re.findall(r"`cew ([a-z]+)", arq.read_text(encoding="utf-8")):
+        for cmd in re.findall(r"`cew ([a-z-]+)", arq.read_text(encoding="utf-8")):
             assert cmd in subs, (arq.parent.name, cmd)
 
 

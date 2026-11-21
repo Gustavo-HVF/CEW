@@ -23,7 +23,7 @@ from converters.comum.binario import ErroFormato, LeitorBinario, exigir
 from converters.comum.cli import Escritor, executar
 
 INFO = {
-    "arquivo": "converters/valve/vpk_to_dir.py",
+    "arquivo": "cookbook/valve/vpk_to_dir.py",
     "descricao": "Extrai pacotes VPK v1/v2 (Source), conferindo o CRC32 de cada arquivo.",
     "formatos_entrada": ["valve.source.vpk"],
     "destino": "pasta",

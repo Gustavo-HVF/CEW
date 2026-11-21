@@ -58,7 +58,7 @@ def executar(projeto: Projeto, dry_run: bool = False, log: Log | None = None, op
         if destino.exists():
             shutil.rmtree(destino)
         try:
-            r = rodar(p["conversor"], entrada, destino, opcoes)
+            r = rodar(p["conversor"], entrada, destino, opcoes, projeto_pasta=projeto.pasta)
             if not r["ok"]:
                 raise RuntimeError(r["erro"])
             saidas = []

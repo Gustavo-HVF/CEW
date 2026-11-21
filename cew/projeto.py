@@ -42,13 +42,14 @@ PASTAS_CRAFT = ["capture", "app", "checks", "investigation.cany", "inbox"]
 PASTAS_CEW = {
     "analise": "analise", "especificacoes": "especificacoes", "tarefas_gemini": "tarefas_gemini", "rascunhos": "rascunhos",
     "referencias": "referencias", "extraido": "build/extraido", "convertido": "build/convertido", "web": "web",
-    "dados": "web/dados", "logs_conversao": "build/logs",
+    "dados": "web/dados", "logs_conversao": "build/logs", "conversores": "conversores",
 }
 ARQUIVOS = {
     "estado": ("estado.json", "estado"), "inventario": ("inventario.json", "inventario"),
     "plano": ("plano_conversao.json", "plano_conversao"), "manifesto": ("web/asset_manifest.json", "asset_manifest"),
     "motor": ("recomendacao_motor.json", "recomendacao_motor"), "verificacao": ("relatorio_verificacao.json", "relatorio_verificacao"),
     "hipoteses": ("analise/hipoteses.json", "hipoteses_formato"), "contexto": ("analise/contexto.json", "contexto_formatos"),
+    "formatos": ("formatos.json", "registry"), "marcos": ("marcos.json", "marcos"), "cobertura": ("cobertura_conteudo.json", "cobertura_conteudo"),
 }
 
 

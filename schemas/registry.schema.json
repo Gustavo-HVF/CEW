@@ -1,72 +1,248 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://cew.local/schemas/registry.schema.json",
-  "title": "formats/registry.json - registro de formatos por empresa/motor (item 4)",
+  "title": "Registro de formatos (formats/registry.json global ou projects/<nome>/formatos.json do projeto)",
   "type": "object",
-  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
-  "required": ["formatos"],
+  "allOf": [
+    {
+      "$ref": "comum.schema.json#/$defs/cabecalho"
+    }
+  ],
+  "required": [
+    "formatos"
+  ],
   "properties": {
-    "schema_version": true, "gerado_por": true,
-    "observacoes": { "type": "string" },
-    "formatos": { "type": "array", "items": { "$ref": "#/$defs/formato" } }
+    "schema_version": true,
+    "gerado_por": true,
+    "observacoes": {
+      "type": "string"
+    },
+    "formatos": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/formato"
+      }
+    }
   },
   "additionalProperties": false,
   "$defs": {
     "assinatura": {
       "type": "object",
-      "required": ["offset", "bytes_hex"],
+      "required": [
+        "offset",
+        "bytes_hex"
+      ],
       "additionalProperties": false,
       "properties": {
-        "offset": { "type": "integer", "description": "Posicao da assinatura; negativo conta a partir do fim do arquivo." },
-        "bytes_hex": { "type": "string", "pattern": "^([0-9a-f]{2})+$" },
-        "texto": { "type": ["string", "null"] }
+        "offset": {
+          "type": "integer",
+          "description": "Posicao da assinatura; negativo conta a partir do fim do arquivo."
+        },
+        "bytes_hex": {
+          "type": "string",
+          "pattern": "^([0-9a-f]{2})+$"
+        },
+        "texto": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       }
     },
     "ferramenta": {
       "type": "object",
-      "required": ["nome", "url", "verificado_em"],
+      "required": [
+        "nome",
+        "url",
+        "verificado_em"
+      ],
       "additionalProperties": false,
       "properties": {
-        "nome": { "type": "string" },
-        "url": { "type": "string", "pattern": "^https?://" },
-        "verificado_em": { "anyOf": [{ "$ref": "comum.schema.json#/$defs/data" }, { "type": "null" }] },
-        "nota": { "type": "string" }
+        "nome": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string",
+          "pattern": "^https?://"
+        },
+        "verificado_em": {
+          "anyOf": [
+            {
+              "$ref": "comum.schema.json#/$defs/data"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "nota": {
+          "type": "string"
+        }
       }
     },
     "formato": {
       "type": "object",
-      "required": ["id", "empresa_ou_motor", "extensoes", "assinatura", "ordem_de_bytes", "tipo", "contem", "compressao_comum", "destino_web", "ferramentas_conhecidas", "conversor", "documentacao", "confianca", "verificacao", "observacoes"],
+      "required": [
+        "id",
+        "empresa_ou_motor",
+        "extensoes",
+        "assinatura",
+        "ordem_de_bytes",
+        "tipo",
+        "contem",
+        "compressao_comum",
+        "destino_web",
+        "ferramentas_conhecidas",
+        "conversor",
+        "documentacao",
+        "confianca",
+        "verificacao",
+        "observacoes"
+      ],
       "additionalProperties": false,
       "properties": {
-        "id": { "$ref": "comum.schema.json#/$defs/id_formato" },
-        "nome": { "type": "string" },
-        "empresa_ou_motor": { "type": "string" },
-        "extensoes": { "type": "array", "items": { "type": "string", "pattern": "^\\.[a-z0-9_.]+$" }, "uniqueItems": true },
-        "assinatura": { "anyOf": [{ "$ref": "#/$defs/assinatura" }, { "type": "null" }] },
-        "assinaturas_alternativas": { "type": "array", "items": { "$ref": "#/$defs/assinatura" } },
-        "verificador_estrutura": { "type": ["string", "null"], "description": "Nome de uma funcao em cew/estruturas.py que confere tamanhos e offsets." },
-        "ordem_de_bytes": { "$ref": "comum.schema.json#/$defs/ordem_de_bytes" },
-        "tipo": { "$ref": "comum.schema.json#/$defs/tipo_formato" },
-        "contem": { "type": "array", "items": { "$ref": "comum.schema.json#/$defs/id_formato" } },
-        "compressao_comum": { "type": "array", "items": { "type": "string" } },
-        "destino_web": { "type": "object", "additionalProperties": { "type": "string" } },
-        "ferramentas_conhecidas": { "type": "array", "items": { "$ref": "#/$defs/ferramenta" } },
-        "conversor": { "type": ["string", "null"], "pattern": "^converters/[a-z0-9_]+/[a-z0-9_]+\\.py$" },
-        "documentacao": { "type": "array", "items": { "type": "string" } },
-        "confianca": { "type": "string", "enum": ["documentado", "engenharia_reversa", "hipotese"] },
-        "cifrado_comum": { "type": "boolean", "description": "Formato costuma vir cifrado; o CEW marca e nao decifra." },
-        "verificacao": {
-          "type": "object",
-          "required": ["estado"],
-          "additionalProperties": false,
-          "properties": {
-            "estado": { "type": "string", "enum": ["a_verificar", "fixtures_sinteticas", "verificado"] },
-            "verificado_em": { "anyOf": [{ "$ref": "comum.schema.json#/$defs/data" }, { "type": "null" }] },
-            "por": { "type": "string" },
-            "evidencia": { "type": "string" }
+        "id": {
+          "$ref": "comum.schema.json#/$defs/id_formato"
+        },
+        "nome": {
+          "type": "string"
+        },
+        "empresa_ou_motor": {
+          "type": "string"
+        },
+        "extensoes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^\\.[a-z0-9_.]+$"
+          },
+          "uniqueItems": true
+        },
+        "assinatura": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/assinatura"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "assinaturas_alternativas": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/assinatura"
           }
         },
-        "observacoes": { "type": "string" }
+        "verificador_estrutura": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Nome de uma funcao em cew/estruturas.py que confere tamanhos e offsets."
+        },
+        "ordem_de_bytes": {
+          "$ref": "comum.schema.json#/$defs/ordem_de_bytes"
+        },
+        "tipo": {
+          "$ref": "comum.schema.json#/$defs/tipo_formato"
+        },
+        "contem": {
+          "type": "array",
+          "items": {
+            "$ref": "comum.schema.json#/$defs/id_formato"
+          }
+        },
+        "compressao_comum": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "destino_web": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "ferramentas_conhecidas": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ferramenta"
+          }
+        },
+        "conversor": {
+          "anyOf": [
+            {
+              "$ref": "comum.schema.json#/$defs/ref_conversor"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "documentacao": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "confianca": {
+          "type": "string",
+          "enum": [
+            "documentado",
+            "engenharia_reversa",
+            "hipotese"
+          ]
+        },
+        "cifrado_comum": {
+          "type": "boolean",
+          "description": "Formato costuma vir cifrado; o CEW marca e nao decifra."
+        },
+        "verificacao": {
+          "type": "object",
+          "required": [
+            "estado"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "estado": {
+              "type": "string",
+              "enum": [
+                "a_verificar",
+                "fixtures_sinteticas",
+                "verificado"
+              ]
+            },
+            "verificado_em": {
+              "anyOf": [
+                {
+                  "$ref": "comum.schema.json#/$defs/data"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "por": {
+              "type": "string"
+            },
+            "evidencia": {
+              "type": "string"
+            }
+          }
+        },
+        "observacoes": {
+          "type": "string"
+        },
+        "decisao": {
+          "$ref": "comum.schema.json#/$defs/decisao_formato"
+        },
+        "tentativas": {
+          "type": "integer",
+          "minimum": 0
+        }
       }
     }
   }

@@ -3,37 +3,224 @@
   "$id": "https://cew.local/schemas/plano_conversao.schema.json",
   "title": "plano_conversao.json - o que converter, com que conversor e em que ordem (etapa 5)",
   "type": "object",
-  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
-  "required": ["projeto", "itens"],
+  "allOf": [
+    {
+      "$ref": "comum.schema.json#/$defs/cabecalho"
+    }
+  ],
+  "required": [
+    "projeto",
+    "itens"
+  ],
   "properties": {
-    "schema_version": true, "gerado_por": true,
-    "gerado_em": { "$ref": "comum.schema.json#/$defs/data_hora" },
-    "projeto": { "type": "string" },
-    "resumo": { "type": "object", "additionalProperties": { "type": "integer" } },
-    "itens": { "type": "array", "items": { "$ref": "#/$defs/item" } }
+    "schema_version": true,
+    "gerado_por": true,
+    "gerado_em": {
+      "$ref": "comum.schema.json#/$defs/data_hora"
+    },
+    "projeto": {
+      "type": "string"
+    },
+    "resumo": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer"
+      }
+    },
+    "itens": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/item"
+      }
+    },
+    "formatos": {
+      "type": "array",
+      "description": "resumo por formato (grupo do ciclo de criacao de conversores)",
+      "items": {
+        "type": "object",
+        "required": [
+          "formato",
+          "itens",
+          "cobertura",
+          "prioridade"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "formato": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "itens": {
+            "type": "integer"
+          },
+          "bytes": {
+            "type": "integer"
+          },
+          "cobertura": {
+            "type": "string",
+            "enum": [
+              "coberto",
+              "falta_conversor",
+              "bloqueado",
+              "ignorado"
+            ]
+          },
+          "prioridade": {
+            "type": "string",
+            "enum": [
+              "alta",
+              "media",
+              "baixa"
+            ]
+          },
+          "conversor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "decisao": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    }
   },
   "additionalProperties": false,
   "$defs": {
     "item": {
       "type": "object",
-      "required": ["id", "item_inventario", "formato_origem", "conversor", "formato_destino", "opcoes", "dependencias", "prioridade", "estado"],
+      "required": [
+        "id",
+        "item_inventario",
+        "formato_origem",
+        "conversor",
+        "formato_destino",
+        "opcoes",
+        "dependencias",
+        "prioridade",
+        "estado"
+      ],
       "additionalProperties": false,
       "properties": {
-        "id": { "$ref": "comum.schema.json#/$defs/id_plano" },
-        "item_inventario": { "$ref": "comum.schema.json#/$defs/id_inventario" },
-        "caminho": { "type": "string" },
-        "formato_origem": { "anyOf": [{ "$ref": "comum.schema.json#/$defs/id_formato" }, { "type": "null" }] },
-        "conversor": { "type": ["string", "null"] },
-        "formato_destino": { "type": ["string", "null"] },
-        "opcoes": { "type": "object" },
-        "dependencias": { "type": "array", "items": { "$ref": "comum.schema.json#/$defs/id_plano" } },
-        "prioridade": { "type": "integer", "minimum": 1, "maximum": 5, "description": "1 = primeiro" },
-        "estado": { "type": "string", "enum": ["pendente", "concluido", "erro", "aguardando_conversor", "aguardando_gemini", "ignorado"] },
-        "motivo": { "type": "string" },
-        "tarefa_gemini": { "type": ["string", "null"] },
-        "hash_entrada": { "$ref": "comum.schema.json#/$defs/sha256" },
-        "saidas": { "type": "array", "items": { "type": "string" } },
-        "erro": { "type": ["string", "null"] }
+        "id": {
+          "$ref": "comum.schema.json#/$defs/id_plano"
+        },
+        "item_inventario": {
+          "$ref": "comum.schema.json#/$defs/id_inventario"
+        },
+        "caminho": {
+          "type": "string"
+        },
+        "formato_origem": {
+          "anyOf": [
+            {
+              "$ref": "comum.schema.json#/$defs/id_formato"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "conversor": {
+          "anyOf": [
+            {
+              "$ref": "comum.schema.json#/$defs/ref_conversor"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "formato_destino": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "opcoes": {
+          "type": "object"
+        },
+        "dependencias": {
+          "type": "array",
+          "items": {
+            "$ref": "comum.schema.json#/$defs/id_plano"
+          }
+        },
+        "prioridade": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "1 = primeiro"
+        },
+        "estado": {
+          "type": "string",
+          "enum": [
+            "pendente",
+            "concluido",
+            "erro",
+            "aguardando_conversor",
+            "aguardando_gemini",
+            "ignorado"
+          ]
+        },
+        "motivo": {
+          "type": "string"
+        },
+        "tarefa_gemini": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "hash_entrada": {
+          "$ref": "comum.schema.json#/$defs/sha256"
+        },
+        "saidas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "erro": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "cobertura": {
+          "type": "string",
+          "enum": [
+            "coberto",
+            "falta_conversor",
+            "bloqueado",
+            "ignorado"
+          ]
+        },
+        "fonte_conversor": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "projeto",
+            "cookbook",
+            "generico",
+            null
+          ]
+        },
+        "tentativas": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "hash_conversor": {
+          "$ref": "comum.schema.json#/$defs/sha256_ou_nulo"
+        }
       }
     }
   }

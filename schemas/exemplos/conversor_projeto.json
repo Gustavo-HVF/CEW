@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "conversor": "projeto:conversores/demo/qzx_imagem_to_png.py",
+  "tipo": "python",
+  "hash_codigo": "7e63ab7f9adbb1ac64a80e1c9688c3e7f07405664f3869c6a1ddf20df1919632",
+  "testado_em": "2026-11-21T10:09:54Z",
+  "aprovado": true,
+  "formatos_entrada": [
+    "demo.qzx.imagem"
+  ],
+  "amostras": [
+    {
+      "caminho": "/home/voce/jogos/jogo-ficticio/gfx/sprite3.qzx",
+      "sha256": "da61205e994451a20f5f512f7a71e17099d5315e36605b176cf9c33d022a5faf",
+      "origem": "real",
+      "ok": true,
+      "saidas": 1,
+      "erro": null,
+      "tempo_s": 0.71
+    },
+    {
+      "caminho": "/home/voce/jogos/jogo-ficticio/gfx/sprite5.qzx",
+      "sha256": "7b6c794385b5da1dda2cbcf95de1a412f763d48185a6e3a7f97e0ef50249a294",
+      "origem": "real",
+      "ok": true,
+      "saidas": 1,
+      "erro": null,
+      "tempo_s": 0.733
+    },
+    {
+      "caminho": "/home/voce/jogos/jogo-ficticio/gfx/sprite0.qzx",
+      "sha256": "fb083672271c31d5ea74302012a10f82f9ddf10340cb8ed3b853e2d5fd1aecf4",
+      "origem": "real",
+      "ok": true,
+      "saidas": 1,
+      "erro": null,
+      "tempo_s": 0.835
+    },
+    {
+      "caminho": "/home/voce/jogos/jogo-ficticio/gfx/sprite4.qzx",
+      "sha256": "ab2bde573cc31a54d37ce9ef5526d656d8bc5902d2abbb5d73848358e6bc83a6",
+      "origem": "real",
+      "ok": true,
+      "saidas": 1,
+      "erro": null,
+      "tempo_s": 0.773
+    },
+    {
+      "caminho": "/home/voce/jogos/jogo-ficticio/gfx/sprite2.qzx",
+      "sha256": "c2807b1c0c20c9913eaaa61373748adeda1c0ae32697460c68100df201202bba",
+      "origem": "real",
+      "ok": true,
+      "saidas": 1,
+      "erro": null,
+      "tempo_s": 0.796
+    },
+    {
+      "caminho": "/home/voce/CEW/projects/ficticio/conversores/demo/amostras/minima.qzx",
+      "sha256": "4f9f97ed91e17b037f045faa3e3ddd8a4812aaa41eade3a3e6df7945ebafe8f7",
+      "origem": "sintetica",
+      "ok": true,
+      "saidas": 1,
+      "erro": null,
+      "tempo_s": 0.746
+    }
+  ],
+  "verificacoes": [
+    {
+      "id": "executa",
+      "aprovado": true,
+      "detalhes": "6/6 amostras convertidas"
+    },
+    {
+      "id": "esquema",
+      "aprovado": true,
+      "detalhes": "resultado valido em schemas/conversor_resultado.schema.json"
+    },
+    {
+      "id": "determinismo",
+      "aprovado": true,
+      "detalhes": "mesmos SHA-256 em duas execucoes"
+    },
+    {
+      "id": "robustez",
+      "aprovado": true,
+      "detalhes": "arquivos truncados/corrompidos terminam com erro de formato limpo"
+    },
+    {
+      "id": "dry_run",
+      "aprovado": true,
+      "detalhes": "dry-run nao grava nada"
+    },
+    {
+      "id": "ajuda",
+      "aprovado": true,
+      "detalhes": "--help mostra --dry-run"
+    },
+    {
+      "id": "tempo_memoria",
+      "aprovado": true,
+      "detalhes": "dentro de 120 s e 2048 MB"
+    }
+  ]
+}

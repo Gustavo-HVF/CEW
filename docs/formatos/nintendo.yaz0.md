@@ -4,7 +4,7 @@
 - Extensoes: .szs, .yaz0, .carc
 - Ordem de bytes: big
 - Tipo: compressao
-- Conversor: `converters/nintendo/yaz0_to_bin.py`
+- Conversor (receita do cookbook): `cookbook/nintendo/yaz0_to_bin.py`
 - Estado no registro: `fixtures_sinteticas` - conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia
 
 Documentacao publica usada:

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/log_conversor.schema.json",
+  "title": "Uma linha de projects/<p>/log_conversores.jsonl (ciclo de criacao de conversores)",
+  "type": "object",
+  "required": ["ts", "formato", "passo", "resultado"],
+  "properties": {
+    "ts": { "$ref": "comum.schema.json#/$defs/data_hora" },
+    "formato": { "type": "string" },
+    "passo": { "type": "string", "enum": ["pesquisar", "amostrar", "escrever", "testar", "conferir", "registrar", "decidir"] },
+    "tentativa": { "type": "integer", "minimum": 0 },
+    "resultado": { "type": "string", "enum": ["ok", "falhou", "info"] },
+    "conversor": { "type": ["string", "null"] },
+    "detalhes": { "type": "string" },
+    "evidencia": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}

@@ -20,7 +20,7 @@ from converters.comum.cores import bgr555_psx
 from converters.comum.imagem import Imagem, png_bytes
 
 INFO = {
-    "arquivo": "converters/sony/tim_to_png.py",
+    "arquivo": "cookbook/sony/tim_to_png.py",
     "descricao": "Converte imagens TIM (4, 8, 16 e 24 bpp, com ou sem CLUT) para PNG.",
     "formatos_entrada": ["sony.psx.tim"],
     "destino": "png",

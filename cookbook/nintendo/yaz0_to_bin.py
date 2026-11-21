@@ -6,7 +6,7 @@ converters/comum/compressao.py). O conteudo costuma ser um conteiner U8/RARC/SAR
 
 from __future__ import annotations
 
-if __package__ in (None, ""):  # permite `python converters/nintendo/yaz0_to_bin.py`
+if __package__ in (None, ""):  # permite `python cookbook/nintendo/yaz0_to_bin.py`
     import pathlib, sys
     sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[2]))
 
@@ -14,7 +14,7 @@ from converters.comum.cli import Escritor, executar
 from converters.comum.compressao import yaz0_descompactar
 
 INFO = {
-    "arquivo": "converters/nintendo/yaz0_to_bin.py",
+    "arquivo": "cookbook/nintendo/yaz0_to_bin.py",
     "descricao": "Descompacta Yaz0 (.szs, .yaz0, .carc) para o arquivo original.",
     "formatos_entrada": ["nintendo.yaz0"],
     "destino": "bin (tipicamente U8/RARC/SARC)",

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import shutil
 import subprocess
 import tempfile
@@ -35,6 +36,7 @@ LIMIAR_SSIM_CENA = 0.60
 class Relatorio:
     def __init__(self) -> None:
         self.itens: list[dict[str, Any]] = []
+        self.marco_atingido: str | None = None
 
     def add(self, id_: str, categoria: str, alvo: str, aprovado: bool, detalhes: str, obrigatorio: bool = True, metricas: dict | None = None, pulado: bool = False) -> None:
         item: dict[str, Any] = {"id": id_, "categoria": categoria, "alvo": alvo, "obrigatorio": obrigatorio, "aprovado": bool(aprovado), "detalhes": detalhes}
@@ -106,7 +108,7 @@ def verificar_determinismo(p: Projeto, r: Relatorio, limite: int = 200) -> None:
         it = inv[item["item_inventario"]]
         entrada = (alvo if alvo.is_file() else alvo / it["caminho_no_disco"]) if it["origem"] == "alvo" else p.pasta / it["caminho_no_disco"]
         with tempfile.TemporaryDirectory(prefix="cew-det-") as tmp:
-            res = rodar(item["conversor"], entrada, Path(tmp), item.get("opcoes") or {})
+            res = rodar(item["conversor"], entrada, Path(tmp), item.get("opcoes") or {}, projeto_pasta=p.pasta)
             novos = {s["caminho"]: s["sha256"] for s in res["saidas"]}
         prefixo = f"build/convertido/{item['id']}/"
         difs = []
@@ -218,22 +220,78 @@ def verificar_web(p: Projeto, r: Relatorio, instalar: bool = False, chromium: st
     if chromium:
         env["CEW_CHROMIUM"] = chromium
     npx = shutil.which("npx") or "npx"
+    shutil.rmtree(p.pasta / "checks" / "assets_carregados", ignore_errors=True)
     pw = subprocess.run([npx, "playwright", "test", "--trace", "off", "--reporter=json"], cwd=app, capture_output=True, text=True, timeout=1800, env=env)
     try:
         rep = json.loads(pw.stdout)
-        specs = [s for suite in rep.get("suites", []) for s in suite.get("specs", [])]
-        for s in specs:
-            ok = s.get("ok", False)
-            erro = ""
-            for t in s.get("tests", []):
-                for res in t.get("results", []):
-                    if res.get("error"):
-                        erro = res["error"].get("message", "")[:600]
-            r.add(f"navegador:{s['title']}", "navegador", s["title"], ok, "abriu sem erros no console" if ok else erro or "falhou")
-        if not specs:
-            r.add("navegador", "navegador", "app/tests", False, "nenhum teste de navegador encontrado")
     except ValueError:
         r.add("navegador", "navegador", "app/tests", False, f"playwright nao rodou: {(pw.stderr or pw.stdout)[-600:]} (instale com 'npx playwright install chromium')")
+        return
+    specs = list(_specs(rep))
+    marcos_res: dict[str, dict] = {}
+    for arquivo, s in specs:
+        estados = [res.get("status") for t in s.get("tests", []) for res in t.get("results", [])] or [t.get("status") for t in s.get("tests", [])]
+        pendente = any(t.get("status") == "skipped" or t.get("expectedStatus") == "skipped" for t in s.get("tests", [])) or not estados
+        ok = bool(s.get("ok")) and not pendente and all(e in ("passed", "expected") for e in estados)
+        erro = next((re.sub(r"\x1b\[[0-9;]*m", "", res["error"].get("message", ""))[:600] for t in s.get("tests", []) for res in t.get("results", []) if res.get("error")), "")
+        f = arquivo.replace("\\", "/")
+        rel = "tests/" + (f.split("tests/")[-1] if "tests/" in f else f.lstrip("./"))  # o reporter usa caminho relativo ao testDir
+        if rel.startswith("tests/marcos/"):
+            atual = marcos_res.get(rel, {"aprovado": True, "pendente": False, "detalhes": ""})
+            atual["aprovado"] = atual["aprovado"] and ok
+            atual["pendente"] = atual["pendente"] or pendente
+            atual["detalhes"] = "pendente (test.fixme)" if atual["pendente"] else ("aprovado" if atual["aprovado"] else erro or "falhou")
+            marcos_res[rel] = atual
+        else:
+            r.add(f"navegador:{s['title']}", "navegador", s["title"], ok, "abriu sem erros no console" if ok else erro or ("pendente" if pendente else "falhou"))
+    if not specs:
+        r.add("navegador", "navegador", "app/tests", False, "nenhum teste de navegador encontrado")
+    from . import marcos as _marcos
+
+    doc, atingido = _marcos.atualizar(p, marcos_res)
+    r.marco_atingido = atingido
+    for m in (doc or {}).get("marcos", []):
+        r.add(f"marco:{m['id']}", "marco", m["titulo"], m["estado"] == "aprovado", f"{m['criterio']} -> {m.get('detalhes', '')}", obrigatorio=m["obrigatorio"])
+    cobertura(p, r)
+
+
+def _specs(no: dict, arquivo: str = ""):
+    for suite in no.get("suites", []):
+        arq = suite.get("file") or arquivo
+        for s in suite.get("specs", []):
+            yield s.get("file") or arq, s
+        yield from _specs(suite, arq)
+
+
+def cobertura(p: Projeto, r: Relatorio) -> dict | None:
+    """Assets do manifesto que o app requisitou nos testes (checks/assets_carregados/*.json)."""
+    from .esquemas import gravar_json as _gravar
+
+    pasta = p.pasta / "checks" / "assets_carregados"
+    if not p.existe("manifesto") or not pasta.is_dir():
+        return None
+    usados, cenas = set(), []
+    for arq in sorted(pasta.glob("*.json")):
+        d = json.loads(arq.read_text(encoding="utf-8"))
+        cenas.append(d.get("nome", arq.stem))
+        usados |= set(d.get("assets", []))
+    man = p.ler("manifesto")["assets"]
+    por_tipo: dict[str, dict] = {}
+    nao = []
+    for a in man:
+        t = por_tipo.setdefault(a["tipo"], {"total": 0, "usados": 0})
+        t["total"] += 1
+        if a["caminho_web"] in usados:
+            t["usados"] += 1
+        else:
+            nao.append({"id": a["id"], "caminho_web": a["caminho_web"], "tipo": a["tipo"]})
+    doc = {"schema_version": SCHEMA_VERSION, "gerado_por": GERADO_POR, "projeto": p.nome, "gerado_em": agora_iso(), "total": len(man),
+           "usados": len(man) - len(nao), "por_tipo": dict(sorted(por_tipo.items())), "nao_usados": nao, "cenas": cenas}
+    _gravar(p.pasta / "cobertura_conteudo.json", doc, "cobertura_conteudo")
+    pct = 100 * doc["usados"] / doc["total"] if doc["total"] else 100.0
+    r.add("cobertura", "cobertura", "cobertura_conteudo.json", True, f"{doc['usados']}/{doc['total']} assets do manifesto usados nos testes ({pct:.0f}%)",
+          obrigatorio=False, metricas={"usados": doc["usados"], "total": doc["total"]})
+    return doc
 
 
 def verificar_capturas(p: Projeto, r: Relatorio, gemini: bool = False) -> None:
@@ -286,7 +344,7 @@ def executar(p: Projeto, web: bool = True, instalar: bool = False, gemini: bool 
         verificar_capturas(p, r, gemini)
     obrig = [i for i in r.itens if i["obrigatorio"]]
     doc = {"schema_version": SCHEMA_VERSION, "gerado_por": GERADO_POR, "projeto": p.nome, "gerado_em": agora_iso(),
-           "aprovado": bool(obrig) and all(i["aprovado"] for i in obrig),
+           "aprovado": bool(obrig) and all(i["aprovado"] for i in obrig), "marco_atingido": r.marco_atingido,
            "resumo": dict(Counter(("aprovado" if i["aprovado"] else "reprovado") + ("_obrigatorio" if i["obrigatorio"] else "_opcional") for i in r.itens)),
            "itens": r.itens}
     if not dry_run:

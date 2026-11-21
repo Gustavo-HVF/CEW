@@ -1,0 +1,9 @@
+{
+  "ts": "2026-11-21T10:09:54Z",
+  "formato": "demo.qzx.imagem",
+  "passo": "testar",
+  "resultado": "ok",
+  "conversor": "projeto:conversores/demo/qzx_imagem_to_png.py",
+  "detalhes": "executa=ok; esquema=ok; determinismo=ok; robustez=ok; dry_run=ok; ajuda=ok; tempo_memoria=ok",
+  "tentativa": 0
+}

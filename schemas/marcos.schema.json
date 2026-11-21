@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/marcos.schema.json",
+  "title": "projects/<p>/marcos.json - marcos de utilizacao/jogabilidade, editaveis pelo agente",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["projeto", "modelo", "marcos"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "projeto": { "type": "string" },
+    "modelo": { "type": "string", "enum": ["jogo", "app", "personalizado"] },
+    "marcos": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "titulo", "criterio", "teste", "obrigatorio", "estado"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^[A-Za-z0-9_-]+$" },
+          "titulo": { "type": "string" },
+          "criterio": { "type": "string", "minLength": 5 },
+          "teste": { "type": "string", "pattern": "^tests/marcos/[A-Za-z0-9_.-]+\\.spec\\.js$", "description": "relativo a app/" },
+          "obrigatorio": { "type": "boolean" },
+          "estado": { "type": "string", "enum": ["pendente", "aprovado", "reprovado"] },
+          "verificado_em": { "$ref": "comum.schema.json#/$defs/data_hora" },
+          "detalhes": { "type": "string" }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}
