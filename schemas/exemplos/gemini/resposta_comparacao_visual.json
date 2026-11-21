@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0", "gerado_por": "cew-gemini-worker", "parecido": true, "nota_similaridade": 0.82,
+  "diferencas": [
+    { "regiao": "HUD superior esquerdo", "descricao": "contador de vidas ausente na versao web", "gravidade": "media" },
+    { "regiao": "ceu", "descricao": "gradiente um pouco mais claro", "gravidade": "baixa" }
+  ],
+  "sugestoes": ["desenhar o HUD de vidas a partir de dados/configuracoes.json", "conferir espaco de cor sRGB da textura do ceu"]
+}

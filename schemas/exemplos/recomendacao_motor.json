@@ -1,0 +1,135 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "gerado_em": "2026-11-21T00:48:22Z",
+  "projeto": "e2e",
+  "perfil": {
+    "dimensao": "3d",
+    "fisica": "simples",
+    "peso_assets_mb": 0.026,
+    "quantidade_assets": 44,
+    "interface": "simples",
+    "multijogador": false,
+    "dispositivos": [
+      "desktop",
+      "celular"
+    ],
+    "experiencia_equipe": [],
+    "sem_codigo": false,
+    "evidencia": [
+      "4 arquivos 3D (modelo/mapa) e 11 imagens no inventario",
+      "44 assets convertidos (0.0 MB)"
+    ]
+  },
+  "motores": [
+    {
+      "id": "threejs",
+      "nome": "Three.js (TS, ou React Three Fiber)",
+      "nota": 9.0,
+      "motivos": [
+        "base 9 para projeto 3D"
+      ],
+      "alertas": [],
+      "modelo_gerado_pelo_cew": true
+    },
+    {
+      "id": "babylonjs",
+      "nome": "Babylon.js (JS/TS)",
+      "nota": 8.5,
+      "motivos": [
+        "base 8.5 para projeto 3D"
+      ],
+      "alertas": [],
+      "modelo_gerado_pelo_cew": true
+    },
+    {
+      "id": "playcanvas",
+      "nome": "PlayCanvas (JS + editor na nuvem)",
+      "nota": 8.0,
+      "motivos": [
+        "base 8 para projeto 3D"
+      ],
+      "alertas": [
+        "editor na nuvem: os assets sobem para o servico do PlayCanvas",
+        "o CEW nao gera o projeto deste motor automaticamente; skills/05 traz o mapa de carregamento"
+      ],
+      "modelo_gerado_pelo_cew": false
+    },
+    {
+      "id": "godot",
+      "nome": "Godot (GDScript/C#, exportacao HTML5)",
+      "nota": 6.5,
+      "motivos": [
+        "base 7 para projeto 3D"
+      ],
+      "alertas": [
+        "exportacao HTML5 do Godot: conferir tamanho e threads/SharedArrayBuffer no host",
+        "o CEW nao gera o projeto deste motor automaticamente; skills/05 traz o mapa de carregamento"
+      ],
+      "modelo_gerado_pelo_cew": false
+    },
+    {
+      "id": "unity_webgl",
+      "nome": "Unity WebGL (C#)",
+      "nota": 5.5,
+      "motivos": [
+        "base 7 para projeto 3D"
+      ],
+      "alertas": [
+        "builds WebGL do Unity sao pesados no celular",
+        "o CEW nao gera o projeto deste motor automaticamente; skills/05 traz o mapa de carregamento"
+      ],
+      "modelo_gerado_pelo_cew": false
+    },
+    {
+      "id": "gdevelop",
+      "nome": "GDevelop (sem codigo)",
+      "nota": 2.0,
+      "motivos": [
+        "base 2 para projeto 3D"
+      ],
+      "alertas": [
+        "o CEW nao gera o projeto deste motor automaticamente; skills/05 traz o mapa de carregamento"
+      ],
+      "modelo_gerado_pelo_cew": false
+    },
+    {
+      "id": "construct3",
+      "nome": "Construct 3 (sem codigo)",
+      "nota": 1.0,
+      "motivos": [
+        "base 1 para projeto 3D"
+      ],
+      "alertas": [
+        "o CEW nao gera o projeto deste motor automaticamente; skills/05 traz o mapa de carregamento"
+      ],
+      "modelo_gerado_pelo_cew": false
+    },
+    {
+      "id": "phaser",
+      "nome": "Phaser (JS/TS)",
+      "nota": 1.0,
+      "motivos": [
+        "base 1 para projeto 3D"
+      ],
+      "alertas": [],
+      "modelo_gerado_pelo_cew": true
+    },
+    {
+      "id": "pixijs",
+      "nome": "PixiJS (JS/TS)",
+      "nota": 0.0,
+      "motivos": [
+        "base 0.5 para projeto 3D",
+        "fisica simples: -0.5 (PixiJS so renderiza)"
+      ],
+      "alertas": [],
+      "modelo_gerado_pelo_cew": true
+    }
+  ],
+  "recomendado": "threejs",
+  "escolha_usuario": {
+    "motor": "threejs",
+    "escolhido_em": "2026-11-21T00:48:22Z"
+  }
+}

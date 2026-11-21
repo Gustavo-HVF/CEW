@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "origem": "dados/textos_sjis.bin",
+  "codificacao_original": "shift_jis",
+  "marcacoes": { "{nova_linha}": "quebra de linha (0x0A)", "{cor_vermelha}": "troca a cor do texto para vermelho (0x01)" },
+  "linhas": [
+    { "id": "fala_00000", "falante_id": "npc_ferreiro", "texto": "こんにちは、世界！", "offset_original": 0 },
+    { "id": "fala_00001", "falante_id": null, "texto": "CEW{cor_vermelha}テスト{nova_linha}です", "offset_original": 19 }
+  ]
+}

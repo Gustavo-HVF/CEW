@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew-ghidra",
+  "programa": {
+    "nome": "jogo.elf",
+    "sha256": "3842e21efe56df967f310db287835fee98bee3264d7b7cac21799c0396d529af",
+    "linguagem": "x86:LE:64:default",
+    "compilador": "gcc",
+    "formato": "Executable and Linking Format (ELF)",
+    "endereco_base": "0x00100000"
+  },
+  "ferramenta": {
+    "nome": "Ghidra",
+    "versao": "12.1.4",
+    "script": "scripts/ghidra/ExportarCEW.java"
+  },
+  "limites": {
+    "max_funcoes_pseudo_c": 200,
+    "segundos_por_funcao": 30
+  },
+  "funcoes": [
+    {
+      "nome": "_start",
+      "endereco": "0x00101100",
+      "tamanho_bytes": 38,
+      "assinatura": "undefined _start(void)",
+      "convencao": "processEntry",
+      "externa": false,
+      "thunk": false,
+      "pseudo_c": "\nvoid processEntry _start(undefined8 param_1,undefined8 param_2)\n\n{\n  undefined1 auStack_8 [8];\n  \n  (*(code *)PTR___libc_start_main_00103fd8)(main,param_2,&stack0x00000008,0,0,param_1,auStack_8);\n  do {\n                    /* WARNING: Do nothing block with infinite loop */\n  } while( true );\n}\n\n",
+      "erro_decompilacao": null
+    },
+    {
+      "nome": "main",
+      "endereco": "0x001011e9",
+      "tamanho_bytes": 208,
+      "assinatura": "undefined main(void)",
+      "convencao": "unknown",
+      "externa": false,
+      "thunk": false,
+      "pseudo_c": "\nundefined8 main(void)\n\n{\n  int iVar1;\n  FILE *__stream;\n  size_t sVar2;\n  long in_FS_OFFSET;\n  undefined1 auStack_68 [8];\n  ushort local_60;\n  ushort local_5e;\n  long local_20;\n  \n  local_20 = *(long *)(in_FS_OFFSET + 0x28);\n  __stream = fopen(\"desconhecido/misterio.xyz\",\"rb\");\n  if (__stream == (FILE *)0x0) {\n    iVar1 = -1;\n  }\n  else {\n    sVar2 = fread(auStack_68,1,0x40,__stream);\n    fclose(__stream);\n    if (sVar2 < 0xc) {\n      iVar1 = -2;\n    }\n    else {\n      iVar1 = memcmp(auStack_68,&DAT_00102021,4);\n      if (iVar1 == 0) {\n        iVar1 = (uint)local_60 * (uint)local_5e;\n      }\n      else {\n        iVar1 = -2;\n      }\n    }\n  }\n  __printf_chk(2,&DAT_00102026,iVar1);\n  if (local_20 == *(long *)(in_FS_OFFSET + 0x28)) {\n    return 0;\n  }\n                    /* WARNING: Subroutine does not return */\n  __stack_chk_fail();\n}\n\n",
+      "erro_decompilacao": null
+    }
+  ],
+  "strings": [
+    {
+      "endereco": "0x00102007",
+      "valor": "desconhecido/misterio.xyz",
+      "tipo": "string",
+      "referenciado_por": [
+        "0x001011e9"
+      ]
+    }
+  ],
+  "chamadas": [
+    {
+      "de": "0x00101000",
+      "para": "0x00105030"
+    },
+    {
+      "de": "0x00101090",
+      "para": "0x00105050"
+    },
+    {
+      "de": "0x001010a0",
+      "para": "0x00105010"
+    },
+    {
+      "de": "0x001010b0",
+      "para": "0x00105018"
+    },
+    {
+      "de": "0x001010c0",
+      "para": "0x00105020"
+    }
+  ]
+}

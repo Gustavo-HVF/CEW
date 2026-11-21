@@ -1,0 +1,8 @@
+{
+  "schema_version": "1.0", "gerado_por": "cew", "tarefa": "analise_funcao", "id": "af_001011e9", "programa": "jogo.elf",
+  "funcao": "main", "endereco": "0x001011e9",
+  "pseudo_c": "__stream = fopen(\"desconhecido/misterio.xyz\",\"rb\"); sVar2 = fread(auStack_68,1,0x40,__stream); iVar1 = memcmp(auStack_68,&DAT_00102021,4); if (iVar1 == 0) { iVar1 = (uint)local_60 * (uint)local_5e; }",
+  "chamadas": ["fopen", "fread", "fclose", "memcmp", "__printf_chk"],
+  "strings_proximas": ["desconhecido/misterio.xyz", "QZX1"],
+  "pergunta": "Que formato esta funcao le e quais campos do cabecalho ela usa?"
+}

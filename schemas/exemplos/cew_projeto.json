@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "projeto": "e2e",
+  "criado_em": "2026-11-21T00:47:05Z",
+  "craft_anything": {
+    "manifesto": "craft.json",
+    "pastas": [
+      "capture",
+      "app",
+      "checks",
+      "investigation.cany",
+      "inbox"
+    ],
+    "investigacao": "investigation.cany",
+    "modo": "deep"
+  },
+  "caminhos": {
+    "analise": "analise",
+    "especificacoes": "especificacoes",
+    "tarefas_gemini": "tarefas_gemini",
+    "rascunhos": "rascunhos",
+    "referencias": "referencias",
+    "extraido": "build/extraido",
+    "convertido": "build/convertido",
+    "web": "web",
+    "dados": "web/dados",
+    "logs_conversao": "build/logs",
+    "estado": "estado.json",
+    "inventario": "inventario.json",
+    "plano": "plano_conversao.json",
+    "manifesto": "web/asset_manifest.json",
+    "motor": "recomendacao_motor.json",
+    "verificacao": "relatorio_verificacao.json",
+    "hipoteses": "analise/hipoteses.json",
+    "contexto": "analise/contexto.json"
+  }
+}

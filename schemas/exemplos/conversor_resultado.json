@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew-conversor",
+  "conversor": "converters/sony/vag_to_wav.py",
+  "versao_conversor": "1.0",
+  "entrada": {
+    "caminho": "som.vag",
+    "sha256": "a9c3280eb4cc6ba6b68ebf678d17698d377c26e07cb0a5badf38f459e17fb375",
+    "tamanho_bytes": 128
+  },
+  "dry_run": true,
+  "ok": true,
+  "erro": null,
+  "saidas": [
+    {
+      "caminho": "audio.wav",
+      "tipo": "audio",
+      "formato": "wav",
+      "sha256": "bf04c6ebc21dfbee1a2d449b438f2b515c13c61ec2b907da2552102388caf422",
+      "tamanho_bytes": 392,
+      "metadados": {
+        "taxa_amostragem_hz": 22050,
+        "canais": 1,
+        "amostras": 140,
+        "duracao_s": 0.006349,
+        "loop": {
+          "inicio_amostra": 56,
+          "fim_amostra": 140
+        },
+        "extras": {
+          "nome_interno": "cew_teste",
+          "versao_vag": 32
+        }
+      }
+    }
+  ],
+  "avisos": [],
+  "estatisticas": {
+    "amostras": 140,
+    "taxa_hz": 22050,
+    "loop": [
+      56,
+      140
+    ]
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "projeto": "e2e",
+  "criado_em": "2026-11-21T00:47:05Z",
+  "atualizado_em": "2026-11-21T00:48:22Z",
+  "etapa_atual": "reconstrucao",
+  "fase_craft_anything": "construir",
+  "etapas": {
+    "ambiente": {
+      "estado": "concluida",
+      "criterio_saida": "reports/ambiente.json sem obrigatorios faltando e teste do Gemini ok",
+      "iniciada_em": "2026-11-21T00:47:05Z",
+      "concluida_em": "2026-11-21T00:47:08Z",
+      "mensagem": "ambiente conferido"
+    },
+    "alvo": {
+      "estado": "concluida",
+      "criterio_saida": "arquivo ou pasta alvo selecionado e acessivel",
+      "iniciada_em": "2026-11-21T00:47:08Z",
+      "concluida_em": "2026-11-21T00:47:08Z",
+      "mensagem": "alvo: /home/voce/jogos/meu-jogo"
+    },
+    "inventario": {
+      "estado": "concluida",
+      "criterio_saida": "inventario.json valido e mapeado",
+      "iniciada_em": "2026-11-21T00:47:08Z",
+      "concluida_em": "2026-11-21T00:47:08Z",
+      "mensagem": "37 itens"
+    },
+    "engenharia": {
+      "estado": "concluida",
+      "criterio_saida": "especificacao com evidencia para cada formato que sera convertido",
+      "iniciada_em": "2026-11-21T00:47:08Z",
+      "concluida_em": "2026-11-21T00:47:18Z",
+      "mensagem": "18 hipoteses, 1 programas no Ghidra"
+    },
+    "conversao": {
+      "estado": "concluida",
+      "criterio_saida": "plano_conversao.json sem itens em erro e conversores com testes passando",
+      "iniciada_em": "2026-11-21T00:48:21Z",
+      "mensagem": "0 convertidos",
+      "concluida_em": "2026-11-21T00:48:21Z"
+    },
+    "motor": {
+      "estado": "concluida",
+      "criterio_saida": "motor escolhido e registrado em recomendacao_motor.json",
+      "iniciada_em": "2026-11-21T00:48:22Z",
+      "concluida_em": "2026-11-21T00:48:22Z",
+      "mensagem": "motor: threejs"
+    },
+    "reconstrucao": {
+      "estado": "pendente",
+      "criterio_saida": "projeto web gerado em app/ carregando asset_manifest.json"
+    },
+    "verificacao": {
+      "estado": "pendente",
+      "criterio_saida": "relatorio_verificacao.json aprovado e build web validado"
+    },
+    "pronto": {
+      "estado": "pendente",
+      "criterio_saida": "tudo aprovado"
+    }
+  },
+  "alvo": {
+    "caminho": "/home/voce/jogos/meu-jogo",
+    "tipo": "pasta",
+    "selecionado_em": "2026-11-21T00:47:08Z"
+  },
+  "motor_escolhido": "threejs",
+  "historico": [
+    {
+      "ts": "2026-11-21T00:47:05Z",
+      "etapa": "ambiente",
+      "evento": "em_andamento"
+    },
+    {
+      "ts": "2026-11-21T00:47:08Z",
+      "etapa": "ambiente",
+      "evento": "concluida: ambiente conferido"
+    },
+    {
+      "ts": "2026-11-21T00:47:08Z",
+      "etapa": "alvo",
+      "evento": "em_andamento"
+    },
+    {
+      "ts": "2026-11-21T00:47:08Z",
+      "etapa": "alvo",
+      "evento": "concluida: alvo: /home/voce/jogos/meu-jogo"
+    },
+    {
+      "ts": "2026-11-21T00:47:08Z",
+      "etapa": "inventario",
+      "evento": "em_andamento"
+    },
+    {
+      "ts": "2026-11-21T00:47:08Z",
+      "etapa": "inventario",
+      "evento": "concluida: 37 itens"
+    },
+    {
+      "ts": "2026-11-21T00:47:08Z",
+      "etapa": "engenharia",
+      "evento": "em_andamento"
+    },
+    {
+      "ts": "2026-11-21T00:47:18Z",
+      "etapa": "engenharia",
+      "evento": "concluida: 18 hipoteses, 1 programas no Ghidra"
+    },
+    {
+      "ts": "2026-11-21T00:47:18Z",
+      "etapa": "conversao",
+      "evento": "em_andamento"
+    },
+    {
+      "ts": "2026-11-21T00:47:19Z",
+      "etapa": "conversao",
+      "evento": "bloqueada: testes dos conversores falharam: \n"
+    },
+    {
+      "ts": "2026-11-21T00:48:21Z",
+      "etapa": "conversao",
+      "evento": "em_andamento"
+    },
+    {
+      "ts": "2026-11-21T00:48:21Z",
+      "etapa": "conversao",
+      "evento": "concluida: 0 convertidos"
+    },
+    {
+      "ts": "2026-11-21T00:48:22Z",
+      "etapa": "motor",
+      "evento": "em_andamento"
+    },
+    {
+      "ts": "2026-11-21T00:48:22Z",
+      "etapa": "motor",
+      "evento": "concluida: motor: threejs"
+    }
+  ]
+}

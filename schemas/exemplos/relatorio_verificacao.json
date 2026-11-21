@@ -1,0 +1,140 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "projeto": "meu-jogo",
+  "gerado_em": "2026-11-21T00:43:47Z",
+  "aprovado": true,
+  "resumo": {
+    "aprovado_obrigatorio": 69
+  },
+  "itens": [
+    {
+      "id": "esquema:estado.json",
+      "categoria": "esquema",
+      "alvo": "estado.json",
+      "obrigatorio": true,
+      "aprovado": true,
+      "detalhes": "valido"
+    },
+    {
+      "id": "esquema:inventario.json",
+      "categoria": "esquema",
+      "alvo": "inventario.json",
+      "obrigatorio": true,
+      "aprovado": true,
+      "detalhes": "valido"
+    },
+    {
+      "id": "determinismo:p_46bde994bb88d759",
+      "categoria": "determinismo",
+      "alvo": "referencias.json",
+      "obrigatorio": true,
+      "aprovado": true,
+      "detalhes": "mesmo SHA-256 nas saidas"
+    },
+    {
+      "id": "determinismo:p_16175fbd02765ca6",
+      "categoria": "determinismo",
+      "alvo": "generico/dxt1.dds",
+      "obrigatorio": true,
+      "aprovado": true,
+      "detalhes": "mesmo SHA-256 nas saidas"
+    },
+    {
+      "id": "modelo:a_a47a0101709573aa",
+      "categoria": "modelo",
+      "alvo": "assets/modelos/tetra-a47a0101.glb",
+      "obrigatorio": true,
+      "aprovado": true,
+      "detalhes": "glTF Validator 2.0.0-dev.3.10: 0 erros, 0 avisos; vertices 4 (esperado 4)",
+      "metricas": {
+        "erros": 0,
+        "avisos": 0,
+        "vertices": 4,
+        "ossos": 0
+      }
+    },
+    {
+      "id": "modelo:a_e01ee263ac909ccd",
+      "categoria": "modelo",
+      "alvo": "assets/modelos/tetra-e01ee263.glb",
+      "obrigatorio": true,
+      "aprovado": true,
+      "detalhes": "glTF Validator 2.0.0-dev.3.10: 0 erros, 0 avisos; vertices 4 (esperado 4)",
+      "metricas": {
+        "erros": 0,
+        "avisos": 0,
+        "vertices": 4,
+        "ossos": 0
+      }
+    },
+    {
+      "id": "audio:a_9bb9255f628b5246",
+      "categoria": "audio",
+      "alvo": "assets/audio/efeito-9bb9255f.wav",
+      "obrigatorio": true,
+      "aprovado": true,
+      "detalhes": "22050 Hz, 0.250 s, loop None (manifesto None)"
+    },
+    {
+      "id": "audio:a_61f740493222504c",
+      "categoria": "audio",
+      "alvo": "assets/audio/musica_loop-61f74049.ogg",
+      "obrigatorio": true,
+      "aprovado": true,
+      "detalhes": "ffprobe: 11025 Hz, 1 canais, 2.500 s (manifesto 2.499955 s, loop {'inicio_amostra': 11025, 'fim_amostra': 27562})"
+    },
+    {
+      "id": "textura:a_e0b7e5c6e1214009",
+      "categoria": "textura",
+      "alvo": "assets/texturas/a-textura_000-e0b7e5c6.png",
+      "obrigatorio": true,
+      "aprovado": true,
+      "detalhes": "8x8, alfa=True (manifesto 8x8, alfa=True)"
+    },
+    {
+      "id": "textura:a_923d5b57a63c39f3",
+      "categoria": "textura",
+      "alvo": "assets/texturas/a-textura_001-923d5b57.png",
+      "obrigatorio": true,
+      "aprovado": true,
+      "detalhes": "8x8, alfa=True (manifesto 8x8, alfa=True)"
+    },
+    {
+      "id": "build_web",
+      "categoria": "build_web",
+      "alvo": "app/",
+      "obrigatorio": true,
+      "aprovado": true,
+      "detalhes": "build sem erros"
+    },
+    {
+      "id": "navegador:cena principal",
+      "categoria": "navegador",
+      "alvo": "cena principal",
+      "obrigatorio": true,
+      "aprovado": true,
+      "detalhes": "abriu sem erros no console"
+    },
+    {
+      "id": "comparacao:fase1",
+      "categoria": "comparacao_visual",
+      "alvo": "fase1.png",
+      "obrigatorio": true,
+      "aprovado": true,
+      "detalhes": "SSIM 0.874 (limiar 0.6), diferenca media 0.041",
+      "metricas": {
+        "ssim": 0.874,
+        "diferenca_media": 0.041
+      }
+    },
+    {
+      "id": "gemini:fase1",
+      "categoria": "segunda_opiniao_gemini",
+      "alvo": "fase1.png",
+      "obrigatorio": false,
+      "aprovado": true,
+      "detalhes": "nota 0.82; 2 diferencas"
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "projeto": "e2e",
+  "hipoteses": [
+    {
+      "formato_id": "generico.dds",
+      "itens_inventario": [
+        "i_16175fbd02765ca6",
+        "i_31b5fe527e6e585a"
+      ],
+      "descricao": "generico.dds",
+      "estado": "confirmada",
+      "especificacao": "especificacoes/generico.dds.md",
+      "evidencias": [
+        {
+          "fonte": "arquivo",
+          "arquivo": "generico/dxt1.dds",
+          "offset": 0,
+          "nota": "assinatura 44445320 encontrada; camada assinatura, confianca 0.95"
+        },
+        {
+          "fonte": "documentacao",
+          "url": "https://learn.microsoft.com/windows/win32/direct3ddds/dx-graphics-dds-pguide"
+        }
+      ]
+    },
+    {
+      "formato_id": "generico.elf",
+      "itens_inventario": [
+        "i_8f46bb1099aaea8c"
+      ],
+      "descricao": "generico.elf",
+      "estado": "hipotese",
+      "especificacao": "especificacoes/generico.elf.md",
+      "evidencias": [
+        {
+          "fonte": "arquivo",
+          "arquivo": "jogo.elf",
+          "offset": 0,
+          "nota": "assinatura 7f454c46 encontrada; camada assinatura, confianca 0.9"
+        }
+      ]
+    },
+    {
+      "formato_id": "generico.json",
+      "itens_inventario": [
+        "i_e9cf13ee6518ddad"
+      ],
+      "descricao": "generico.json",
+      "estado": "hipotese",
+      "especificacao": "especificacoes/generico.json.md",
+      "evidencias": [
+        {
+          "fonte": "arquivo",
+          "arquivo": "generico/pacote.zip!/dados/config.json",
+          "nota": "identificado pela camada extensao"
+        }
+      ]
+    }
+  ]
+}

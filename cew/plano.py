@@ -137,6 +137,8 @@ def delegar_desconhecidos(projeto: Projeto, cliente: ClienteGemini | None = None
     pasta = projeto.caminho("tarefas_gemini")
     vistos: set[str] = set()
     relatorio = []
+    arq_carr = projeto.caminho("analise") / "carregadores.json"
+    carregadores = __import__("json").loads(arq_carr.read_text(encoding="utf-8"))["carregadores"] if arq_carr.is_file() else []
     for p in plano["itens"]:
         if p["estado"] != "aguardando_gemini" or len(relatorio) >= limite:
             continue
@@ -144,7 +146,11 @@ def delegar_desconhecidos(projeto: Projeto, cliente: ClienteGemini | None = None
         if item["sha256"] in vistos or item["tamanho_bytes"] == 0:
             continue
         vistos.add(item["sha256"])
-        tarefa = tarefa_formato(projeto, item, inv, reg)
+        ext = PurePosixPath(item["caminho"]).suffix.lower()
+        magia = item.get("assinatura_texto", "")[:4]
+        ctx = [{"funcao": c["funcao"], "endereco": c["endereco"], "pseudo_c": c["pseudo_c"]} for c in carregadores
+               if c.get("pseudo_c") and (c["chave"] == ext or c["chave"] == magia)]
+        tarefa = tarefa_formato(projeto, item, inv, reg, ctx or None)
         arq_tarefa = pasta / f"{item['sha256']}.tarefa.json"
         arq_resp = pasta / f"{item['sha256']}.resposta.json"
         p["tarefa_gemini"] = arq_tarefa.relative_to(projeto.pasta).as_posix()

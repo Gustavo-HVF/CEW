@@ -1,0 +1,244 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "gerado_em": "2026-11-21T00:47:08Z",
+  "projeto": "e2e",
+  "alvo": {
+    "caminho": "/home/voce/jogos/meu-jogo",
+    "tipo": "pasta"
+  },
+  "limites": {
+    "profundidade_maxima": 8,
+    "bytes_extraidos_maximo": 8589934592,
+    "arquivos_maximo": 200000
+  },
+  "resumo": {
+    "total": 37,
+    "identificados": 30,
+    "desconhecidos": 6,
+    "compactados": 1,
+    "bytes_total": 90391,
+    "por_formato": {
+      "desconhecido": 6,
+      "generico.dds": 2,
+      "generico.elf": 1,
+      "generico.json": 1,
+      "generico.png": 1,
+      "generico.tabela_texto": 6,
+      "generico.tga": 1,
+      "generico.wav": 2,
+      "generico.zip": 1,
+      "idtech.quake.pak": 1,
+      "idtech.quake2.md2": 2,
+      "nintendo.gx.tpl": 4,
+      "nintendo.sarc": 1,
+      "nintendo.u8": 2,
+      "nintendo.yaz0": 1,
+      "sony.ps.vag": 1,
+      "sony.psx.tim": 2,
+      "valve.source.vpk": 1,
+      "valve.source.vtf": 1
+    }
+  },
+  "itens": [
+    {
+      "id": "i_8f46bb1099aaea8c",
+      "caminho": "jogo.elf",
+      "caminho_no_disco": "jogo.elf",
+      "origem": "alvo",
+      "pai": null,
+      "profundidade": 0,
+      "tamanho_bytes": 16192,
+      "sha256": "3842e21efe56df967f310db287835fee98bee3264d7b7cac21799c0396d529af",
+      "assinatura_hex": "7f454c46020101000000000000000000",
+      "assinatura_texto": ".ELF............",
+      "ordem_de_bytes": "little",
+      "entropia_bits_por_byte": 1.7775,
+      "compressao": null,
+      "formato": {
+        "id": "generico.elf",
+        "empresa_ou_motor": "Unix/System V",
+        "tipo": "codigo",
+        "camada": "assinatura",
+        "confianca": 0.9,
+        "evidencia": "assinatura de 4 bytes"
+      },
+      "estado": "identificado"
+    },
+    {
+      "id": "i_47f663823dc377fc",
+      "caminho": "desconhecido/misterio.xyz",
+      "caminho_no_disco": "desconhecido/misterio.xyz",
+      "origem": "alvo",
+      "pai": null,
+      "profundidade": 0,
+      "tamanho_bytes": 76,
+      "sha256": "588b490ceb55d2540196bf9c67a9fcffa8e37c4083b636baae8b2ab022960dd0",
+      "assinatura_hex": "515a5831000000030010001000010203",
+      "assinatura_texto": "QZX1............",
+      "ordem_de_bytes": "big",
+      "entropia_bits_por_byte": 5.9287,
+      "compressao": null,
+      "formato": {
+        "id": null,
+        "empresa_ou_motor": null,
+        "tipo": null,
+        "camada": "nenhuma",
+        "confianca": 0.0
+      },
+      "estado": "desconhecido"
+    },
+    {
+      "id": "i_afb519d34688b5fd",
+      "caminho": "nintendo/arquivo.szs",
+      "caminho_no_disco": "nintendo/arquivo.szs",
+      "origem": "alvo",
+      "pai": null,
+      "profundidade": 0,
+      "tamanho_bytes": 744,
+      "sha256": "d1354c9da7e74381daa76ad04c72c3d5a7e0d0467d7ae8e2e8b319db1fbf03cd",
+      "assinatura_hex": "59617a30000005e00000000000000000",
+      "assinatura_texto": "Yaz0............",
+      "ordem_de_bytes": "big",
+      "entropia_bits_por_byte": 6.482,
+      "compressao": {
+        "algoritmo": "yaz0",
+        "confianca": 0.98,
+        "tamanho_descompactado": 1504,
+        "descompactado_em": "i_efd427e66a8ce69e"
+      },
+      "formato": {
+        "id": "nintendo.yaz0",
+        "empresa_ou_motor": "Nintendo (GameCube/Wii/Switch)",
+        "tipo": "compressao",
+        "camada": "assinatura",
+        "confianca": 0.9,
+        "evidencia": "assinatura de 4 bytes"
+      },
+      "estado": "compactado"
+    },
+    {
+      "id": "i_efd427e66a8ce69e",
+      "caminho": "nintendo/arquivo.szs!/descompactado.arc",
+      "caminho_no_disco": "build/extraido/i_afb519d34688b5fd/descompactado.arc",
+      "origem": "extraido",
+      "pai": "i_afb519d34688b5fd",
+      "profundidade": 1,
+      "tamanho_bytes": 1504,
+      "sha256": "e7dedfda01c091252fc3776c033b2572f2b1251f25ee98499509b3d4ba65cbec",
+      "assinatura_hex": "55aa382d0000002000000083000000c0",
+      "assinatura_texto": "U.8-... ........",
+      "ordem_de_bytes": "big",
+      "entropia_bits_por_byte": 4.5151,
+      "compressao": null,
+      "formato": {
+        "id": "nintendo.u8",
+        "empresa_ou_motor": "Nintendo (Wii/GameCube)",
+        "tipo": "conteiner",
+        "camada": "assinatura",
+        "confianca": 0.95,
+        "evidencia": "assinatura + estrutura (u8_arc)"
+      },
+      "estado": "identificado",
+      "extraido": true
+    },
+    {
+      "id": "i_f620289168e3b25f",
+      "caminho": "nintendo/arquivo.szs!/descompactado.arc!/dados/vazio/x.bin",
+      "caminho_no_disco": "build/extraido/i_efd427e66a8ce69e/dados/vazio/x.bin",
+      "origem": "extraido",
+      "pai": "i_efd427e66a8ce69e",
+      "profundidade": 2,
+      "tamanho_bytes": 3,
+      "sha256": "039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81",
+      "assinatura_hex": "010203",
+      "assinatura_texto": "...",
+      "ordem_de_bytes": "desconhecida",
+      "entropia_bits_por_byte": 1.585,
+      "compressao": null,
+      "formato": {
+        "id": null,
+        "empresa_ou_motor": null,
+        "tipo": null,
+        "camada": "nenhuma",
+        "confianca": 0.0,
+        "candidatos": [
+          "iso.9660"
+        ]
+      },
+      "estado": "desconhecido"
+    },
+    {
+      "id": "i_00631858c7899871",
+      "caminho": "nintendo/arquivo.szs!/descompactado.arc!/leia.txt",
+      "caminho_no_disco": "build/extraido/i_efd427e66a8ce69e/leia.txt",
+      "origem": "extraido",
+      "pai": "i_efd427e66a8ce69e",
+      "profundidade": 2,
+      "tamanho_bytes": 12,
+      "sha256": "55e29663ac5222d5cc31445fdf92e6ee003a11422415ce945a38b7e8526503a2",
+      "assinatura_hex": "636f6e746575646f2055380a",
+      "assinatura_texto": "conteudo U8.",
+      "ordem_de_bytes": "nenhuma",
+      "entropia_bits_por_byte": 3.4183,
+      "compressao": null,
+      "formato": {
+        "id": "generico.tabela_texto",
+        "empresa_ou_motor": "generico",
+        "tipo": "dados",
+        "camada": "extensao",
+        "confianca": 0.4,
+        "evidencia": "so a extensao (formato sem assinatura)"
+      },
+      "estado": "identificado"
+    },
+    {
+      "id": "i_0730d81c537e6ede",
+      "caminho": "nintendo/arquivo.szs!/descompactado.arc!/texturas/fundo.tpl",
+      "caminho_no_disco": "build/extraido/i_efd427e66a8ce69e/texturas/fundo.tpl",
+      "origem": "extraido",
+      "pai": "i_efd427e66a8ce69e",
+      "profundidade": 2,
+      "tamanho_bytes": 1248,
+      "sha256": "74a35b734886597caa1b41775b186dd9d07cf55c66866ba2fe21646e46fa5004",
+      "assinatura_hex": "0020af30000000080000000c0000004c",
+      "assinatura_texto": ". .0...........L",
+      "ordem_de_bytes": "big",
+      "entropia_bits_por_byte": 4.6253,
+      "compressao": null,
+      "formato": {
+        "id": "nintendo.gx.tpl",
+        "empresa_ou_motor": "Nintendo (GameCube/Wii)",
+        "tipo": "textura",
+        "camada": "assinatura",
+        "confianca": 0.9,
+        "evidencia": "assinatura de 4 bytes"
+      },
+      "estado": "identificado"
+    },
+    {
+      "id": "i_18aebf81f6bebcff",
+      "caminho": "sony/som.vag",
+      "caminho_no_disco": "sony/som.vag",
+      "origem": "alvo",
+      "pai": null,
+      "profundidade": 0,
+      "tamanho_bytes": 128,
+      "sha256": "a9c3280eb4cc6ba6b68ebf678d17698d377c26e07cb0a5badf38f459e17fb375",
+      "assinatura_hex": "56414770000000200000000000000050",
+      "assinatura_texto": "VAGp... .......P",
+      "ordem_de_bytes": "big",
+      "entropia_bits_por_byte": 3.6094,
+      "compressao": null,
+      "formato": {
+        "id": "sony.ps.vag",
+        "empresa_ou_motor": "Sony (PlayStation)",
+        "tipo": "audio",
+        "camada": "assinatura",
+        "confianca": 0.9,
+        "evidencia": "assinatura de 4 bytes"
+      },
+      "estado": "identificado"
+    }
+  ]
+}

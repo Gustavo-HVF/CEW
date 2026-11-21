@@ -1,0 +1,160 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "gerado_em": "2026-11-21T00:47:08Z",
+  "sistema": {
+    "os": "Linux 6.18.44-fc-v726",
+    "arquitetura": "x86_64",
+    "python": "3.13.18"
+  },
+  "ferramentas": [
+    {
+      "id": "python",
+      "obrigatoria": true,
+      "encontrada": true,
+      "ok": true,
+      "caminho": "/usr/local/bin/python3",
+      "versao": "3.13.18",
+      "versao_minima": "3.10",
+      "mensagem": "ok"
+    },
+    {
+      "id": "git",
+      "obrigatoria": true,
+      "encontrada": true,
+      "ok": true,
+      "caminho": "/usr/bin/git",
+      "versao": "2.43.0",
+      "versao_minima": null,
+      "mensagem": "ok"
+    },
+    {
+      "id": "node",
+      "obrigatoria": true,
+      "encontrada": true,
+      "ok": true,
+      "caminho": "/opt/node22/bin/node",
+      "versao": "22.23.5",
+      "versao_minima": "20",
+      "mensagem": "ok"
+    },
+    {
+      "id": "npm",
+      "obrigatoria": true,
+      "encontrada": true,
+      "ok": true,
+      "caminho": "/opt/node22/bin/npm",
+      "versao": "10.9.9",
+      "versao_minima": null,
+      "mensagem": "ok"
+    },
+    {
+      "id": "ffmpeg",
+      "obrigatoria": true,
+      "encontrada": true,
+      "ok": true,
+      "caminho": "/usr/bin/ffmpeg",
+      "versao": "6.1.1-3ubuntu5",
+      "versao_minima": null,
+      "mensagem": "ok"
+    },
+    {
+      "id": "rust",
+      "obrigatoria": false,
+      "encontrada": true,
+      "ok": true,
+      "caminho": "/root/.cargo/bin/rustc",
+      "versao": "1.97.0",
+      "versao_minima": "1.97",
+      "mensagem": "ok"
+    },
+    {
+      "id": "cargo",
+      "obrigatoria": false,
+      "encontrada": true,
+      "ok": true,
+      "caminho": "/root/.cargo/bin/cargo",
+      "versao": "1.97.0",
+      "versao_minima": null,
+      "mensagem": "ok"
+    },
+    {
+      "id": "craft-anything-cli",
+      "obrigatoria": true,
+      "encontrada": true,
+      "ok": true,
+      "caminho": "/home/voce/CEW/ferramentas/craft-anything/target/release/craft-anything-cli",
+      "versao": "0.6.1",
+      "versao_minima": null,
+      "mensagem": "ok"
+    },
+    {
+      "id": "java",
+      "obrigatoria": true,
+      "encontrada": true,
+      "ok": true,
+      "caminho": "/usr/lib/jvm/java-21-openjdk-amd64/bin/java",
+      "versao": "21",
+      "versao_minima": "21",
+      "mensagem": "ok"
+    },
+    {
+      "id": "ghidra",
+      "obrigatoria": false,
+      "encontrada": true,
+      "ok": true,
+      "caminho": "/opt/ghidra_12.1.4_PUBLIC/support/analyzeHeadless",
+      "versao": "12.1.4",
+      "versao_minima": null,
+      "mensagem": "ok"
+    },
+    {
+      "id": "blender",
+      "obrigatoria": false,
+      "encontrada": false,
+      "ok": false,
+      "caminho": null,
+      "versao": null,
+      "versao_minima": null,
+      "mensagem": "nao encontrado"
+    }
+  ],
+  "craft_anything": {
+    "repositorio": "https://github.com/storytold/craft-anything",
+    "ref": "44c89badd69c76eca7fd79315263a9ae80b5770f",
+    "cli": "/home/voce/CEW/ferramentas/craft-anything/target/release/craft-anything-cli",
+    "doctor": {
+      "checks": [
+        {
+          "message": "craft-anything-cli is at /home/voce/CEW/ferramentas/craft-anything/target/release/craft-anything-cli",
+          "name": "binary",
+          "status": "ok"
+        },
+        {
+          "message": "Claude Code is installed but not connected.",
+          "name": "registration:claude_code",
+          "remediation": "craft-anything-cli setup --client claude_code",
+          "status": "info"
+        },
+        {
+          "message": "The Craft Anything skill isn't installed here.",
+          "name": "skill:/root/.claude/skills",
+          "remediation": "craft-anything-cli setup --yes",
+          "status": "info"
+        }
+      ],
+      "healthy": true
+    },
+    "mensagem": "doctor executado"
+  },
+  "gemini": {
+    "chave_presente": true,
+    "teste_ok": true,
+    "erro": null,
+    "tipo_erro": null,
+    "latencia_ms": null,
+    "modelo": "gemini-3.8-flash"
+  },
+  "obrigatorios_faltando": [],
+  "pronto": true
+}

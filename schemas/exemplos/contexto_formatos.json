@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "regras": [
+    {
+      "padrao": "dados/*.bin",
+      "formato_id": "generico.tabela_texto",
+      "confianca": 0.85,
+      "evidencia": { "fonte": "ghidra", "funcao": "carregar_dialogos", "endereco": "0x00401a20", "trecho_pseudocodigo": "f = fopen(\"dados/textos_sjis.bin\",\"rb\"); ... separa por byte 0 e decodifica cp932", "nota": "funcao que le o arquivo, conferida pela IA principal" }
+    }
+  ]
+}

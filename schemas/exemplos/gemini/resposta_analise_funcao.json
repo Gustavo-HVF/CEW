@@ -1,0 +1,9 @@
+{
+  "schema_version": "1.0", "gerado_por": "cew-gemini-worker",
+  "resumo": "Le os 64 primeiros bytes de misterio.xyz, confere o magic 'QZX1' e multiplica dois u16 nos offsets 8 e 10 (largura x altura).",
+  "papel": "carregador_formato",
+  "formatos_relacionados": ["desconhecido.qzx.misterio"],
+  "estruturas": [{ "nome": "Cab", "campos": [{ "nome": "magic", "offset": 0, "tipo": "char[4]" }, { "nome": "versao", "offset": 4, "tipo": "u32" }, { "nome": "largura", "offset": 8, "tipo": "u16" }, { "nome": "altura", "offset": 10, "tipo": "u16" }] }],
+  "confianca": 0.8,
+  "duvidas": ["a ordem de bytes depende da plataforma original; o arquivo de teste sugere big-endian"]
+}

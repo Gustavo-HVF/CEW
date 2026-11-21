@@ -1,0 +1,167 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "gerado_em": "2026-11-21T00:48:21Z",
+  "projeto": "e2e",
+  "resumo": {
+    "ignorado": 7,
+    "aguardando_gemini": 6,
+    "concluido": 23,
+    "aguardando_conversor": 1
+  },
+  "itens": [
+    {
+      "id": "p_8f46bb1099aaea8c",
+      "item_inventario": "i_8f46bb1099aaea8c",
+      "caminho": "jogo.elf",
+      "formato_origem": "generico.elf",
+      "conversor": null,
+      "formato_destino": null,
+      "opcoes": {},
+      "dependencias": [],
+      "prioridade": 5,
+      "estado": "ignorado",
+      "tarefa_gemini": null,
+      "hash_entrada": "3842e21efe56df967f310db287835fee98bee3264d7b7cac21799c0396d529af",
+      "saidas": [],
+      "erro": null,
+      "motivo": "codigo executavel: vai para a etapa de engenharia reversa (Ghidra/Craft Anything)"
+    },
+    {
+      "id": "p_47f663823dc377fc",
+      "item_inventario": "i_47f663823dc377fc",
+      "caminho": "desconhecido/misterio.xyz",
+      "formato_origem": null,
+      "conversor": null,
+      "formato_destino": null,
+      "opcoes": {},
+      "dependencias": [],
+      "prioridade": 4,
+      "estado": "aguardando_gemini",
+      "tarefa_gemini": "tarefas_gemini/588b490ceb55d2540196bf9c67a9fcffa8e37c4083b636baae8b2ab022960dd0.tarefa.json",
+      "hash_entrada": "588b490ceb55d2540196bf9c67a9fcffa8e37c4083b636baae8b2ab022960dd0",
+      "saidas": [],
+      "erro": null,
+      "motivo": "formato desconhecido: tarefa de analise para o Gemini"
+    },
+    {
+      "id": "p_afb519d34688b5fd",
+      "item_inventario": "i_afb519d34688b5fd",
+      "caminho": "nintendo/arquivo.szs",
+      "formato_origem": "nintendo.yaz0",
+      "conversor": null,
+      "formato_destino": "pasta",
+      "opcoes": {},
+      "dependencias": [],
+      "prioridade": 1,
+      "estado": "concluido",
+      "tarefa_gemini": null,
+      "hash_entrada": "d1354c9da7e74381daa76ad04c72c3d5a7e0d0467d7ae8e2e8b319db1fbf03cd",
+      "saidas": [],
+      "erro": null,
+      "motivo": "aberto na etapa de inventario; os arquivos internos estao no plano"
+    },
+    {
+      "id": "p_efd427e66a8ce69e",
+      "item_inventario": "i_efd427e66a8ce69e",
+      "caminho": "nintendo/arquivo.szs!/descompactado.arc",
+      "formato_origem": "nintendo.u8",
+      "conversor": null,
+      "formato_destino": "pasta",
+      "opcoes": {},
+      "dependencias": [
+        "p_afb519d34688b5fd"
+      ],
+      "prioridade": 1,
+      "estado": "concluido",
+      "tarefa_gemini": null,
+      "hash_entrada": "e7dedfda01c091252fc3776c033b2572f2b1251f25ee98499509b3d4ba65cbec",
+      "saidas": [],
+      "erro": null,
+      "motivo": "aberto na etapa de inventario; os arquivos internos estao no plano"
+    },
+    {
+      "id": "p_f620289168e3b25f",
+      "item_inventario": "i_f620289168e3b25f",
+      "caminho": "nintendo/arquivo.szs!/descompactado.arc!/dados/vazio/x.bin",
+      "formato_origem": null,
+      "conversor": null,
+      "formato_destino": null,
+      "opcoes": {},
+      "dependencias": [
+        "p_efd427e66a8ce69e"
+      ],
+      "prioridade": 4,
+      "estado": "aguardando_gemini",
+      "tarefa_gemini": null,
+      "hash_entrada": "039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81",
+      "saidas": [],
+      "erro": null,
+      "motivo": "formato desconhecido: tarefa de analise para o Gemini"
+    },
+    {
+      "id": "p_00631858c7899871",
+      "item_inventario": "i_00631858c7899871",
+      "caminho": "nintendo/arquivo.szs!/descompactado.arc!/leia.txt",
+      "formato_origem": "generico.tabela_texto",
+      "conversor": null,
+      "formato_destino": null,
+      "opcoes": {},
+      "dependencias": [
+        "p_efd427e66a8ce69e"
+      ],
+      "prioridade": 5,
+      "estado": "ignorado",
+      "tarefa_gemini": null,
+      "hash_entrada": "55e29663ac5222d5cc31445fdf92e6ee003a11422415ce945a38b7e8526503a2",
+      "saidas": [],
+      "erro": null,
+      "motivo": "texto generico identificado so pela extensao: confirme por contexto (analise/contexto.json) para converter"
+    },
+    {
+      "id": "p_0730d81c537e6ede",
+      "item_inventario": "i_0730d81c537e6ede",
+      "caminho": "nintendo/arquivo.szs!/descompactado.arc!/texturas/fundo.tpl",
+      "formato_origem": "nintendo.gx.tpl",
+      "conversor": "converters/nintendo/tpl_to_png.py",
+      "formato_destino": "png",
+      "opcoes": {},
+      "dependencias": [
+        "p_efd427e66a8ce69e"
+      ],
+      "prioridade": 2,
+      "estado": "concluido",
+      "tarefa_gemini": null,
+      "hash_entrada": "74a35b734886597caa1b41775b186dd9d07cf55c66866ba2fe21646e46fa5004",
+      "saidas": [
+        "build/convertido/p_0730d81c537e6ede/textura_000.png",
+        "build/convertido/p_0730d81c537e6ede/textura_001.png",
+        "build/convertido/p_0730d81c537e6ede/textura_002.png",
+        "build/convertido/p_0730d81c537e6ede/textura_003.png",
+        "build/convertido/p_0730d81c537e6ede/textura_004.png",
+        "build/convertido/p_0730d81c537e6ede/textura_005.png",
+        "build/convertido/p_0730d81c537e6ede/textura_006.png",
+        "build/convertido/p_0730d81c537e6ede/textura_007.png"
+      ],
+      "erro": null
+    },
+    {
+      "id": "p_18aebf81f6bebcff",
+      "item_inventario": "i_18aebf81f6bebcff",
+      "caminho": "sony/som.vag",
+      "formato_origem": "sony.ps.vag",
+      "conversor": "converters/sony/vag_to_wav.py",
+      "formato_destino": "wav",
+      "opcoes": {},
+      "dependencias": [],
+      "prioridade": 2,
+      "estado": "concluido",
+      "tarefa_gemini": null,
+      "hash_entrada": "a9c3280eb4cc6ba6b68ebf678d17698d377c26e07cb0a5badf38f459e17fb375",
+      "saidas": [
+        "build/convertido/p_18aebf81f6bebcff/cadeia/audio.wav"
+      ],
+      "erro": null
+    }
+  ]
+}

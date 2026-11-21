@@ -1,0 +1,133 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "projeto": "e2e",
+  "raiz_web": "web",
+  "assets": [
+    {
+      "id": "a_9bb9255f628b5246",
+      "caminho_web": "assets/audio/efeito-9bb9255f.wav",
+      "tipo": "audio",
+      "mime": "audio/wav",
+      "hash_sha256": "650559119763077a389319685214cb9ee8d4c541e664eaa6938b419735fd88b9",
+      "tamanho_bytes": 11068,
+      "origem": {
+        "item_inventario": "i_6daa6ff1e18b8946",
+        "caminho": "generico/efeito.wav",
+        "formato": "generico.wav",
+        "conversor": "converters/generico/wav_to_ogg.py"
+      },
+      "metadados": {
+        "taxa_amostragem_hz": 22050,
+        "canais": 1,
+        "amostras": 5512,
+        "duracao_s": 0.249977,
+        "loop": null
+      }
+    },
+    {
+      "id": "a_61f740493222504c",
+      "caminho_web": "assets/audio/musica_loop-61f74049.ogg",
+      "tipo": "audio",
+      "mime": "audio/ogg",
+      "hash_sha256": "044182190bf0d93c91d46f3dc281329accb51524fd1f6d3e1821bef225e9a433",
+      "tamanho_bytes": 5288,
+      "origem": {
+        "item_inventario": "i_1efc485b09651e79",
+        "caminho": "generico/musica_loop.wav",
+        "formato": "generico.wav",
+        "conversor": "converters/generico/wav_to_ogg.py"
+      },
+      "metadados": {
+        "taxa_amostragem_hz": 11025,
+        "canais": 1,
+        "amostras": 27562,
+        "duracao_s": 2.499955,
+        "loop": {
+          "inicio_amostra": 11025,
+          "fim_amostra": 27562
+        }
+      }
+    },
+    {
+      "id": "a_42f2c6f190e3c249",
+      "caminho_web": "assets/audio/som-42f2c6f1.wav",
+      "tipo": "audio",
+      "mime": "audio/wav",
+      "hash_sha256": "bf04c6ebc21dfbee1a2d449b438f2b515c13c61ec2b907da2552102388caf422",
+      "tamanho_bytes": 392,
+      "origem": {
+        "item_inventario": "i_18aebf81f6bebcff",
+        "caminho": "sony/som.vag",
+        "formato": "sony.ps.vag",
+        "conversor": "converters/sony/vag_to_wav.py"
+      },
+      "metadados": {
+        "taxa_amostragem_hz": 22050,
+        "canais": 1,
+        "amostras": 140,
+        "duracao_s": 0.006349,
+        "loop": {
+          "inicio_amostra": 56,
+          "fim_amostra": 140
+        }
+      }
+    },
+    {
+      "id": "a_a47a0101709573aa",
+      "caminho_web": "assets/modelos/tetra-a47a0101.glb",
+      "tipo": "modelo",
+      "mime": "model/gltf-binary",
+      "hash_sha256": "28d6585a397f4f0763072743edcec547a47274c5c5a5af8683f2225a7fc9bc33",
+      "tamanho_bytes": 2860,
+      "origem": {
+        "item_inventario": "i_ea228cf6d2c9ba22",
+        "caminho": "idtech/tetra.md2",
+        "formato": "idtech.quake2.md2",
+        "conversor": "converters/idtech/md2_to_glb.py"
+      },
+      "metadados": {
+        "escala_metros": 0.0254,
+        "eixo_para_cima": "Y",
+        "vertices": 4,
+        "ossos": 0,
+        "fps_original": 10.0,
+        "extras": {
+          "triangulos": 4,
+          "quadros": 3,
+          "animacoes": [
+            "run",
+            "stand"
+          ],
+          "skins": [
+            "models/cew/skin.pcx"
+          ]
+        }
+      }
+    },
+    {
+      "id": "a_e0b7e5c6e1214009",
+      "caminho_web": "assets/texturas/a-textura_000-e0b7e5c6.png",
+      "tipo": "textura",
+      "mime": "image/png",
+      "hash_sha256": "97f96dc1eb14ef78be47d4231514438ab58713b605cecc393a7db57014cf07de",
+      "tamanho_bytes": 159,
+      "origem": {
+        "item_inventario": "i_dad777e8ef0d3b06",
+        "caminho": "nintendo/pacote.sarc!/Tex/a.tpl",
+        "formato": "nintendo.gx.tpl",
+        "conversor": "converters/nintendo/tpl_to_png.py"
+      },
+      "metadados": {
+        "largura_px": 8,
+        "altura_px": 8,
+        "espaco_cor": "srgb",
+        "tem_alfa": true,
+        "potencia_de_2": true,
+        "extras": {
+          "formato_gx": "RGBA32"
+        }
+      }
+    }
+  ]
+}

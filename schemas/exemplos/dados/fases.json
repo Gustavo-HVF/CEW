@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "unidade_distancia": "metros",
+  "fases": [
+    {
+      "id": "fase_1",
+      "nome": "Floresta",
+      "geometria_asset_id": "a_0123456789abcdef",
+      "musica_asset_id": "a_61f74049aa00bb11",
+      "tempo_limite_s": 300,
+      "proxima_fase_id": "fase_2",
+      "spawns": [{ "id": "jogador", "posicao_m": [0, 0, 0], "rotacao_y_graus": 90 }],
+      "entidades": [{ "id": "inimigo_01", "tipo": "slime", "posicao_m": [4.5, 0, -2], "propriedades": { "vida": 3, "velocidade_m_s": 1.2 } }],
+      "gatilhos": [{ "id": "saida", "forma": "caixa", "centro_m": [30, 1, 0], "tamanho_m": [2, 2, 2], "acao": "trocar_fase", "parametros": { "fase": "fase_2" } }],
+      "colisao": { "malha_asset_id": "a_0123456789abcdef", "materiais": { "agua": "lento" } }
+    }
+  ]
+}

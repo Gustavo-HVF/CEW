@@ -229,3 +229,13 @@ def reduzir(img: Imagem, max_lado: int = 256) -> Imagem:
         for x in range(w):
             out.definir(x, y, img.pixel(min(img.largura - 1, int(x * escala)), min(img.altura - 1, int(y * escala))))
     return out
+
+
+def redimensionar(img: Imagem, largura: int, altura: int) -> Imagem:
+    """Vizinho mais proximo para um tamanho exato (comparar captura e referencia de tamanhos diferentes)."""
+    out = Imagem.vazia(largura, altura)
+    for y in range(altura):
+        sy = min(img.altura - 1, y * img.altura // altura)
+        for x in range(largura):
+            out.definir(x, y, img.pixel(min(img.largura - 1, x * img.largura // largura), sy))
+    return out

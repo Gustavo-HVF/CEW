@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "tarefa": "formato",
+  "id": "t_734c6d0aca710156",
+  "item_inventario": "i_47f663823dc377fc",
+  "caminho": "desconhecido/misterio.xyz",
+  "extensao": ".xyz",
+  "tamanho_bytes": 76,
+  "sha256": "588b490ceb55d2540196bf9c67a9fcffa8e37c4083b636baae8b2ab022960dd0",
+  "entropia_bits_por_byte": 5.9287,
+  "ordem_de_bytes_estimada": "big",
+  "amostras": [
+    {
+      "offset": 0,
+      "hex": "515a58310000000300100010000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425262728292a2b2c2d2e2f303132333435363738393a3b3c3d3e3f"
+    }
+  ],
+  "strings_ascii": [
+    " !\"#$%&'()*+,-./0123456789:;<=>?"
+  ],
+  "irmaos_mesma_extensao": 0,
+  "formatos_parecidos": [],
+  "instrucoes": "Proponha a estrutura deste formato a partir dos bytes. Para cada campo do cabecalho, cite offset e os bytes que sustentam a leitura. Se houver um rascunho de conversor, use Python 3 so com a biblioteca padrao e com o esqueleto de converters/comum/cli.py (INFO, converter(dados, esc, opcoes), executar). Leia de forma defensiva.",
+  "contexto_programa": [
+    {
+      "funcao": "main",
+      "endereco": "0x001011e9",
+      "pseudo_c": "\nundefined8 main(void)\n\n{\n  int iVar1;\n  FILE *__stream;\n  size_t sVar2;\n  long in_FS_OFFSET;\n  undefined1 auStack_68 [8];\n  ushort local_60;\n  ushort local_5e;\n  long local_20;\n  \n  local_20 = *(long *)(in_FS_OFFSET + 0x28);\n  __stream = fopen(\"desconhecido/misterio.xyz\",\"rb\");\n  if (__stream == (FILE *)0x0) {\n    iVar1 = -1;\n  }\n  else {\n    sVar2 = fread(auStack_68,1,0x40,__stream);\n    fclose(__stream);\n    if (sVar2 < 0xc) {\n      iVar1 = -2;\n    }\n    else {\n      iVar1 = memcmp(auStack_68,&DAT_00102021,4);\n      if (iVar1 == 0) {\n        iVar1 = (uint)local_60 * (uint)local_5e;\n      }\n      else {\n        iVar1 = -2;\n      }\n    }\n  }\n  __printf_chk(2,&DAT_00102026,iVar1);\n  if (local_20 == *(long *)(in_FS_OFFSET + 0x28)) {\n    return 0;\n  }\n                    /* WARNING: Subroutine does not return */\n  __stack_chk_fail();\n}\n\n"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew-gemini-worker",
+  "formato_id_proposto": "desconhecido.qzx.misterio",
+  "confianca": 0.55,
+  "ordem_de_bytes": "big",
+  "tipo": "dados",
+  "cabecalho": [
+    {
+      "campo": "magic",
+      "offset": 0,
+      "tipo": "char[4]",
+      "evidencia": "51 5a 58 31 = 'QZX1'"
+    }
+  ],
+  "secoes": [],
+  "duvidas": [
+    "sem segunda amostra"
+  ],
+  "rascunho_conversor": {
+    "linguagem": "python",
+    "arquivo": "qzx_to_json.py",
+    "codigo": "import json,sys\nprint(json.dumps({'magic': open(sys.argv[1],'rb').read(4).decode()}))\n"
+  }
+}
