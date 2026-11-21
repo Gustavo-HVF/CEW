@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "projeto": "demo-jogo",
+  "analisado_em": "2026-11-21T18:00:10Z",
+  "numeros": {
+    "arquivos_no_alvo": 4,
+    "assets_publicados": 4,
+    "formatos_sem_conversor": 0,
+    "formatos_sem_conversor_alta": 0,
+    "unidades_de_codigo": 0,
+    "unidades_alta": 0,
+    "unidades_alta_traduzidas": 0,
+    "unidades_alta_testadas": 0,
+    "cenas": 1,
+    "elementos_de_cena": 6,
+    "inimigos_npcs": 1,
+    "assets_usados_nos_testes_pct": null,
+    "marco_atingido": null,
+    "linguagem_destino": null
+  },
+  "limites_web": [],
+  "tamanho_estimado": "pequeno",
+  "proposta": {
+    "descricao": "primeira fase jogavel (floresta): abre, entrada, colisao, laco_central",
+    "marcos": [
+      "abre",
+      "entrada",
+      "colisao",
+      "laco_central"
+    ],
+    "motivos": [
+      "0 unidades de codigo de prioridade alta (0 ja traduzidas)",
+      "0 formatos de prioridade alta ainda sem conversor ou decisao",
+      "tamanho estimado: pequeno"
+    ]
+  },
+  "decisao": {
+    "descricao": "fase floresta completa: andar, pular a pilastra, derrotar o slime e concluir a fase",
+    "marcos": [
+      "abre",
+      "entrada",
+      "colisao",
+      "laco_central",
+      "progressao"
+    ],
+    "em": "2026-11-21T18:00:10Z"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/escopo.schema.json",
+  "title": "projects/<p>/escopo.json - analise do projeto e escopo minimo jogavel combinado com a pessoa",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["projeto", "analisado_em", "numeros", "limites_web", "proposta", "decisao"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "projeto": { "type": "string" },
+    "analisado_em": { "$ref": "comum.schema.json#/$defs/data_hora" },
+    "numeros": { "type": "object", "additionalProperties": { "type": ["integer", "number", "string", "null"] } },
+    "limites_web": { "type": "array", "items": { "type": "object", "required": ["limite", "evidencia"], "additionalProperties": false, "properties": { "limite": { "type": "string" }, "evidencia": { "type": "string" }, "alternativa": { "type": "string" } } } },
+    "tamanho_estimado": { "type": "string", "enum": ["pequeno", "medio", "grande"] },
+    "proposta": {
+      "type": "object", "required": ["descricao", "marcos"], "additionalProperties": false,
+      "properties": { "descricao": { "type": "string" }, "marcos": { "type": "array", "items": { "type": "string" } }, "motivos": { "type": "array", "items": { "type": "string" } } }
+    },
+    "decisao": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object", "required": ["descricao", "marcos", "em"], "additionalProperties": false,
+          "properties": { "descricao": { "type": "string" }, "marcos": { "type": "array", "items": { "type": "string" }, "minItems": 1 }, "em": { "$ref": "comum.schema.json#/$defs/data_hora" }, "nota": { "type": "string" } }
+        }
+      ]
+    }
+  },
+  "additionalProperties": false
+}

@@ -246,6 +246,25 @@ def verificar_traducao(p: Projeto, r: Relatorio) -> None:
           metricas={"alta": len(alta), "alta_traduzidas": len(feitas), "total": len(vivas)})
 
 
+def verificar_jogo(p: Projeto, r: Relatorio) -> None:
+    """v2.3: esqueleto de traducao alcancavel a partir de src/main.js reprova; evidencias das constantes do jogo."""
+    from .jogavel import esqueletos_alcancaveis
+
+    if (p.pasta / "app" / "src" / "main.js").is_file():
+        esq = esqueletos_alcancaveis(p)
+        r.add("traducao:esqueletos_alcancaveis", "traducao", "app/src", not esq,
+              "nenhuma funcao 'ainda nao traduzida' alcancavel a partir de src/main.js" if not esq else f"esqueletos alcancaveis (lancam erro no jogo): {esq[:5]}")
+    for arq in sorted(p.caminho("dados").rglob("configuracoes*.json")):
+        doc = json.loads(arq.read_text(encoding="utf-8"))
+        if _esquema_dados(doc) != "dados/configuracoes":
+            continue
+        valores = doc.get("valores", {})
+        com = [k for k in valores if k in (doc.get("evidencias") or {})]
+        r.add(f"fidelidade:{arq.name}", "fidelidade", arq.relative_to(p.pasta).as_posix(), True,
+              f"{len(com)}/{len(valores)} constantes do jogo com evidencia" + (f"; sem evidencia: {[k for k in valores if k not in com][:6]}" if len(com) < len(valores) else ""),
+              obrigatorio=False, metricas={"com_evidencia": len(com), "total": len(valores)})
+
+
 def _npm(app: Path, args: list[str], tempo: int = 900) -> subprocess.CompletedProcess:
     npx = shutil.which("npm")
     if not npx:
@@ -387,7 +406,8 @@ def _segunda_opiniao(p: Projeto, r: Relatorio, ref: Path, cap: Path, metricas: d
         r.add(f"gemini:{ref.stem}", "segunda_opiniao_gemini", ref.name, False, str(e), obrigatorio=False)
 
 
-def executar(p: Projeto, web: bool = True, instalar: bool = False, gemini: bool = False, chromium: str | None = None, dry_run: bool = False, log: Log | None = None) -> dict:
+def executar(p: Projeto, web: bool = True, instalar: bool = False, gemini: bool = False, chromium: str | None = None, dry_run: bool = False, log: Log | None = None,
+             sessao_s: int | None = None) -> dict:
     log = log or Log("verificacao")
     r = Relatorio()
     verificar_esquemas(p, r)
@@ -397,7 +417,12 @@ def executar(p: Projeto, web: bool = True, instalar: bool = False, gemini: bool 
         verificar_assets(p, r)
         verificar_cenas(p, r)
     verificar_traducao(p, r)
+    verificar_jogo(p, r)
     if web:
+        import os
+
+        if sessao_s is not None:
+            os.environ["CEW_SESSAO_S"] = str(sessao_s)
         verificar_web(p, r, instalar, chromium)
         verificar_capturas(p, r, gemini)
     obrig = [i for i in r.itens if i["obrigatorio"]]

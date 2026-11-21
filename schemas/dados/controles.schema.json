@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/dados/controles.schema.json",
+  "title": "web/dados/controles.json - acoes do jogo: controle original -> teclado/gamepad/toque",
+  "type": "object",
+  "allOf": [{ "$ref": "../comum.schema.json#/$defs/cabecalho" }],
+  "required": ["acoes"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "acoes": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[a-z][a-z0-9_]*$" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "original": { "type": "string", "description": "tecla/botao no jogo original" },
+          "evidencia": { "$ref": "../comum.schema.json#/$defs/evidencia" },
+          "teclas": { "type": "array", "items": { "type": "string", "description": "KeyboardEvent.code (ArrowLeft, KeyZ, Space...)" } },
+          "gamepad": {
+            "type": "object", "additionalProperties": false,
+            "properties": { "botoes": { "type": "array", "items": { "type": "integer", "minimum": 0 } }, "eixo": { "type": "array", "items": { "type": "integer" }, "minItems": 2, "maxItems": 2 } }
+          },
+          "toque": { "type": "string", "description": "rotulo do botao na tela (celular)" }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

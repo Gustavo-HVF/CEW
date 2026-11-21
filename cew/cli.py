@@ -204,7 +204,7 @@ def etapa_reconstrucao(p: Projeto, a: argparse.Namespace) -> str:
 def etapa_verificacao(p: Projeto, a: argparse.Namespace) -> str:
     from . import verificacao
 
-    doc = verificacao.executar(p, web=not a.sem_web, instalar=a.instalar_dependencias, gemini=a.gemini, chromium=a.chromium, dry_run=a.dry_run)
+    doc = verificacao.executar(p, web=not a.sem_web, instalar=a.instalar_dependencias, gemini=a.gemini, chromium=a.chromium, dry_run=a.dry_run, sessao_s=a.sessao_s)
     reprov = [i for i in doc["itens"] if i["obrigatorio"] and not i["aprovado"]]
     print(f"{len(doc['itens'])} verificacoes; {len(reprov)} obrigatorias reprovadas")
     for i in reprov[:15]:
@@ -516,6 +516,51 @@ def cmd_codigo(a: argparse.Namespace) -> int:
     return 0 if all(r["aprovado"] for r in res) else 1
 
 
+def cmd_escopo(a: argparse.Namespace) -> int:
+    from . import escopo
+
+    p = Projeto.abrir(a.projeto, criar=False)
+    if a.acao == "definir":
+        if not a.marcos or not a.descricao:
+            print("informe --marcos abre,entrada,... e --descricao \"primeira fase jogavel\"")
+            return 2
+        doc = escopo.definir(p, [m.strip() for m in a.marcos.split(",") if m.strip()], a.descricao, a.nota or "")
+        print(f"escopo registrado: {doc['decisao']['descricao']} (obrigatorios: {', '.join(doc['decisao']['marcos'])})")
+        return 0
+    doc = escopo.analisar(p)
+    print(f"Projeto {p.nome} - tamanho estimado: {doc['tamanho_estimado']}")
+    for k, v in doc["numeros"].items():
+        print(f"  {k:<34} {v}")
+    for l in doc["limites_web"]:
+        print(f"  limite web: {l['limite']} ({l['evidencia']}) -> {l['alternativa']}")
+    print(f"Proposta: {doc['proposta']['descricao']}")
+    for m in doc["proposta"]["motivos"]:
+        print(f"  - {m}")
+    print("Decisao atual: " + (doc["decisao"]["descricao"] if doc["decisao"] else "nenhuma (combine com a pessoa e rode 'cew escopo definir')"))
+    return 0
+
+
+def cmd_jogavel(a: argparse.Namespace) -> int:
+    from . import jogavel
+
+    p = Projeto.abrir(a.projeto, criar=False)
+    if a.acao == "confirmar":
+        if interativo() and perguntar("Voce jogou e confirma que esta jogavel no escopo combinado? (sim/nao)", "nao").lower() != "sim":
+            print("confirmacao cancelada")
+            return 1
+        try:
+            doc = jogavel.confirmar(p, a.nota or "joguei e esta jogavel no escopo combinado", interativo())
+        except (PermissionError, ValueError) as e:
+            print(f"nao confirmado: {e}")
+            return 1
+    else:
+        doc = jogavel.avaliar(p)
+    for c in doc["criterios"]:
+        print(f"  [{'ok' if c['aprovado'] else '  '}] {c['id']:<26} {c['detalhes'][:150]}")
+    print("JOGAVEL" if doc["jogavel"] else "ainda nao jogavel (veja os criterios acima)")
+    return 0 if doc["jogavel"] else 1
+
+
 def cmd_marcos(a: argparse.Namespace) -> int:
     from . import marcos
 
@@ -637,6 +682,7 @@ def parser() -> argparse.ArgumentParser:
         s.add_argument("--ignorar-ambiente", action="store_true", help="segue mesmo com ferramentas obrigatorias faltando (desenvolvimento)")
         s.add_argument("--modelo-marcos", choices=["jogo", "app"], default="jogo", help="modelo de marcos criado na reconstrucao")
         s.add_argument("--sem-codigo", action="store_true", help="nao descompila o codigo do jogo na etapa de engenharia")
+        s.add_argument("--sessao-s", type=int, default=None, help="duracao da sessao curta de ponta a ponta no navegador (padrao do teste: 30 s)")
 
     s = sub.add_parser("setup", help="ambiente, Craft Anything e teste do Gemini")
     s.add_argument("--ssh", action="store_true")
@@ -749,6 +795,16 @@ def parser() -> argparse.ArgumentParser:
     s.add_argument("--limite", type=int, default=10, help="descompilar: maximo de programas")
     s.add_argument("--todas", action="store_true", help="status: inclui as descartadas")
     s.set_defaults(func=cmd_codigo)
+    s = sub.add_parser("escopo", help="analisa o projeto e registra o escopo minimo jogavel combinado com a pessoa")
+    s.add_argument("acao", choices=["analisar", "definir"])
+    s.add_argument("--marcos", help="definir: ids separados por virgula (ficam obrigatorios em marcos.json)")
+    s.add_argument("--descricao", help="definir: ex.: 'primeira fase completa'")
+    s.add_argument("--nota")
+    s.set_defaults(func=cmd_escopo)
+    s = sub.add_parser("jogavel", help="avalia os criterios de 'jogavel'; a pessoa confirma depois de jogar")
+    s.add_argument("acao", choices=["avaliar", "confirmar"])
+    s.add_argument("--nota", help="confirmar: o que a pessoa jogou")
+    s.set_defaults(func=cmd_jogavel)
     s = sub.add_parser("sandbox", help="roda um rascunho do Gemini isolado")
     s.add_argument("rascunho", help="arquivo .py ou <sha>.resposta.json")
     s.add_argument("--entrada")

@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "origem": "jogo de demonstracao do CEW (nao ha executavel original)",
+  "valores": {
+    "gravidade_px_s2": 700,
+    "velocidade_px_s": 90,
+    "pulo_px_s": 260,
+    "vida_inicial": 3,
+    "pontos_por_inimigo": 100,
+    "passo_logica_hz": 60,
+    "invencivel_s": 1.0
+  },
+  "evidencias": {
+    "gravidade_px_s2": {
+      "fonte": "manual",
+      "nota": "valor de projeto do jogo de demonstracao"
+    },
+    "velocidade_px_s": {
+      "fonte": "manual",
+      "nota": "valor de projeto do jogo de demonstracao"
+    },
+    "pulo_px_s": {
+      "fonte": "manual",
+      "nota": "altura de pulo ~48 px, passa a pilastra de 32 px"
+    },
+    "vida_inicial": {
+      "fonte": "manual",
+      "nota": "valor de projeto"
+    },
+    "pontos_por_inimigo": {
+      "fonte": "manual",
+      "nota": "valor de projeto"
+    },
+    "passo_logica_hz": {
+      "fonte": "manual",
+      "nota": "passo fixo de 60 Hz"
+    },
+    "invencivel_s": {
+      "fonte": "manual",
+      "nota": "valor de projeto do jogo de demonstracao"
+    }
+  }
+}

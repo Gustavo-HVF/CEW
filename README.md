@@ -130,8 +130,24 @@ Para comparar com o original, coloque capturas em `projects/<nome>/referencias/<
 | `cew marcos iniciar\|status --projeto P [--modelo jogo\|app]` | marcos de utilizacao/jogabilidade |
 | `cew cena listar\|mostrar\|ajustar\|regra --projeto P` | elementos dos mapas: ver, reposicionar, reorganizar por regra |
 | `cew codigo descompilar\|planejar\|status\|pacote\|registrar\|testar --projeto P` | codigo do jogo: descompilar (Craft Anything) e traduzir para a linguagem do motor |
+| `cew escopo analisar\|definir --projeto P` | numeros e limites do projeto; escopo minimo jogavel combinado (marcos obrigatorios) |
+| `cew jogavel avaliar\|confirmar --projeto P` | criterios de "jogavel"; a pessoa confirma depois de jogar (terminal interativo) |
 
 Cada conversor tambem roda sozinho: `python cookbook/nintendo/tpl_to_png.py --help`.
+
+## Do cenario pronto ao jogo jogavel
+
+Com assets, cenas, codigo descompilado e `app/` prontos, o caminho ate jogar no navegador (skill 10):
+
+1. `cew escopo analisar` -> combinar com a pessoa -> `cew escopo definir --marcos ...` (so esses ficam obrigatorios);
+2. logica com evidencia + traducao das unidades alcancadas pelo jogo (`cew codigo`);
+3. montar no motor sobre a arquitetura do modelo (`app/ARQUITETURA.md`): `src/nucleo/` (regras sem motor,
+   passo fixo, comportamento por categoria da cena), `src/adaptadores/` (acoes por teclado/gamepad/toque,
+   salvamento), `window.__CEW_ESTADO` com `quadro`/`fps` medidos;
+4. testes de marco reais + sessao curta automatica (`tests/sessao.spec.js`) em `cew check`;
+5. `cew jogavel avaliar` e, depois de jogar, a confirmacao da pessoa (`cew jogavel confirmar`).
+
+`exemplos/plataforma-2d/` mostra tudo isso num jogo pequeno feito a partir do mapa do Tiled das amostras.
 
 ## Codigo do jogo: descompilar e traduzir para o motor
 
@@ -199,7 +215,8 @@ converters/generico/ conversores genericos (fonte "generico")
 cookbook/<familia>/  receitas opcionais e testadas (fonte "cookbook")
 tests/               pytest (+ tests/js para ajv e glTF Validator) e amostras sinteticas em tests/fixtures/
 docs/                DECISOES.md, formatos/, especificacoes/
-skills/              nove skills para o agente no VS Code
+skills/              dez skills para o agente no VS Code
+exemplos/            plataforma-2d: caso trabalhado do cenario ate o jogo jogavel
 projects/<nome>/     criado pelo CEW (estrutura do Craft Anything + JSONs do CEW + conversores/ do agente, formatos.json, marcos.json)
 ```
 

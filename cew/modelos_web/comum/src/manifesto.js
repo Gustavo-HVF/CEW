@@ -31,6 +31,16 @@ export class Audio {
     this.ctx ??= new (window.AudioContext || window.webkitAudioContext)();
     return this.ctx;
   }
+  // Navegadores so liberam audio depois de um gesto da pessoa: chame uma vez no inicio.
+  desbloquear() {
+    const liberar = () => {
+      this._ctx().resume?.();
+      window.removeEventListener('pointerdown', liberar);
+      window.removeEventListener('keydown', liberar);
+    };
+    window.addEventListener('pointerdown', liberar);
+    window.addEventListener('keydown', liberar);
+  }
   async carregar(asset, url) {
     if (this.buffers.has(asset.id)) return this.buffers.get(asset.id);
     const dados = await (await fetch(url)).arrayBuffer();
@@ -77,8 +87,29 @@ export function estado(parcial) {
   return window.__CEW_ESTADO;
 }
 
+// Medidor de quadros: window.__CEW_ESTADO.quadro sobe a cada quadro e .fps e atualizado a cada 0,5 s
+// (os testes de sessao e de desempenho usam isso para provar que o jogo nao travou).
+function iniciarMedidor() {
+  if (window.__CEW_MEDIDOR) return;
+  window.__CEW_MEDIDOR = true;
+  let ultimo = performance.now(), quadros = 0;
+  const passo = (agora) => {
+    const e = window.__CEW_ESTADO || (window.__CEW_ESTADO = {});
+    e.quadro = (e.quadro || 0) + 1;
+    quadros++;
+    if (agora - ultimo >= 500) {
+      e.fps = Math.round((quadros * 1000) / (agora - ultimo));
+      quadros = 0;
+      ultimo = agora;
+    }
+    requestAnimationFrame(passo);
+  };
+  requestAnimationFrame(passo);
+}
+
 export function pronto(texto) {
   document.getElementById('status').textContent = texto;
   estado({ assets_carregados: true });
+  iniciarMedidor();
   window.__CEW_PRONTO = true;
 }

@@ -203,6 +203,28 @@ relacao ao prompt original e o que ainda e hipotese. Datas no formato AAAA-MM-DD
 48. **Andamento preservado** ao replanejar; traducao editada depois de `testada` volta a `traduzida`;
     codigo original diferente (novo binario) devolve a unidade para revisao.
 
+## v2.3 - do cenario pronto ao jogo jogavel
+
+49. **Sem jogo da pessoa nesta sessao.** O v2.3 foi aplicado como ferramentas do CEW (escopo, arquitetura
+    nucleo/adaptadores, medidor de quadros, sessao curta, esqueletos alcancaveis, fidelidade, criterios de
+    jogavel) e provado num jogo de demonstracao (`exemplos/plataforma-2d/`) feito do mapa sintetico. Num jogo
+    real, as regras vem do codigo original com evidencia; no exemplo as constantes sao "valor de projeto".
+50. **Confirmacao da pessoa** so por terminal interativo (`cew jogavel confirmar`), com pergunta explicita;
+    sessao nao interativa (um agente) e recusada. Nao e autenticacao: e uma barreira contra o agente
+    declarar "jogavel" sozinho.
+51. **Medidor de quadros** independente do motor (requestAnimationFrame em `src/manifesto.js`): `quadro` e
+    `fps` em `window.__CEW_ESTADO`, usados pela sessao curta (quadros subindo = nao travou) e pelo marco de
+    desempenho.
+52. **Esqueleto alcancavel** = arquivo com "ainda nao traduzida" alcancado por `import` relativo a partir de
+    `app/src/main.js` (analise estatica por expressao regular: imports montados em tempo de execucao nao sao
+    vistos). Reprova a verificacao. O mesmo grafo define as "unidades usadas pelo jogo" do criterio de
+    equivalencia.
+53. **Sessao curta** joga sozinha (setas, espaco, X) por `CEW_SESSAO_S` segundos (padrao 30; `cew check
+    --sessao-s`): exige zero erros, quadros subindo e, se o jogo expoe o jogador, que ele se mova.
+54. **Achados da demonstracao** (corrigidos e registrados na skill 10): `pronto()` antes da cena do motor
+    existir deixa o estado incompleto para os testes; texto do Phaser com zoom de camera fica fora da tela
+    (HUD no DOM); o Playwright pega `*.test.mjs` por padrao (modelo agora usa `testMatch: '**/*.spec.js'`).
+
 ## Hipoteses tecnicas nos conversores (a conferir com arquivos reais)
 
 - **MD2:** ordem das faces invertida por padrao (o glquake desenha com `glCullFace(GL_FRONT)`, ou

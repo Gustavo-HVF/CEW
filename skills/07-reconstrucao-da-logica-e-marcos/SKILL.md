@@ -26,7 +26,8 @@ description: Use para tornar o app/jogo web utilizavel ou jogavel - reconstruir 
      (entrada injetada com `page.keyboard`/`page.mouse` -> mudanca em `estado(page)`);
    - `cew check --projeto P` ate o marco ficar `aprovado`; commit por marco.
 4. Leia `cobertura_conteudo.json`: assets nunca requisitados indicam conteudo ainda nao ligado ao jogo.
-5. `cew marcos status --projeto P` mostra onde o projeto esta.
+5. `cew marcos status --projeto P` mostra onde o projeto esta. Fluxo completo ate "jogavel" (escopo, nucleo,
+   adaptadores, sessao curta, `cew jogavel`): skill 10 e `exemplos/plataforma-2d/`.
 
 ## Delegacao
 - Gemini (opcional): resumir funcoes longas de logica (`schemas/gemini/tarefa_analise_funcao`).

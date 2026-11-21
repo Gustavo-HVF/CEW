@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/jogavel.schema.json",
+  "title": "projects/<p>/jogavel.json - avaliacao dos criterios de 'jogavel' (v2.3, item 7)",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["projeto", "avaliado_em", "jogavel", "criterios", "confirmacao"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "projeto": { "type": "string" },
+    "avaliado_em": { "$ref": "comum.schema.json#/$defs/data_hora" },
+    "escopo": { "type": ["string", "null"] },
+    "jogavel": { "type": "boolean", "description": "true so com todos os criterios aprovados E a confirmacao da pessoa" },
+    "marco_atingido": { "type": ["string", "null"] },
+    "criterios": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["id", "aprovado", "detalhes"], "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "enum": ["escopo_definido", "marcos_obrigatorios", "laco_central", "equivalencia", "sem_esqueleto_alcancavel", "sessao", "build_estatico", "confirmacao_pessoa"] },
+          "aprovado": { "type": "boolean" }, "detalhes": { "type": "string" }
+        }
+      }
+    },
+    "confirmacao": {
+      "anyOf": [
+        { "type": "null" },
+        { "type": "object", "required": ["em", "nota", "como"], "additionalProperties": false, "properties": { "em": { "$ref": "comum.schema.json#/$defs/data_hora" }, "nota": { "type": "string" }, "como": { "type": "string", "enum": ["terminal_interativo"] } } }
+      ]
+    }
+  },
+  "additionalProperties": false
+}

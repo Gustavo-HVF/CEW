@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "acoes": {
+    "esquerda": {
+      "original": "seta esquerda",
+      "teclas": [
+        "ArrowLeft",
+        "KeyA"
+      ],
+      "gamepad": {
+        "botoes": [
+          14
+        ],
+        "eixo": [
+          0,
+          -1
+        ]
+      },
+      "toque": "<"
+    },
+    "direita": {
+      "original": "seta direita",
+      "teclas": [
+        "ArrowRight",
+        "KeyD"
+      ],
+      "gamepad": {
+        "botoes": [
+          15
+        ],
+        "eixo": [
+          0,
+          1
+        ]
+      },
+      "toque": ">"
+    },
+    "pular": {
+      "original": "espaco",
+      "teclas": [
+        "Space",
+        "ArrowUp",
+        "KeyZ"
+      ],
+      "gamepad": {
+        "botoes": [
+          0
+        ]
+      },
+      "toque": "A"
+    },
+    "pausa": {
+      "original": "esc",
+      "teclas": [
+        "Escape",
+        "KeyP"
+      ],
+      "gamepad": {
+        "botoes": [
+          9
+        ]
+      }
+    }
+  }
+}

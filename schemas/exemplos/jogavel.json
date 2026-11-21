@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "projeto": "demo-jogo",
+  "avaliado_em": "2026-11-21T18:06:04Z",
+  "escopo": "fase floresta completa: andar, pular a pilastra, derrotar o slime e concluir a fase",
+  "jogavel": false,
+  "marco_atingido": "progressao",
+  "criterios": [
+    {
+      "id": "escopo_definido",
+      "aprovado": true,
+      "detalhes": "fase floresta completa: andar, pular a pilastra, derrotar o slime e concluir a fase"
+    },
+    {
+      "id": "marcos_obrigatorios",
+      "aprovado": true,
+      "detalhes": "5/5 aprovados"
+    },
+    {
+      "id": "laco_central",
+      "aprovado": true,
+      "detalhes": "laco central aprovado"
+    },
+    {
+      "id": "equivalencia",
+      "aprovado": true,
+      "detalhes": "0/0 unidades usadas pelo jogo com testes de equivalencia aprovados"
+    },
+    {
+      "id": "sem_esqueleto_alcancavel",
+      "aprovado": true,
+      "detalhes": "nenhum esqueleto alcancavel a partir de src/main.js"
+    },
+    {
+      "id": "sessao",
+      "aprovado": true,
+      "detalhes": "abriu sem erros no console"
+    },
+    {
+      "id": "build_estatico",
+      "aprovado": true,
+      "detalhes": "dist/ gerado e servido como arquivos estaticos nos testes"
+    },
+    {
+      "id": "confirmacao_pessoa",
+      "aprovado": false,
+      "detalhes": "a pessoa ainda nao confirmou depois de jogar (cew jogavel confirmar)"
+    }
+  ],
+  "confirmacao": null
+}
