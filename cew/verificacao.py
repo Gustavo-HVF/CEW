@@ -74,6 +74,14 @@ def verificar_esquemas(p: Projeto, r: Relatorio) -> None:
         r.add("esquema:craft.json", "esquema", "craft.json", True, "valido para docs/schemas/craft.schema.json do Craft Anything")
     except (ValueError, OSError) as e:
         r.add("esquema:craft.json", "esquema", "craft.json", False, str(e))
+    node, ajv = shutil.which("node"), raiz_repositorio() / "node_modules" / "ajv"
+    if node and ajv.is_dir():
+        for chave in ("manifesto", "inventario", "plano"):
+            rel, esq = ARQUIVOS[chave]
+            if (p.pasta / rel).is_file():
+                pr = subprocess.run([node, str(raiz_repositorio() / "tests" / "js" / "validar_esquemas.mjs"), str(p.pasta / rel), esq],
+                                    capture_output=True, text=True, timeout=300, cwd=raiz_repositorio())
+                r.add(f"ajv:{rel}", "esquema", rel, pr.returncode == 0, "valido tambem no ajv (Node)" if pr.returncode == 0 else pr.stderr[-400:])
     for arq in sorted(p.caminho("tarefas_gemini").glob("*.json")):
         esq = "gemini/tarefa_formato" if arq.name.endswith(".tarefa.json") else "gemini/resposta_formato"
         e = erros_esquema(json.loads(arq.read_text(encoding="utf-8")), esq)

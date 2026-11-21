@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import struct
 import sys
 from pathlib import Path
 from typing import Any, Callable
@@ -100,6 +101,10 @@ def rodar(info: dict, funcao: Callable[[bytes, Escritor, dict], dict | None], en
     except ErroFormato as e:
         resultado["ok"] = False
         resultado["erro"] = str(e)
+    except (struct.error, IndexError, KeyError, ValueError, OverflowError, UnicodeError, ZeroDivisionError) as e:
+        # rede de seguranca: arquivo corrompido nunca derruba o orquestrador; o texto marca o bug
+        resultado["ok"] = False
+        resultado["erro"] = f"falha inesperada (bug do conversor, leitura sem conferencia): {type(e).__name__}: {e}"
     resultado["saidas"] = esc.saidas
     resultado["avisos"] = esc.avisos
     _validar(resultado)

@@ -11,6 +11,7 @@ if __package__ in (None, ""):
 
 import io
 import zipfile
+import zlib
 
 from converters.comum.binario import ErroFormato
 from converters.comum.cli import Escritor, executar
@@ -31,7 +32,7 @@ def converter(dados: bytes, esc: Escritor, opcoes: dict) -> dict:
     max_razao = float(opcoes.get("max_razao", 200))
     try:
         z = zipfile.ZipFile(io.BytesIO(dados))
-    except zipfile.BadZipFile as e:
+    except (zipfile.BadZipFile, ValueError, EOFError, OSError, NotImplementedError, UnicodeDecodeError) as e:
         raise ErroFormato(f"ZIP invalido: {e}") from e
     total, pulados = 0, 0
     with z:
@@ -47,8 +48,11 @@ def converter(dados: bytes, esc: Escritor, opcoes: dict) -> dict:
             total += info.file_size
             if total > max_total:
                 raise ErroFormato(f"conteudo passa de {max_total} bytes")
-            with z.open(info) as f:
-                corpo = f.read(info.file_size + 1)
+            try:
+                with z.open(info) as f:
+                    corpo = f.read(info.file_size + 1)
+            except (zipfile.BadZipFile, zlib.error, EOFError, NotImplementedError, RuntimeError, ValueError) as e:
+                raise ErroFormato(f"ZIP corrompido em {info.filename}: {e}") from e
             if len(corpo) != info.file_size:
                 raise ErroFormato(f"tamanho real diferente do declarado: {info.filename}")
             esc.gravar(info.filename, corpo, "arquivo_extraido", "bin")

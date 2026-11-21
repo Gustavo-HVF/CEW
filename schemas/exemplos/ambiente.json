@@ -63,7 +63,7 @@
       "obrigatoria": false,
       "encontrada": true,
       "ok": true,
-      "caminho": "/root/.cargo/bin/rustc",
+      "caminho": "/home/voce/.cargo/bin/rustc",
       "versao": "1.97.0",
       "versao_minima": "1.97",
       "mensagem": "ok"
@@ -73,7 +73,7 @@
       "obrigatoria": false,
       "encontrada": true,
       "ok": true,
-      "caminho": "/root/.cargo/bin/cargo",
+      "caminho": "/home/voce/.cargo/bin/cargo",
       "versao": "1.97.0",
       "versao_minima": null,
       "mensagem": "ok"
@@ -138,7 +138,7 @@
         },
         {
           "message": "The Craft Anything skill isn't installed here.",
-          "name": "skill:/root/.claude/skills",
+          "name": "skill:/home/voce/.claude/skills",
           "remediation": "craft-anything-cli setup --yes",
           "status": "info"
         }

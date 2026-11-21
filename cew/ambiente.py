@@ -100,7 +100,8 @@ def verificar(testar_gemini: bool = True, cliente: ClienteGemini | None = None, 
 
 
 def gravar(rel: dict) -> Path:
-    return gravar_json(raiz_repositorio() / "reports" / "ambiente.json", rel, "ambiente")
+    pasta = Path(os.environ["CEW_REPORTS"]) if os.environ.get("CEW_REPORTS") else raiz_repositorio() / "reports"
+    return gravar_json(pasta / "ambiente.json", rel, "ambiente")
 
 
 def resumo_texto(rel: dict) -> str:
@@ -111,5 +112,4 @@ def resumo_texto(rel: dict) -> str:
     g = rel["gemini"]
     linhas.append(f"[{'ok ' if g['teste_ok'] else 'FALTA'}] {'gemini':<20} {g.get('modelo', ''):<12} {g.get('erro') or 'teste real ok'}")
     linhas.append("Pronto para usar o CEW." if rel["pronto"] else "Faltando: " + ", ".join(rel["obrigatorios_faltando"]))
-    _ = os.sep
     return "\n".join(linhas)
