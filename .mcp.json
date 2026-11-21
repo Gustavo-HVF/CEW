@@ -1,0 +1,6 @@
+{
+  "mcpServers": {
+    "cew-mcp": { "command": "python", "args": ["scripts/mcp_server.py"] },
+    "craft-anything": { "command": "craft-anything-cli", "args": ["--deep", "mcp"] }
+  }
+}

@@ -1,0 +1,134 @@
+# Decisoes e diferencas em relacao ao prompt
+
+Registro pedido pela "regra de ouro": tudo o que foi conferido na fonte real, o que mudou em
+relacao ao prompt original e o que ainda e hipotese. Datas no formato AAAA-MM-DD.
+
+## Versoes conferidas
+
+| Ferramenta | Versao usada | Como foi conferida |
+|---|---|---|
+| Craft Anything | commit `44c89badd69c` (workspace 0.6.1), 2026-11-20 | repositorio clonado; `apps/craft-anything-cli/src/*.rs`, `README.md`, `docs/tools.md`, `docs/STATUS.md`, `docs/file-formats.md`, `docs/schemas/craft.schema.json` lidos; `craft-anything-cli` compilado com Rust 1.97 e executado (`--version`, `doctor`, `commands`, `triage`, `settings-show`, `mcp`) |
+| Ghidra | 12.1.4 (`ghidra_12.1.4_PUBLIC_20260921.zip`, SHA-256 `ddac49f9...d2d4db` igual ao da pagina de releases) | `Ghidra/application.properties` e `support/analyzeHeadlessREADME.md` lidos no repositorio oficial; `scripts/ghidra/ExportarCEW.java` executado de verdade em modo headless com OpenJDK 21 |
+| API do Gemini | REST `generativelanguage.googleapis.com` | o site ai.google.dev nao resolvia no ambiente de construcao; o contrato foi lido no codigo do SDK oficial `google-genai` 3.6.1 (PyPI). O host respondeu 403 sem chave (alcancavel). **Nenhuma chamada com chave real foi feita aqui.** |
+| glTF Validator (Khronos) | npm `gltf-validator` 2.0.0-dev.3.10 | GLB gerado pelo `md2_to_glb.py`: 0 erros, 0 avisos |
+| ffmpeg | 6.1.1 | OGG Vorbis com `-fflags +bitexact`: mesma entrada -> mesmos bytes |
+| Node / Vite / Playwright | Node 22, Vite 8.3.8, @playwright/test 1.65.1 | os quatro modelos web (Three.js 0.187.0, Babylon.js 9.37.1, Phaser 4.2.1, PixiJS 8.23.0) compilaram e passaram no teste de navegador |
+
+## Diferencas em relacao ao prompt
+
+1. **Logica em `cew/`, scripts como invólucros.** O prompt pede `scripts/orchestrator.py`,
+   `scripts/setup_craft_anything.py` e `scripts/mcp_server.py` e um comando `cew` empacotado.
+   Empacotar uma pasta chamada `scripts` como pacote Python instalaria um modulo global com nome
+   generico. A logica ficou no pacote `cew/` (entrypoint `cew = "cew.cli:main"`) e os tres
+   arquivos em `scripts/` existem e funcionam sem instalar nada, chamando o pacote.
+2. **`craft.json` pertence ao Craft Anything.** Ele e a struct `Manifest` versionada
+   (`MANIFEST_VERSION` = 5) e o Craft Anything nao preserva campos desconhecidos ao salvar.
+   Por isso os caminhos relativos do CEW ficam em `projects/<nome>/cew.json`
+   (`schemas/cew_projeto.schema.json`) e o `craft.json` que o CEW grava e minimo e validado
+   contra o esquema publicado pelo proprio Craft Anything (copiado em
+   `schemas/externos/craft-anything-craft.json`).
+3. **`investigation.cany` e uma pasta de projeto** (com `project.toml`, criada pelo
+   `craft-anything-cli --project`), nao um arquivo.
+4. **O Craft Anything acha o Ghidra pela configuracao**, nao por `GHIDRA_INSTALL_DIR`
+   (`engines.ghidra.install_dir` em `settings-show`). O `cew setup` repassa a pasta com
+   `craft-anything-cli settings-set --key engines.ghidra.install_dir --value "<pasta>"`.
+5. **Versao do Ghidra fixada em 12.1.4.** A 12.2 (mais nova) exige Java 25
+   (`application.java.min=25`); a 12.1.4 exige Java 21 e e a que o proprio Craft Anything documenta
+   em execucoes reais. Troque em `config/versoes.json` se tiver o JDK 25.
+6. **Craft Anything ja tem servidor MCP** (`craft-anything-cli mcp`, 39 ferramentas Essenciais por
+   padrao, todas com `--all-tools`). Os dois servidores estao em `.vscode/mcp.json` e `.mcp.json`:
+   o do Craft Anything e o `cew-mcp` (as quatro ferramentas pedidas).
+7. **Papel do Craft Anything no fluxo.** O CEW usa o Craft Anything como motor de inspecao (modo
+   Deep: `triage`, ferramentas `game_*`, `native_*`, evidencias em `investigation.cany`). A
+   reconstrucao do jogo pelo `craft-anything-cli rebuild` usa um agente de codigo (Claude Code) e
+   continua disponivel, mas o CEW gera o projeto web a partir do `asset_manifest.json` no motor
+   escolhido. As quatro fases do Craft Anything (Study/Build/Check/Ready) aparecem como
+   `fase_craft_anything` em `estado.json`.
+8. **Etapas.** O prompt lista 7 etapas; o `estado.json` tem 9 (`ambiente`, `alvo`, `inventario`,
+   `engenharia`, `conversao`, `motor`, `reconstrucao`, `verificacao`, `pronto`) porque a etapa 7 do
+   prompt junta reconstruir e verificar, e o item 9 tem o criterio "Motor -> Pronto".
+9. **Gemini por REST, sem SDK.** `urllib` da biblioteca padrao, para nao depender da evolucao do
+   SDK. Campos usados: `systemInstruction`, `contents`, `generationConfig.responseMimeType`,
+   `responseJsonSchema` (ou `responseSchema`), `temperature`, `maxOutputTokens`,
+   `thinkingConfig.thinkingLevel`; chave no cabecalho `x-goog-api-key`.
+   - `responseJsonSchema` aceita so `$id $defs $ref $anchor type format title description enum
+     items prefixItems minItems maxItems minimum maximum anyOf oneOf properties
+     additionalProperties required` (docstring do SDK). Os esquemas `schemas/gemini/resposta_*`
+     usam so isso (teste `test_respostas_gemini_so_usam_palavras_aceitas`); `enum` so com strings
+     e numeros, por isso o `{"ok": true}` do teste de conexao e conferido no codigo.
+   - Modelo padrao `gemini-3.8-flash`: e o nome usado nos exemplos do SDK 3.6.1. **Nao foi
+     confirmado com chave real**; rode `cew gemini modelos` e ajuste `config/gemini.json`.
+   - `versao_api` = `v1beta` (o SDK usa `v1` por padrao; as duas ficam configuraveis).
+   - Precos por milhao de tokens ficam 0 ate voce preencher: com preco 0 o limite em dolares
+     nao bloqueia, so os de chamadas e tokens.
+10. **`cew-mcp` sem dependencias.** JSON-RPC 2.0 por stdio implementado na biblioteca padrao
+    (initialize, ping, tools/list, tools/call), versoes de protocolo 2025-06-18, 2025-03-26 e
+    2024-11-05. Testado por subprocesso.
+11. **Tipos de formato a mais.** O enum `tipo` do registro ganhou `compressao`, `video`, `fonte` e
+    `imagem` (Yaz0, USM e PNG nao cabiam nos tipos do prompt).
+12. **Estado de verificacao do registro.** Alem de `confianca`, cada entrada tem `verificacao.estado`:
+    `a_verificar` (semente, nada conferido em arquivo real), `fixtures_sinteticas` (conversor
+    testado com amostra montada pela especificacao publica) e `verificado` (conferido com arquivos
+    reais e ferramenta de referencia - nenhuma entrada chegou aqui ainda). Os repositorios das
+    ferramentas de referencia foram confirmados com `git ls-remote` em 2026-11-20 (`verificado_em`),
+    mas o suporte de cada ferramenta a cada formato nao foi testado. As URLs de documentacao nao
+    foram abertas, exceto `qfiles.h` (Quake II) e `bspfile.h` (Quake), lidos no repositorio da id.
+13. **Conteudo cifrado nao e decifrado.** O CEW nao tem bloqueio por origem, licenca ou patente,
+    mas nao implementa quebra de DRM/cifra: formatos que costumam vir cifrados (NCA, CPK/HCA
+    mascarados, indice AES de .pak do Unreal) ficam marcados e o inventario avisa quando a
+    entropia sugere cifra. O Craft Anything segue a mesma regra ("never decrypting").
+14. **Sandbox dos rascunhos do Gemini.** Processo separado, pasta propria, tempo limite, limites de
+    memoria/CPU/arquivo (POSIX), proxies invalidos e um `sitecustomize` que bloqueia `socket`; no
+    Linux com `unshare` liberado, tambem sem interface de rede no SO. No Windows so ha tempo limite
+    e o bloqueio no nivel do Python: **nao e barreira contra codigo hostil** - a IA principal le o
+    codigo antes de rodar (skill 04).
+15. **Especificacoes por projeto.** As especificacoes de um alvo ficam em
+    `projects/<nome>/especificacoes/`; `docs/especificacoes/` traz o modelo e o guia;
+    `docs/formatos/` documenta os formatos com conversor.
+16. **Raiz web.** Os assets publicados ficam em `projects/<nome>/web/` (com `asset_manifest.json`) e o
+    projeto web gerado em `app/` serve essa pasta com `publicDir: '../web'` do Vite, sem copias.
+17. **Motores com modelo gerado:** Three.js, Babylon.js, Phaser e PixiJS. Godot, Unity WebGL,
+    PlayCanvas, Construct 3 e GDevelop recebem nota e o mapa de carregamento na skill 05, sem
+    projeto gerado automaticamente.
+18. **Regra de confirmacao de hipotese** (criterio Engenharia -> Conversao): uma hipotese gerada pelo
+    CEW so fica `confirmada` se o conversor do formato foi testado E (ha documentacao publica +
+    assinatura encontrada no arquivo, ou a identificacao no arquivo tem confianca >= 0,75). O resto
+    fica `hipotese` ate a IA principal completar a evidencia (skill 03). Decisoes da IA principal
+    (`confirmada`/`refutada` com evidencia) nao sao sobrescritas.
+19. **Texto generico** (`.txt` identificado so pela extensao) nao e convertido sem evidencia de contexto
+    (`analise/contexto.json`), para nao transformar todo leia-me em dialogo.
+20. **IDs estaveis pelo caminho logico**, nao pelo conteudo: `i_`/`p_`/`a_` + 16 hex do SHA-256 do
+    caminho (com `!/` entre conteineres, `/` como separador e Unicode NFC, para Windows, macOS e
+    Linux darem o mesmo id). Assim a nova versao de um arquivo mantem o id e o caminho web, e o
+    `hash_sha256` do manifesto muda (cache do navegador e comparacao entre versoes).
+21. **Amostras de teste sinteticas.** Nenhum arquivo de jogo comercial esta no repositorio:
+    `tests/fixtures/gerar_fixtures.py` monta cada amostra a partir da especificacao, de forma
+    deterministica (os testes conferem que regenerar da os mesmos bytes).
+22. **`--ignorar-ambiente`.** O criterio Ambiente -> Alvo bloqueia o fluxo com ferramenta obrigatoria
+    faltando; a opcao existe para desenvolvimento e fica registrada no historico.
+23. **Chromium do Playwright.** `CEW_CHROMIUM` (ou `--chromium`) aponta um Chromium ja instalado;
+    sem isso use `npx playwright install chromium` em `app/`.
+
+24. **Instalacao editavel.** O CEW le `schemas/`, `formats/`, `config/` e `converters/` da raiz do
+    repositorio, entao o modo suportado e `pip install -e .` (ou rodar `scripts/orchestrator.py`).
+    Uma instalacao nao editavel funciona para os conversores, mas a CLI precisa do repositorio.
+
+## Hipoteses tecnicas nos conversores (a conferir com arquivos reais)
+
+- **MD2:** ordem das faces invertida por padrao (o glquake desenha com `glCullFace(GL_FRONT)`, ou
+  seja, face visivel horaria); opcao `inverter_faces`. Normais calculadas da geometria (a tabela de
+  162 normais do MD2 nao foi transcrita). Animacoes a 10 quadros/s.
+- **CMPR/BC1:** interpolacao padrao S3TC (2/3 + 1/3); o hardware do GameCube pode diferir em 1-2
+  niveis por canal.
+- **PS-ADPCM:** `(h1*f0 + h2*f1) >> 6` sem arredondamento; deslocamentos > 12 tratados como 9.
+- **TIM:** 0x0000 = transparente; o bit STP vira alfa 255 (semitransparencia do GPU nao tem
+  equivalente direto).
+- **Identificacao fraca:** LZ10/LZ11 so pela razao de compressao plausivel; assinatura do `.pak`
+  do Unreal no rodape varia por versao.
+
+## Nao testado neste ambiente
+
+- Chamada real ao Gemini com chave (todos os testes usam transporte falso; o contrato vem do SDK).
+- Windows e macOS (o codigo trata caminhos com espacos/acentos e NFC; os testes rodaram no Linux).
+- Compilacao do app desktop do Craft Anything (`--com-app`); so o CLI foi compilado.
+- Conversores contra arquivos reais de jogos (so amostras sinteticas).

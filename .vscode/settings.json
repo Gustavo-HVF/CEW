@@ -1,0 +1,26 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv",
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": ["tests"],
+  "python.testing.unittestEnabled": false,
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+  "files.exclude": { "**/__pycache__": true, "**/.pytest_cache": true },
+  "search.exclude": { "cache/**": true, "logs/**": true, "build/**": true, "ferramentas/**": true, "projects/*/build/**": true, "**/node_modules": true },
+  "files.watcherExclude": { "cache/**": true, "logs/**": true, "ferramentas/**": true, "projects/*/build/**": true },
+  "json.schemas": [
+    { "fileMatch": ["formats/registry.json"], "url": "./schemas/registry.schema.json" },
+    { "fileMatch": ["config/gemini.json"], "url": "./schemas/config_gemini.schema.json" },
+    { "fileMatch": ["config/versoes.json"], "url": "./schemas/config_versoes.schema.json" },
+    { "fileMatch": ["projects/*/inventario.json"], "url": "./schemas/inventario.schema.json" },
+    { "fileMatch": ["projects/*/plano_conversao.json"], "url": "./schemas/plano_conversao.schema.json" },
+    { "fileMatch": ["projects/*/web/asset_manifest.json"], "url": "./schemas/asset_manifest.schema.json" },
+    { "fileMatch": ["projects/*/estado.json"], "url": "./schemas/estado.schema.json" },
+    { "fileMatch": ["projects/*/recomendacao_motor.json"], "url": "./schemas/recomendacao_motor.schema.json" },
+    { "fileMatch": ["projects/*/relatorio_verificacao.json"], "url": "./schemas/relatorio_verificacao.schema.json" },
+    { "fileMatch": ["projects/*/analise/hipoteses.json"], "url": "./schemas/hipoteses_formato.schema.json" },
+    { "fileMatch": ["projects/*/analise/contexto.json"], "url": "./schemas/contexto_formatos.schema.json" },
+    { "fileMatch": ["projects/*/cew.json"], "url": "./schemas/cew_projeto.schema.json" },
+    { "fileMatch": ["reports/ambiente.json"], "url": "./schemas/ambiente.schema.json" }
+  ]
+}

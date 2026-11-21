@@ -12,6 +12,7 @@ projects/*
 !projects/.gitkeep
 !projects/README.md
 ferramentas/
+.claude/skills/
 
 # Python
 __pycache__/

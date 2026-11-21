@@ -1,0 +1,15 @@
+{
+  "servers": {
+    "cew-mcp": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["${workspaceFolder}/scripts/mcp_server.py"],
+      "env": { "PYTHONIOENCODING": "utf-8" }
+    },
+    "craft-anything": {
+      "type": "stdio",
+      "command": "craft-anything-cli",
+      "args": ["--deep", "--project", "${workspaceFolder}/projects/meu-jogo/investigation.cany", "mcp"]
+    }
+  }
+}

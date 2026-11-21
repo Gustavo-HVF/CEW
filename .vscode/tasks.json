@@ -1,0 +1,29 @@
+{
+  "version": "2.0.0",
+  "inputs": [
+    { "id": "projeto", "type": "promptString", "description": "Nome do projeto (projects/<nome>)", "default": "meu-jogo" },
+    { "id": "alvo", "type": "promptString", "description": "Arquivo ou pasta alvo (jogo, ROM, pacote, executavel)" },
+    { "id": "motor", "type": "pickString", "description": "Motor grafico", "options": ["threejs", "babylonjs", "phaser", "pixijs", "playcanvas", "godot", "unity_webgl", "construct3", "gdevelop"], "default": "threejs" },
+    { "id": "etapa", "type": "pickString", "description": "Etapa", "options": ["ambiente", "alvo", "inventario", "engenharia", "conversao", "motor", "reconstrucao", "verificacao", "pronto"] }
+  ],
+  "tasks": [
+    { "label": "CEW: setup (ambiente + Craft Anything + Gemini)", "type": "shell", "command": "python", "args": ["scripts/setup_craft_anything.py"], "problemMatcher": [] },
+    { "label": "CEW: setup (dry-run)", "type": "shell", "command": "python", "args": ["scripts/orchestrator.py", "setup", "--dry-run"], "problemMatcher": [] },
+    { "label": "CEW: menu interativo", "type": "shell", "command": "python", "args": ["scripts/orchestrator.py"], "problemMatcher": [] },
+    { "label": "CEW: fluxo completo", "type": "shell", "command": "python", "args": ["scripts/orchestrator.py", "run", "--projeto", "${input:projeto}", "--alvo", "${input:alvo}"], "problemMatcher": [] },
+    { "label": "CEW: retomar fluxo", "type": "shell", "command": "python", "args": ["scripts/orchestrator.py", "run", "--projeto", "${input:projeto}"], "problemMatcher": [] },
+    { "label": "CEW: fluxo (dry-run)", "type": "shell", "command": "python", "args": ["scripts/orchestrator.py", "run", "--dry-run", "--projeto", "${input:projeto}", "--alvo", "${input:alvo}"], "problemMatcher": [] },
+    { "label": "CEW: Estudar - inventario", "type": "shell", "command": "python", "args": ["scripts/orchestrator.py", "etapa", "inventario", "--projeto", "${input:projeto}"], "problemMatcher": [] },
+    { "label": "CEW: Estudar - engenharia reversa (Craft Anything + Ghidra)", "type": "shell", "command": "python", "args": ["scripts/orchestrator.py", "etapa", "engenharia", "--projeto", "${input:projeto}"], "problemMatcher": [] },
+    { "label": "CEW: Construir - conversao", "type": "shell", "command": "python", "args": ["scripts/orchestrator.py", "etapa", "conversao", "--projeto", "${input:projeto}"], "problemMatcher": [] },
+    { "label": "CEW: Construir - escolher motor", "type": "shell", "command": "python", "args": ["scripts/orchestrator.py", "etapa", "motor", "--projeto", "${input:projeto}", "--motor", "${input:motor}"], "problemMatcher": [] },
+    { "label": "CEW: Construir - gerar projeto web", "type": "shell", "command": "python", "args": ["scripts/orchestrator.py", "etapa", "reconstrucao", "--projeto", "${input:projeto}"], "problemMatcher": [] },
+    { "label": "CEW: Verificar (check)", "type": "shell", "command": "python", "args": ["scripts/orchestrator.py", "check", "--projeto", "${input:projeto}"], "problemMatcher": [] },
+    { "label": "CEW: rodar uma etapa", "type": "shell", "command": "python", "args": ["scripts/orchestrator.py", "etapa", "${input:etapa}", "--projeto", "${input:projeto}"], "problemMatcher": [] },
+    { "label": "CEW: status", "type": "shell", "command": "python", "args": ["scripts/orchestrator.py", "status", "--projeto", "${input:projeto}"], "problemMatcher": [] },
+    { "label": "CEW: testar Gemini", "type": "shell", "command": "python", "args": ["scripts/orchestrator.py", "gemini", "testar"], "problemMatcher": [] },
+    { "label": "CEW: testes (pytest + ajv + glTF)", "type": "shell", "command": "python -m pytest && npm test", "group": { "kind": "test", "isDefault": true }, "problemMatcher": [] },
+    { "label": "CEW: instalar skills no Claude Code (.claude/skills)", "type": "shell", "command": "python", "args": ["scripts/orchestrator.py", "skills", "instalar"], "problemMatcher": [] },
+    { "label": "CEW: jogo web (dev)", "type": "shell", "command": "npm run dev", "options": { "cwd": "${workspaceFolder}/projects/${input:projeto}/app" }, "isBackground": true, "problemMatcher": [] }
+  ]
+}
