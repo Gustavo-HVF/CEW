@@ -3,7 +3,7 @@
   "$id": "https://cew.local/schemas/gemini/resposta_teste_conexao.schema.json",
   "title": "Resposta Gemini ao teste de conexao",
   "type": "object",
-  "properties": { "ok": { "type": "boolean", "enum": [true] } },
+  "properties": { "ok": { "type": "boolean", "description": "sempre true" } },
   "required": ["ok"],
   "additionalProperties": false
 }

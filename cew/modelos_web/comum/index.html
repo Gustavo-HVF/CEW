@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>{{PROJETO}} - CEW ({{MOTOR_NOME}})</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #111; color: #eee; font: 14px system-ui, sans-serif; }
+    #cena { position: fixed; inset: 0; }
+    #painel { position: fixed; top: 8px; left: 8px; max-width: 360px; max-height: 90vh; overflow: auto; background: #000a; padding: 8px 10px; border-radius: 6px; }
+    #painel button { margin: 2px; }
+  </style>
+</head>
+<body>
+  <div id="cena"></div>
+  <div id="painel"><strong>{{PROJETO}}</strong> <span id="status">carregando asset_manifest.json...</span><div id="audio"></div></div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
