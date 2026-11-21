@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "modelo": "gemini-3.8-flash",
+  "url_base": "https://generativelanguage.googleapis.com",
+  "versao_api": "v1beta",
+  "temperatura": 0.2,
+  "max_tokens_saida": 8192,
+  "nivel_raciocinio": null,
+  "tentativas": 3,
+  "espera_entre_tentativas_s": 2.0,
+  "tempo_limite_requisicao_s": 120,
+  "modo_esquema": "responseJsonSchema",
+  "limite_sessao": {
+    "max_chamadas": 200,
+    "max_tokens_totais": 2000000,
+    "custo_maximo_usd": 5.0,
+    "preco_por_milhao_tokens_usd": { "entrada": 0.0, "saida": 0.0 }
+  },
+  "cache": { "ativo": true, "pasta": "cache/gemini" },
+  "observacoes": "Nome do modelo tirado dos exemplos do SDK oficial google-genai 3.6.1 (2026-11-20). Confira com 'cew gemini modelos'. Os precos ficam em 0 ate voce preencher os valores atuais; com preco 0 o limite de custo nao bloqueia, so os limites de chamadas e tokens."
+}

@@ -1,0 +1,5 @@
+# Dependencias Python com versao fixa (as mesmas de pyproject.toml).
+jsonschema==4.26.0
+referencing==0.37.0
+# Desenvolvimento e testes
+pytest==9.1.1

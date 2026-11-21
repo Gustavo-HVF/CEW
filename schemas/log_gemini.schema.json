@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/log_gemini.schema.json",
+  "title": "Uma linha de logs/gemini/<data>.jsonl (nunca contem a chave)",
+  "type": "object",
+  "required": ["ts", "tarefa", "modelo", "hash_entrada", "cache", "resultado"],
+  "properties": {
+    "ts": { "type": "string" },
+    "tarefa": { "type": "string" },
+    "modelo": { "type": "string" },
+    "hash_entrada": { "$ref": "comum.schema.json#/$defs/sha256" },
+    "cache": { "type": "boolean" },
+    "tentativa": { "type": "integer" },
+    "resultado": { "type": "string", "enum": ["ok", "resposta_invalida", "erro_http", "erro_rede", "limite_sessao", "falha"] },
+    "erro": { "type": ["string", "null"] },
+    "tokens": { "type": "object" },
+    "enviado": { "description": "o que foi enviado (texto e metadados das partes binarias), sem a chave" }
+  }
+}

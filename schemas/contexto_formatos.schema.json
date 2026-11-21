@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/contexto_formatos.schema.json",
+  "title": "analise/contexto.json - camada 4 da identificacao: quem carrega o arquivo (Ghidra/Craft Anything)",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["regras"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "regras": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["padrao", "formato_id", "evidencia"], "additionalProperties": false,
+        "properties": {
+          "padrao": { "type": "string", "description": "glob sobre o caminho logico (ex.: '*.dat', 'stage/*.bin')" },
+          "formato_id": { "$ref": "comum.schema.json#/$defs/id_formato" },
+          "confianca": { "type": "number", "minimum": 0, "maximum": 1 },
+          "evidencia": { "$ref": "comum.schema.json#/$defs/evidencia" }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

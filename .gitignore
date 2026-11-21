@@ -1,0 +1,25 @@
+# Segredos
+.env
+.env.*
+!.env.example
+
+# Gerados pelo CEW
+cache/
+logs/
+build/
+reports/*.json
+projects/*
+!projects/.gitkeep
+!projects/README.md
+ferramentas/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# Node
+node_modules/

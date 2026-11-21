@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/dados/dialogos.schema.json",
+  "title": "dados/dialogos*.json - textos em UTF-8 com codigos de controle como marcacoes documentadas",
+  "type": "object",
+  "allOf": [{ "$ref": "../comum.schema.json#/$defs/cabecalho" }],
+  "required": ["origem", "codificacao_original", "marcacoes", "linhas"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "origem": { "type": "string" },
+    "codificacao_original": { "type": "string" },
+    "marcacoes": {
+      "type": "object",
+      "description": "Mapa marcacao -> significado, ex.: '{nova_linha}': 'quebra de linha (0x0A)'",
+      "additionalProperties": { "type": "string" }
+    },
+    "linhas": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["id", "texto"], "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "falante_id": { "type": ["string", "null"] },
+          "texto": { "type": "string" },
+          "offset_original": { "type": "integer", "minimum": 0 }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

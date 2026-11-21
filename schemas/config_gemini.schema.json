@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/config_gemini.schema.json",
+  "title": "config/gemini.json",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["modelo", "url_base", "versao_api", "temperatura", "max_tokens_saida", "tentativas", "espera_entre_tentativas_s", "tempo_limite_requisicao_s", "modo_esquema", "limite_sessao", "cache"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "modelo": { "type": "string", "minLength": 1 },
+    "url_base": { "type": "string", "pattern": "^https://" },
+    "versao_api": { "type": "string", "enum": ["v1", "v1beta"] },
+    "temperatura": { "type": "number", "minimum": 0, "maximum": 2 },
+    "max_tokens_saida": { "type": "integer", "minimum": 16 },
+    "nivel_raciocinio": { "type": ["string", "null"], "enum": [null, "MINIMAL", "LOW", "MEDIUM", "HIGH"] },
+    "tentativas": { "type": "integer", "minimum": 1, "maximum": 10 },
+    "espera_entre_tentativas_s": { "type": "number", "minimum": 0 },
+    "tempo_limite_requisicao_s": { "type": "number", "minimum": 5 },
+    "modo_esquema": { "type": "string", "enum": ["responseJsonSchema", "responseSchema"] },
+    "limite_sessao": {
+      "type": "object",
+      "required": ["max_chamadas", "max_tokens_totais", "custo_maximo_usd", "preco_por_milhao_tokens_usd"],
+      "additionalProperties": false,
+      "properties": {
+        "max_chamadas": { "type": "integer", "minimum": 1 },
+        "max_tokens_totais": { "type": "integer", "minimum": 1 },
+        "custo_maximo_usd": { "type": "number", "minimum": 0 },
+        "preco_por_milhao_tokens_usd": {
+          "type": "object", "required": ["entrada", "saida"], "additionalProperties": false,
+          "properties": { "entrada": { "type": "number", "minimum": 0 }, "saida": { "type": "number", "minimum": 0 } }
+        }
+      }
+    },
+    "cache": {
+      "type": "object", "required": ["ativo", "pasta"], "additionalProperties": false,
+      "properties": { "ativo": { "type": "boolean" }, "pasta": { "type": "string" } }
+    },
+    "observacoes": { "type": "string" }
+  },
+  "additionalProperties": false
+}

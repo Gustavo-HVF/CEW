@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/gemini/tarefa_teste_conexao.schema.json",
+  "title": "Tarefa Gemini: teste de chave, modelo e cota",
+  "type": "object",
+  "required": ["schema_version", "gerado_por", "tarefa"],
+  "properties": {
+    "schema_version": { "$ref": "../comum.schema.json#/$defs/schema_version" },
+    "gerado_por": { "const": "cew" },
+    "tarefa": { "const": "teste_conexao" }
+  },
+  "additionalProperties": false
+}

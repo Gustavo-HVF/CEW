@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/gemini/tarefa_formato.schema.json",
+  "title": "Tarefa Gemini: analisar um formato desconhecido (so trechos relevantes, item 1.6)",
+  "type": "object",
+  "required": ["schema_version", "gerado_por", "tarefa", "id", "item_inventario", "caminho", "tamanho_bytes", "sha256", "amostras", "instrucoes"],
+  "properties": {
+    "schema_version": { "$ref": "../comum.schema.json#/$defs/schema_version" },
+    "gerado_por": { "const": "cew" },
+    "tarefa": { "const": "formato" },
+    "id": { "type": "string", "pattern": "^t_[0-9a-f]{16}$" },
+    "item_inventario": { "$ref": "../comum.schema.json#/$defs/id_inventario" },
+    "caminho": { "type": "string" },
+    "extensao": { "type": "string" },
+    "tamanho_bytes": { "type": "integer", "minimum": 0 },
+    "sha256": { "$ref": "../comum.schema.json#/$defs/sha256" },
+    "entropia_bits_por_byte": { "type": "number" },
+    "ordem_de_bytes_estimada": { "$ref": "../comum.schema.json#/$defs/ordem_de_bytes" },
+    "amostras": {
+      "type": "array", "minItems": 1, "maxItems": 8,
+      "items": {
+        "type": "object", "required": ["offset", "hex"], "additionalProperties": false,
+        "properties": { "offset": { "type": "integer", "minimum": 0 }, "hex": { "type": "string", "pattern": "^([0-9a-f]{2})*$", "maxLength": 1024 } }
+      }
+    },
+    "strings_ascii": { "type": "array", "items": { "type": "string", "maxLength": 120 }, "maxItems": 40 },
+    "irmaos_mesma_extensao": { "type": "integer", "minimum": 0 },
+    "formatos_parecidos": { "type": "array", "items": { "$ref": "../comum.schema.json#/$defs/id_formato" } },
+    "contexto_programa": {
+      "type": "array", "maxItems": 4,
+      "items": {
+        "type": "object", "required": ["funcao", "endereco", "pseudo_c"], "additionalProperties": false,
+        "properties": { "funcao": { "type": "string" }, "endereco": { "type": "string" }, "pseudo_c": { "type": "string", "maxLength": 6000 } }
+      }
+    },
+    "instrucoes": { "type": "string" }
+  },
+  "additionalProperties": false
+}

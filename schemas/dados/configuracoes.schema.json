@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/dados/configuracoes.schema.json",
+  "title": "dados/configuracoes.json - parametros do jogo, com a unidade no nome do campo",
+  "type": "object",
+  "allOf": [{ "$ref": "../comum.schema.json#/$defs/cabecalho" }],
+  "required": ["origem", "valores"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "origem": { "type": "string" },
+    "valores": {
+      "type": "object",
+      "description": "Nomes em snake_case terminando com a unidade quando houver: velocidade_m_s, gravidade_m_s2, tempo_s, angulo_graus.",
+      "propertyNames": { "pattern": "^[a-z][a-z0-9_]*$" },
+      "additionalProperties": { "type": ["number", "string", "boolean", "array", "object", "null"] }
+    },
+    "evidencias": {
+      "type": "object",
+      "additionalProperties": { "$ref": "../comum.schema.json#/$defs/evidencia" }
+    }
+  },
+  "additionalProperties": false
+}

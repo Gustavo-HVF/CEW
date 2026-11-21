@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/comum.schema.json",
+  "title": "Definicoes comuns do CEW",
+  "$defs": {
+    "schema_version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+$" },
+    "gerado_por": { "type": "string", "enum": ["cew", "cew-gemini-worker", "cew-ghidra", "cew-craft-anything", "cew-conversor"] },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "data_hora": { "type": "string", "format": "date-time" },
+    "data": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+    "caminho_relativo": { "type": "string", "minLength": 1, "not": { "pattern": "^(/|[A-Za-z]:|\\.\\./)" } },
+    "id_formato": { "type": "string", "pattern": "^[a-z0-9_]+(\\.[a-z0-9_]+)+$" },
+    "id_inventario": { "type": "string", "pattern": "^i_[0-9a-f]{16}$" },
+    "id_plano": { "type": "string", "pattern": "^p_[0-9a-f]{16}$" },
+    "id_asset": { "type": "string", "pattern": "^a_[0-9a-f]{16}$" },
+    "ordem_de_bytes": { "type": "string", "enum": ["big", "little", "nenhuma", "desconhecida"] },
+    "tipo_formato": {
+      "type": "string",
+      "enum": ["conteiner", "compressao", "modelo", "textura", "animacao", "audio", "video", "mapa", "dados", "codigo", "fonte", "imagem"]
+    },
+    "tipo_asset": { "type": "string", "enum": ["modelo", "textura", "animacao", "audio", "video", "mapa", "dados", "fonte", "outro"] },
+    "etapa": {
+      "type": "string",
+      "enum": ["ambiente", "alvo", "inventario", "engenharia", "conversao", "motor", "reconstrucao", "verificacao", "pronto"]
+    },
+    "cabecalho": {
+      "type": "object",
+      "required": ["schema_version", "gerado_por"],
+      "properties": {
+        "schema_version": { "$ref": "#/$defs/schema_version" },
+        "gerado_por": { "$ref": "#/$defs/gerado_por" }
+      }
+    },
+    "evidencia": {
+      "type": "object",
+      "description": "De onde vem uma afirmacao: endereco/funcao/pseudocodigo (Ghidra/Craft Anything) ou offset de arquivo.",
+      "required": ["fonte"],
+      "additionalProperties": false,
+      "properties": {
+        "fonte": { "type": "string", "enum": ["ghidra", "craft_anything", "arquivo", "documentacao", "gemini", "manual"] },
+        "endereco": { "type": "string", "pattern": "^(0x)?[0-9a-fA-F]+$" },
+        "funcao": { "type": "string" },
+        "trecho_pseudocodigo": { "type": "string", "maxLength": 4000 },
+        "arquivo": { "type": "string" },
+        "offset": { "type": "integer", "minimum": 0 },
+        "url": { "type": "string" },
+        "nota": { "type": "string" }
+      }
+    }
+  }
+}

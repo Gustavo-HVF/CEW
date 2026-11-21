@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "craft_anything": {
+    "repositorio_https": "https://github.com/storytold/craft-anything",
+    "repositorio_ssh": "git@github.com:storytold/craft-anything.git",
+    "ref": "44c89badd69c76eca7fd79315263a9ae80b5770f",
+    "versao": "0.6.1",
+    "binario_cli": "craft-anything-cli",
+    "verificado_em": "2026-11-20",
+    "observacoes": "Commit lido em 2026-11-20 (workspace 0.6.1, rust-version 1.97). Comandos usados pelo CEW conferidos em apps/craft-anything-cli/src/main.rs."
+  },
+  "ghidra": {
+    "versao": "12.1.4",
+    "tag": "Ghidra_12.1.4_build",
+    "arquivo": "ghidra_12.1.4_PUBLIC_20260921.zip",
+    "url": "https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_12.1.4_build/ghidra_12.1.4_PUBLIC_20260921.zip",
+    "sha256": "ddac49f903da9d5bac833e5cc79395098b9c33cfd3279be5f31bd00387d2d4db",
+    "java_minimo": 21,
+    "verificado_em": "2026-11-20",
+    "observacoes": "Ghidra/application.properties da tag 12.1.4 exige application.java.min=21; a tag 12.2 exige 25. Craft Anything documenta execucoes reais com 12.1.4 + Temurin 21."
+  },
+  "rust": { "minimo": "1.97" },
+  "python": { "minimo": "3.10" },
+  "node": { "minimo": "20" },
+  "java": { "minimo": 21 }
+}

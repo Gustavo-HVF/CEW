@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/cew_projeto.schema.json",
+  "title": "projects/<nome>/cew.json - liga a estrutura do Craft Anything as pastas do CEW",
+  "description": "craft.json pertence ao Craft Anything (struct Manifest versionada); campos desconhecidos nao sobrevivem a um salvamento dele, entao os caminhos relativos do CEW ficam aqui.",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["projeto", "craft_anything", "caminhos"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "projeto": { "type": "string" },
+    "criado_em": { "$ref": "comum.schema.json#/$defs/data_hora" },
+    "craft_anything": {
+      "type": "object", "required": ["manifesto", "pastas"], "additionalProperties": false,
+      "properties": {
+        "manifesto": { "type": "string", "const": "craft.json" },
+        "pastas": { "type": "array", "items": { "type": "string" } },
+        "investigacao": { "type": "string" },
+        "modo": { "type": "string", "enum": ["deep", "clean-room"] }
+      }
+    },
+    "caminhos": {
+      "type": "object", "additionalProperties": { "$ref": "comum.schema.json#/$defs/caminho_relativo" }
+    }
+  },
+  "additionalProperties": false
+}

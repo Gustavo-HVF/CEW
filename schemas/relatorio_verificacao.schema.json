@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/relatorio_verificacao.schema.json",
+  "title": "relatorio_verificacao.json - resultados da etapa Verificar (item 8)",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["projeto", "gerado_em", "aprovado", "itens"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "projeto": { "type": "string" },
+    "gerado_em": { "$ref": "comum.schema.json#/$defs/data_hora" },
+    "aprovado": { "type": "boolean", "description": "true so se todo item obrigatorio foi aprovado" },
+    "resumo": { "type": "object", "additionalProperties": { "type": "integer" } },
+    "itens": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "categoria", "alvo", "obrigatorio", "aprovado", "detalhes"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "categoria": { "type": "string", "enum": ["esquema", "conversor", "determinismo", "modelo", "textura", "audio", "build_web", "navegador", "comparacao_visual", "segunda_opiniao_gemini"] },
+          "alvo": { "type": "string" },
+          "obrigatorio": { "type": "boolean" },
+          "aprovado": { "type": "boolean" },
+          "pulado": { "type": "boolean" },
+          "detalhes": { "type": "string" },
+          "metricas": { "type": "object" }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

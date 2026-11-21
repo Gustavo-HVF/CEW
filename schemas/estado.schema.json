@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/estado.schema.json",
+  "title": "estado.json - etapa atual e o que ja foi feito (para retomar)",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["projeto", "etapa_atual", "etapas", "alvo", "motor_escolhido", "historico"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "projeto": { "type": "string" },
+    "criado_em": { "$ref": "comum.schema.json#/$defs/data_hora" },
+    "atualizado_em": { "$ref": "comum.schema.json#/$defs/data_hora" },
+    "etapa_atual": { "$ref": "comum.schema.json#/$defs/etapa" },
+    "fase_craft_anything": { "type": "string", "enum": ["estudar", "construir", "verificar", "pronto"] },
+    "etapas": {
+      "type": "object",
+      "propertyNames": { "$ref": "comum.schema.json#/$defs/etapa" },
+      "additionalProperties": {
+        "type": "object", "required": ["estado"], "additionalProperties": false,
+        "properties": {
+          "estado": { "type": "string", "enum": ["pendente", "em_andamento", "concluida", "erro", "bloqueada"] },
+          "iniciada_em": { "$ref": "comum.schema.json#/$defs/data_hora" },
+          "concluida_em": { "$ref": "comum.schema.json#/$defs/data_hora" },
+          "saidas": { "type": "array", "items": { "type": "string" } },
+          "mensagem": { "type": "string" },
+          "criterio_saida": { "type": "string" }
+        }
+      }
+    },
+    "alvo": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object", "required": ["caminho", "tipo"], "additionalProperties": false,
+          "properties": { "caminho": { "type": "string" }, "tipo": { "type": "string", "enum": ["arquivo", "pasta"] }, "selecionado_em": { "$ref": "comum.schema.json#/$defs/data_hora" } }
+        }
+      ]
+    },
+    "motor_escolhido": { "type": ["string", "null"] },
+    "historico": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["ts", "etapa", "evento"], "additionalProperties": false,
+        "properties": { "ts": { "$ref": "comum.schema.json#/$defs/data_hora" }, "etapa": { "type": "string" }, "evento": { "type": "string" }, "dry_run": { "type": "boolean" } }
+      }
+    }
+  },
+  "additionalProperties": false
+}

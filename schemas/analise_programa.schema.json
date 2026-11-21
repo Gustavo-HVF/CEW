@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/analise_programa.schema.json",
+  "title": "analise/<programa>.json - exportacao do Ghidra headless (funcoes, strings, grafo de chamadas, pseudo-C)",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["programa", "ferramenta", "funcoes", "strings", "chamadas"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "gerado_em": { "type": "string" },
+    "programa": {
+      "type": "object", "required": ["nome"],
+      "properties": {
+        "nome": { "type": "string" }, "sha256": { "type": "string" }, "linguagem": { "type": "string" },
+        "compilador": { "type": "string" }, "formato": { "type": "string" }, "endereco_base": { "type": "string" }
+      }
+    },
+    "ferramenta": {
+      "type": "object", "required": ["nome", "versao"],
+      "properties": { "nome": { "type": "string" }, "versao": { "type": "string" }, "script": { "type": "string" } }
+    },
+    "limites": { "type": "object" },
+    "funcoes": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["nome", "endereco"],
+        "properties": {
+          "nome": { "type": "string" }, "endereco": { "type": "string" }, "tamanho_bytes": { "type": "integer" },
+          "assinatura": { "type": "string" }, "convencao": { "type": "string" }, "externa": { "type": "boolean" },
+          "thunk": { "type": "boolean" }, "pseudo_c": { "type": ["string", "null"] }, "erro_decompilacao": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "strings": {
+      "type": "array",
+      "items": { "type": "object", "required": ["endereco", "valor"], "properties": { "endereco": { "type": "string" }, "valor": { "type": "string" }, "tipo": { "type": "string" } } }
+    },
+    "chamadas": {
+      "type": "array",
+      "items": { "type": "object", "required": ["de", "para"], "properties": { "de": { "type": "string" }, "para": { "type": "string" } } }
+    }
+  }
+}

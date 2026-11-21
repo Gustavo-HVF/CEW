@@ -1,0 +1,19 @@
+{
+  "name": "cew-ferramentas-web",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Ferramentas Node do CEW: validacao dos JSON com ajv e validacao/otimizacao de glTF.",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "validar-esquemas": "node tests/js/validar_esquemas.mjs",
+    "validar-gltf": "node tests/js/validar_gltf.mjs",
+    "test": "node tests/js/validar_esquemas.mjs && node tests/js/validar_gltf.mjs"
+  },
+  "devDependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "gltf-validator": "2.0.0-dev.3.10",
+    "@gltf-transform/cli": "4.5.1"
+  }
+}

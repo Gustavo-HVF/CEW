@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/gemini/tarefa_analise_funcao.schema.json",
+  "title": "Tarefa Gemini: explicar o papel de uma funcao a partir do pseudo-C (lote)",
+  "type": "object",
+  "required": ["schema_version", "gerado_por", "tarefa", "id", "programa", "funcao", "endereco", "pseudo_c"],
+  "properties": {
+    "schema_version": { "$ref": "../comum.schema.json#/$defs/schema_version" },
+    "gerado_por": { "const": "cew" },
+    "tarefa": { "const": "analise_funcao" },
+    "id": { "type": "string" },
+    "programa": { "type": "string" },
+    "funcao": { "type": "string" },
+    "endereco": { "type": "string" },
+    "pseudo_c": { "type": "string", "maxLength": 12000 },
+    "chamadas": { "type": "array", "items": { "type": "string" }, "maxItems": 50 },
+    "strings_proximas": { "type": "array", "items": { "type": "string" }, "maxItems": 50 },
+    "pergunta": { "type": "string" }
+  },
+  "additionalProperties": false
+}

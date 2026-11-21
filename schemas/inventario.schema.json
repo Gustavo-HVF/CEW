@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/inventario.schema.json",
+  "title": "inventario.json - um item por arquivo encontrado (etapa 3)",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["projeto", "alvo", "resumo", "itens"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "gerado_em": { "$ref": "comum.schema.json#/$defs/data_hora" },
+    "projeto": { "type": "string" },
+    "alvo": {
+      "type": "object", "required": ["caminho", "tipo"], "additionalProperties": false,
+      "properties": {
+        "caminho": { "type": "string" },
+        "tipo": { "type": "string", "enum": ["arquivo", "pasta"] },
+        "sha256": { "$ref": "comum.schema.json#/$defs/sha256" }
+      }
+    },
+    "limites": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "profundidade_maxima": { "type": "integer" },
+        "bytes_extraidos_maximo": { "type": "integer" },
+        "arquivos_maximo": { "type": "integer" }
+      }
+    },
+    "resumo": {
+      "type": "object", "required": ["total", "identificados", "desconhecidos", "compactados"], "additionalProperties": false,
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "identificados": { "type": "integer", "minimum": 0 },
+        "desconhecidos": { "type": "integer", "minimum": 0 },
+        "compactados": { "type": "integer", "minimum": 0 },
+        "bytes_total": { "type": "integer", "minimum": 0 },
+        "por_formato": { "type": "object", "additionalProperties": { "type": "integer" } }
+      }
+    },
+    "itens": { "type": "array", "items": { "$ref": "#/$defs/item" } }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "item": {
+      "type": "object",
+      "required": ["id", "caminho", "caminho_no_disco", "pai", "profundidade", "tamanho_bytes", "sha256", "assinatura_hex", "ordem_de_bytes", "entropia_bits_por_byte", "compressao", "formato", "estado"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "comum.schema.json#/$defs/id_inventario" },
+        "caminho": { "type": "string", "description": "Caminho logico com '/' e '!/' entre conteiners." },
+        "caminho_no_disco": { "type": "string", "description": "Onde ler os bytes: relativo ao alvo (origem alvo) ou ao projeto (origem extraido)." },
+        "origem": { "type": "string", "enum": ["alvo", "extraido"] },
+        "pai": { "anyOf": [{ "$ref": "comum.schema.json#/$defs/id_inventario" }, { "type": "null" }] },
+        "profundidade": { "type": "integer", "minimum": 0 },
+        "tamanho_bytes": { "type": "integer", "minimum": 0 },
+        "sha256": { "$ref": "comum.schema.json#/$defs/sha256" },
+        "assinatura_hex": { "type": "string", "pattern": "^([0-9a-f]{2}){0,16}$" },
+        "assinatura_texto": { "type": "string" },
+        "ordem_de_bytes": { "$ref": "comum.schema.json#/$defs/ordem_de_bytes" },
+        "entropia_bits_por_byte": { "type": "number", "minimum": 0, "maximum": 8 },
+        "compressao": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object", "required": ["algoritmo", "confianca"], "additionalProperties": false,
+              "properties": {
+                "algoritmo": { "type": "string" },
+                "confianca": { "type": "number", "minimum": 0, "maximum": 1 },
+                "tamanho_descompactado": { "type": ["integer", "null"] },
+                "descompactado_em": { "anyOf": [{ "$ref": "comum.schema.json#/$defs/id_inventario" }, { "type": "null" }] }
+              }
+            }
+          ]
+        },
+        "formato": {
+          "type": "object",
+          "required": ["id", "camada", "confianca"],
+          "additionalProperties": false,
+          "properties": {
+            "id": { "anyOf": [{ "$ref": "comum.schema.json#/$defs/id_formato" }, { "type": "null" }] },
+            "empresa_ou_motor": { "type": ["string", "null"] },
+            "tipo": { "anyOf": [{ "$ref": "comum.schema.json#/$defs/tipo_formato" }, { "type": "null" }] },
+            "camada": { "type": "string", "enum": ["assinatura", "extensao", "estrutura", "contexto", "gemini", "nenhuma"] },
+            "confianca": { "type": "number", "minimum": 0, "maximum": 1 },
+            "candidatos": { "type": "array", "items": { "$ref": "comum.schema.json#/$defs/id_formato" } },
+            "evidencia": { "type": "string" }
+          }
+        },
+        "estado": { "type": "string", "enum": ["identificado", "desconhecido", "compactado"] },
+        "extraido": { "type": "boolean", "description": "Conteiner ja aberto; os filhos apontam para este item em 'pai'." },
+        "observacoes": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

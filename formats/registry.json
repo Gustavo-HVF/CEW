@@ -1,0 +1,3387 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "observacoes": "Semeado em 2026-11-20. 'a_verificar' = assinatura e ferramenta de referencia ainda nao conferidas contra arquivos reais. 'fixtures_sinteticas' = conversor testado com amostra montada pela especificacao publica. Repositorios das ferramentas confirmados com git ls-remote em 2026-11-20.",
+  "formatos": [
+    {
+      "id": "nintendo.yaz0",
+      "empresa_ou_motor": "Nintendo (GameCube/Wii/Switch)",
+      "extensoes": [
+        ".szs",
+        ".yaz0",
+        ".carc"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "59617a30",
+        "texto": "Yaz0"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "compressao",
+      "contem": [
+        "nintendo.u8",
+        "nintendo.rarc",
+        "nintendo.sarc"
+      ],
+      "compressao_comum": [],
+      "destino_web": {
+        "saida": "conteudo descompactado"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "oead",
+          "url": "https://github.com/zeldamods/oead",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "GCFT",
+          "url": "https://github.com/LagoLunatic/GCFT",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": "converters/nintendo/yaz0_to_bin.py",
+      "documentacao": [
+        "http://www.amnoid.de/gc/yaz0.txt"
+      ],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "fixtures_sinteticas",
+        "verificado_em": "2026-11-20",
+        "por": "cew (IA principal)",
+        "evidencia": "conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia"
+      },
+      "observacoes": "Comum em .szs (U8/RARC no Wii, SARC no Switch)."
+    },
+    {
+      "id": "nintendo.yay0",
+      "empresa_ou_motor": "Nintendo (N64/GameCube)",
+      "extensoes": [
+        ".yay0",
+        ".szp"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "59617930",
+        "texto": "Yay0"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "compressao",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "saida": "conteudo descompactado"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "GCFT",
+          "url": "https://github.com/LagoLunatic/GCFT",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "Descompactador em converters/comum/compressao.py (yay0_descompactar), ainda sem conversor dedicado nem fixture."
+    },
+    {
+      "id": "nintendo.lz10",
+      "empresa_ou_motor": "Nintendo (GBA/DS)",
+      "extensoes": [
+        ".lz",
+        ".lz77"
+      ],
+      "assinatura": null,
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "compressao",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "saida": "conteudo descompactado"
+      },
+      "ferramentas_conhecidas": [],
+      "conversor": null,
+      "documentacao": [
+        "https://problemkaputt.de/gbatek.htm"
+      ],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "Assinatura fraca (byte 0x10 + tamanho); detectado por converters/comum/compressao.detectar com confianca baixa."
+    },
+    {
+      "id": "nintendo.u8",
+      "empresa_ou_motor": "Nintendo (Wii/GameCube)",
+      "extensoes": [
+        ".arc",
+        ".u8"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "55aa382d",
+        "texto": null
+      },
+      "verificador_estrutura": "u8_arc",
+      "ordem_de_bytes": "big",
+      "tipo": "conteiner",
+      "contem": [],
+      "compressao_comum": [
+        "yaz0"
+      ],
+      "destino_web": {
+        "saida": "pasta"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "GCFT",
+          "url": "https://github.com/LagoLunatic/GCFT",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "BrawlCrate",
+          "url": "https://github.com/soopercool101/BrawlCrate",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": "converters/nintendo/u8_to_dir.py",
+      "documentacao": [
+        "https://wiibrew.org/wiki/U8_archive"
+      ],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "fixtures_sinteticas",
+        "verificado_em": "2026-11-20",
+        "por": "cew (IA principal)",
+        "evidencia": "conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "nintendo.rarc",
+      "empresa_ou_motor": "Nintendo (GameCube/Wii, J3D)",
+      "extensoes": [
+        ".arc",
+        ".rarc"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "52415243",
+        "texto": "RARC"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "conteiner",
+      "contem": [],
+      "compressao_comum": [
+        "yaz0"
+      ],
+      "destino_web": {
+        "saida": "pasta"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "GCFT",
+          "url": "https://github.com/LagoLunatic/GCFT",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "Sem conversor ainda; candidato a tarefa do Gemini + revisao."
+    },
+    {
+      "id": "nintendo.sarc",
+      "empresa_ou_motor": "Nintendo (Wii U/3DS/Switch)",
+      "extensoes": [
+        ".sarc",
+        ".pack",
+        ".bars",
+        ".blarc"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "53415243",
+        "texto": "SARC"
+      },
+      "verificador_estrutura": "sarc",
+      "ordem_de_bytes": "big",
+      "tipo": "conteiner",
+      "contem": [],
+      "compressao_comum": [
+        "yaz0",
+        "zstd"
+      ],
+      "destino_web": {
+        "saida": "pasta"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "oead",
+          "url": "https://github.com/zeldamods/oead",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "Switch Toolbox",
+          "url": "https://github.com/KillzXGaming/Switch-Toolbox",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": "converters/nintendo/sarc_to_dir.py",
+      "documentacao": [
+        "https://zeldamods.org/wiki/SARC"
+      ],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "fixtures_sinteticas",
+        "verificado_em": "2026-11-20",
+        "por": "cew (IA principal)",
+        "evidencia": "conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia"
+      },
+      "observacoes": "Ordem de bytes pelo BOM em 0x06 (FEFF big, FFFE little)."
+    },
+    {
+      "id": "nintendo.nw4r.brres",
+      "empresa_ou_motor": "Nintendo (NW4R / Wii)",
+      "extensoes": [
+        ".brres"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "62726573",
+        "texto": "bres"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "conteiner",
+      "contem": [
+        "nintendo.nw4r.mdl0",
+        "nintendo.nw4r.tex0",
+        "nintendo.nw4r.chr0"
+      ],
+      "compressao_comum": [
+        "yaz0"
+      ],
+      "destino_web": {
+        "modelo": "glb",
+        "textura": "png|ktx2",
+        "animacao": "glb"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "BrawlCrate",
+          "url": "https://github.com/soopercool101/BrawlCrate",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "noclip.website",
+          "url": "https://github.com/magcius/noclip.website",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [
+        "https://wiki.tockdom.com/wiki/BRRES_(File_Format)"
+      ],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "nintendo.nw4r.mdl0",
+      "empresa_ou_motor": "Nintendo (NW4R / Wii)",
+      "extensoes": [
+        ".mdl0"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "4d444c30",
+        "texto": "MDL0"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "modelo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "modelo": "glb"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "BrawlCrate",
+          "url": "https://github.com/soopercool101/BrawlCrate",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [
+        "https://wiki.tockdom.com/wiki/MDL0_(File_Format)"
+      ],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "nintendo.nw4r.tex0",
+      "empresa_ou_motor": "Nintendo (NW4R / Wii)",
+      "extensoes": [
+        ".tex0"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "54455830",
+        "texto": "TEX0"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "textura",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "textura": "png|ktx2"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "BrawlCrate",
+          "url": "https://github.com/soopercool101/BrawlCrate",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [
+        "https://wiki.tockdom.com/wiki/TEX0_(File_Format)"
+      ],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "Usa os mesmos formatos GX do TPL (converters/comum/texturas.py)."
+    },
+    {
+      "id": "nintendo.nw4r.chr0",
+      "empresa_ou_motor": "Nintendo (NW4R / Wii)",
+      "extensoes": [
+        ".chr0"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "43485230",
+        "texto": "CHR0"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "animacao",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "animacao": "glb"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "BrawlCrate",
+          "url": "https://github.com/soopercool101/BrawlCrate",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "nintendo.j3d.bmd",
+      "empresa_ou_motor": "Nintendo (J3D / GameCube)",
+      "extensoes": [
+        ".bmd"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "4a334432626d6433",
+        "texto": "J3D2bmd3"
+      },
+      "assinaturas_alternativas": [
+        {
+          "offset": 0,
+          "bytes_hex": "4a334432626d6432",
+          "texto": "J3D2bmd2"
+        }
+      ],
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "modelo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "modelo": "glb"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "SuperBMD",
+          "url": "https://github.com/Sage-of-Mirrors/SuperBMD",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "noclip.website",
+          "url": "https://github.com/magcius/noclip.website",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "nintendo.j3d.bdl",
+      "empresa_ou_motor": "Nintendo (J3D / GameCube/Wii)",
+      "extensoes": [
+        ".bdl"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "4a33443262646c34",
+        "texto": "J3D2bdl4"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "modelo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "modelo": "glb"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "SuperBMD",
+          "url": "https://github.com/Sage-of-Mirrors/SuperBMD",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "noclip.website",
+          "url": "https://github.com/magcius/noclip.website",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "nintendo.bfres",
+      "empresa_ou_motor": "Nintendo (Wii U/Switch)",
+      "extensoes": [
+        ".bfres"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "46524553",
+        "texto": "FRES"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "conteiner",
+      "contem": [],
+      "compressao_comum": [
+        "yaz0",
+        "zstd"
+      ],
+      "destino_web": {
+        "modelo": "glb",
+        "textura": "png|ktx2"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Switch Toolbox",
+          "url": "https://github.com/KillzXGaming/Switch-Toolbox",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "Wii U big-endian; Switch little-endian com 'FRES    ' (a verificar)."
+    },
+    {
+      "id": "nintendo.gx.tpl",
+      "empresa_ou_motor": "Nintendo (GameCube/Wii)",
+      "extensoes": [
+        ".tpl"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "0020af30",
+        "texto": null
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "textura",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "textura": "png|ktx2"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "BrawlCrate",
+          "url": "https://github.com/soopercool101/BrawlCrate",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "GCFT",
+          "url": "https://github.com/LagoLunatic/GCFT",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": "converters/nintendo/tpl_to_png.py",
+      "documentacao": [
+        "https://wiki.tockdom.com/wiki/TPL_(File_Format)"
+      ],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "fixtures_sinteticas",
+        "verificado_em": "2026-11-20",
+        "por": "cew (IA principal)",
+        "evidencia": "conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "nintendo.j3d.bti",
+      "empresa_ou_motor": "Nintendo (J3D / GameCube)",
+      "extensoes": [
+        ".bti"
+      ],
+      "assinatura": null,
+      "verificador_estrutura": "gx_bti",
+      "ordem_de_bytes": "big",
+      "tipo": "textura",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "textura": "png|ktx2"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "GCFT",
+          "url": "https://github.com/LagoLunatic/GCFT",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "SuperBMD",
+          "url": "https://github.com/Sage-of-Mirrors/SuperBMD",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [
+        "https://wiki.tockdom.com/wiki/BTI_(File_Format)"
+      ],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "Sem assinatura: identificado por extensao + estrutura do cabecalho de 0x20 bytes."
+    },
+    {
+      "id": "nintendo.bntx",
+      "empresa_ou_motor": "Nintendo (Switch)",
+      "extensoes": [
+        ".bntx"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "424e5458",
+        "texto": "BNTX"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "textura",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "textura": "png|ktx2"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Switch Toolbox",
+          "url": "https://github.com/KillzXGaming/Switch-Toolbox",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "Texturas com swizzle de bloco (Tegra X1)."
+    },
+    {
+      "id": "nintendo.brstm",
+      "empresa_ou_motor": "Nintendo (Wii)",
+      "extensoes": [
+        ".brstm"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "5253544d",
+        "texto": "RSTM"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "audio",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "audio": "ogg"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "vgmstream",
+          "url": "https://github.com/vgmstream/vgmstream",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "nintendo.bcstm",
+      "empresa_ou_motor": "Nintendo (3DS)",
+      "extensoes": [
+        ".bcstm"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "4353544d",
+        "texto": "CSTM"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "audio",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "audio": "ogg"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "vgmstream",
+          "url": "https://github.com/vgmstream/vgmstream",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "nintendo.bfstm",
+      "empresa_ou_motor": "Nintendo (Wii U/Switch)",
+      "extensoes": [
+        ".bfstm"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "4653544d",
+        "texto": "FSTM"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "audio",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "audio": "ogg"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "vgmstream",
+          "url": "https://github.com/vgmstream/vgmstream",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "nintendo.brsar",
+      "empresa_ou_motor": "Nintendo (Wii)",
+      "extensoes": [
+        ".brsar"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "52534152",
+        "texto": "RSAR"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "conteiner",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "audio": "ogg|wav"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "vgmstream",
+          "url": "https://github.com/vgmstream/vgmstream",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "sony.psx.tim",
+      "empresa_ou_motor": "Sony (PlayStation)",
+      "extensoes": [
+        ".tim"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "10000000",
+        "texto": null
+      },
+      "verificador_estrutura": "tim_psx",
+      "ordem_de_bytes": "little",
+      "tipo": "textura",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "textura": "png"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "jPSXdec",
+          "url": "https://github.com/m35/jpsxdec",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": "converters/sony/tim_to_png.py",
+      "documentacao": [
+        "https://psx-spx.consoledev.net/"
+      ],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "fixtures_sinteticas",
+        "verificado_em": "2026-11-20",
+        "por": "cew (IA principal)",
+        "evidencia": "conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia"
+      },
+      "observacoes": "Mesma assinatura que um chunk Clump do RenderWare (0x10): a estrutura desempata."
+    },
+    {
+      "id": "sony.ps2.tim2",
+      "empresa_ou_motor": "Sony (PlayStation 2/PSP)",
+      "extensoes": [
+        ".tm2",
+        ".tim2"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "54494d32",
+        "texto": "TIM2"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "textura",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "textura": "png"
+      },
+      "ferramentas_conhecidas": [],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "sony.psp.gim",
+      "empresa_ou_motor": "Sony (PSP/PS3)",
+      "extensoes": [
+        ".gim"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "4d49472e30302e31505350",
+        "texto": "MIG.00.1PSP"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "textura",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "textura": "png"
+      },
+      "ferramentas_conhecidas": [],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "Texturas com swizzle."
+    },
+    {
+      "id": "sony.vita.gxt",
+      "empresa_ou_motor": "Sony (PS Vita)",
+      "extensoes": [
+        ".gxt"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "47585400",
+        "texto": "GXT"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "textura",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "textura": "png|ktx2"
+      },
+      "ferramentas_conhecidas": [],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "sony.ps.vag",
+      "empresa_ou_motor": "Sony (PlayStation)",
+      "extensoes": [
+        ".vag"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "56414770",
+        "texto": "VAGp"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "audio",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "audio": "wav|ogg"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "vgmstream",
+          "url": "https://github.com/vgmstream/vgmstream",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": "converters/sony/vag_to_wav.py",
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "fixtures_sinteticas",
+        "verificado_em": "2026-11-20",
+        "por": "cew (IA principal)",
+        "evidencia": "conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia"
+      },
+      "observacoes": "PS-ADPCM; loop pelas flags dos quadros."
+    },
+    {
+      "id": "sony.atrac3",
+      "empresa_ou_motor": "Sony (PSP/PS3)",
+      "extensoes": [
+        ".at3"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "52494646",
+        "texto": "RIFF"
+      },
+      "verificador_estrutura": "wav_atrac3",
+      "ordem_de_bytes": "little",
+      "tipo": "audio",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "audio": "ogg"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "vgmstream",
+          "url": "https://github.com/vgmstream/vgmstream",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "FFmpeg",
+          "url": "https://github.com/FFmpeg/FFmpeg",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "sony.atrac9",
+      "empresa_ou_motor": "Sony (PS Vita/PS4)",
+      "extensoes": [
+        ".at9"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "52494646",
+        "texto": "RIFF"
+      },
+      "verificador_estrutura": "wav_atrac9",
+      "ordem_de_bytes": "little",
+      "tipo": "audio",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "audio": "ogg"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "vgmstream",
+          "url": "https://github.com/vgmstream/vgmstream",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "cri.cpk",
+      "empresa_ou_motor": "CRI Middleware",
+      "extensoes": [
+        ".cpk"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "43504b20",
+        "texto": "CPK "
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "conteiner",
+      "contem": [],
+      "compressao_comum": [
+        "crilayla"
+      ],
+      "destino_web": {
+        "saida": "pasta"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "CriPakTools",
+          "url": "https://github.com/esperknight/CriPakTools",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "PyCriCodecs",
+          "url": "https://github.com/Youjose/PyCriCodecs",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "cifrado_comum": true,
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "Tabelas @UTF podem vir mascaradas."
+    },
+    {
+      "id": "cri.adx",
+      "empresa_ou_motor": "CRI Middleware",
+      "extensoes": [
+        ".adx"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "8000",
+        "texto": null
+      },
+      "verificador_estrutura": "adx",
+      "ordem_de_bytes": "big",
+      "tipo": "audio",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "audio": "ogg"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "vgmstream",
+          "url": "https://github.com/vgmstream/vgmstream",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "PyCriCodecs",
+          "url": "https://github.com/Youjose/PyCriCodecs",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "cifrado_comum": true,
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "Confirmacao por '(c)CRI' antes do inicio dos dados."
+    },
+    {
+      "id": "cri.hca",
+      "empresa_ou_motor": "CRI Middleware",
+      "extensoes": [
+        ".hca"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "48434100",
+        "texto": "HCA"
+      },
+      "assinaturas_alternativas": [
+        {
+          "offset": 0,
+          "bytes_hex": "c8c3c100",
+          "texto": null
+        }
+      ],
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "audio",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "audio": "ogg"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "vgmstream",
+          "url": "https://github.com/vgmstream/vgmstream",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "PyCriCodecs",
+          "url": "https://github.com/Youjose/PyCriCodecs",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "cifrado_comum": true,
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "Cabecalho com bit alto ligado (C8 C3 C1) indica mascara/cifra."
+    },
+    {
+      "id": "cri.usm",
+      "empresa_ou_motor": "CRI Middleware",
+      "extensoes": [
+        ".usm"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "43524944",
+        "texto": "CRID"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "video",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "video": "webm|mp4"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "PyCriCodecs",
+          "url": "https://github.com/Youjose/PyCriCodecs",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "cifrado_comum": true,
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "audiokinetic.wwise.bnk",
+      "empresa_ou_motor": "Audiokinetic Wwise",
+      "extensoes": [
+        ".bnk"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "424b4844",
+        "texto": "BKHD"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "conteiner",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "audio": "ogg"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "wwiser",
+          "url": "https://github.com/bnnm/wwiser",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "vgmstream",
+          "url": "https://github.com/vgmstream/vgmstream",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "audiokinetic.wwise.wem",
+      "empresa_ou_motor": "Audiokinetic Wwise",
+      "extensoes": [
+        ".wem"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "52494646",
+        "texto": "RIFF"
+      },
+      "assinaturas_alternativas": [
+        {
+          "offset": 0,
+          "bytes_hex": "52494658",
+          "texto": "RIFX"
+        }
+      ],
+      "verificador_estrutura": "wav_wwise",
+      "ordem_de_bytes": "little",
+      "tipo": "audio",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "audio": "ogg"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "vgmstream",
+          "url": "https://github.com/vgmstream/vgmstream",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "Vorbis do Wwise usa codebooks proprios; decodificar com vgmstream."
+    },
+    {
+      "id": "fmod.fsb5",
+      "empresa_ou_motor": "FMOD",
+      "extensoes": [
+        ".fsb"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "46534235",
+        "texto": "FSB5"
+      },
+      "assinaturas_alternativas": [
+        {
+          "offset": 0,
+          "bytes_hex": "46534234",
+          "texto": "FSB4"
+        }
+      ],
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "conteiner",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "audio": "ogg"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "python-fsb5",
+          "url": "https://github.com/HearthSim/python-fsb5",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "vgmstream",
+          "url": "https://github.com/vgmstream/vgmstream",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "cifrado_comum": true,
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "fmod.studio.bank",
+      "empresa_ou_motor": "FMOD",
+      "extensoes": [
+        ".bank"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "52494646",
+        "texto": "RIFF"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "conteiner",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "audio": "ogg"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "vgmstream",
+          "url": "https://github.com/vgmstream/vgmstream",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "RIFF com forma 'FEV ' e FSB5 embutido (a verificar)."
+    },
+    {
+      "id": "unity.serializado",
+      "empresa_ou_motor": "Unity",
+      "extensoes": [
+        ".assets"
+      ],
+      "assinatura": null,
+      "verificador_estrutura": "unity_serializado",
+      "ordem_de_bytes": "big",
+      "tipo": "conteiner",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "modelo": "glb",
+        "textura": "png|ktx2",
+        "audio": "ogg"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Craft Anything",
+          "url": "https://github.com/storytold/craft-anything",
+          "verificado_em": "2026-11-20",
+          "nota": "game_pak_list, game_iostore_list, game_unity_list, game_unity_bundle_list, game_unity_asset_export, game_unreal_texture_export confirmados em docs/tools.md (commit 44c89ba)"
+        },
+        {
+          "nome": "AssetStudio",
+          "url": "https://github.com/Perfare/AssetStudio",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "UnityPy",
+          "url": "https://github.com/K0lb3/UnityPy",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "AssetRipper",
+          "url": "https://github.com/AssetRipper/AssetRipper",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "SerializedFile sem assinatura fixa; craft-anything-cli game-unity-list le o arquivo."
+    },
+    {
+      "id": "unity.assetbundle",
+      "empresa_ou_motor": "Unity",
+      "extensoes": [
+        ".bundle",
+        ".unity3d",
+        ".ab"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "556e6974794653",
+        "texto": "UnityFS"
+      },
+      "assinaturas_alternativas": [
+        {
+          "offset": 0,
+          "bytes_hex": "556e697479576562",
+          "texto": "UnityWeb"
+        },
+        {
+          "offset": 0,
+          "bytes_hex": "556e697479526177",
+          "texto": "UnityRaw"
+        }
+      ],
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "conteiner",
+      "contem": [],
+      "compressao_comum": [
+        "lz4",
+        "lzma"
+      ],
+      "destino_web": {
+        "saida": "pasta"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Craft Anything",
+          "url": "https://github.com/storytold/craft-anything",
+          "verificado_em": "2026-11-20",
+          "nota": "game_pak_list, game_iostore_list, game_unity_list, game_unity_bundle_list, game_unity_asset_export, game_unreal_texture_export confirmados em docs/tools.md (commit 44c89ba)"
+        },
+        {
+          "nome": "AssetStudio",
+          "url": "https://github.com/Perfare/AssetStudio",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "UnityPy",
+          "url": "https://github.com/K0lb3/UnityPy",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "unity.ress",
+      "empresa_ou_motor": "Unity",
+      "extensoes": [
+        ".ress",
+        ".resource"
+      ],
+      "assinatura": null,
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "nenhuma",
+      "tipo": "dados",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "saida": "bytes referenciados pelo .assets"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "AssetStudio",
+          "url": "https://github.com/Perfare/AssetStudio",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "Dados brutos de textura/audio referenciados por offset no SerializedFile."
+    },
+    {
+      "id": "epic.unreal.pak",
+      "empresa_ou_motor": "Epic Unreal Engine",
+      "extensoes": [
+        ".pak"
+      ],
+      "assinatura": {
+        "offset": -44,
+        "bytes_hex": "e1126f5a",
+        "texto": null
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "conteiner",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "saida": "pasta"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Craft Anything",
+          "url": "https://github.com/storytold/craft-anything",
+          "verificado_em": "2026-11-20",
+          "nota": "game_pak_list, game_iostore_list, game_unity_list, game_unity_bundle_list, game_unity_asset_export, game_unreal_texture_export confirmados em docs/tools.md (commit 44c89ba)"
+        },
+        {
+          "nome": "repak",
+          "url": "https://github.com/trumank/repak",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "FModel",
+          "url": "https://github.com/4sval/FModel",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "cifrado_comum": true,
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "Assinatura 0x5A6F12E1 no rodape (offset depende da versao). Indice cifrado com AES nao e decifrado pelo CEW."
+    },
+    {
+      "id": "epic.unreal.utoc",
+      "empresa_ou_motor": "Epic Unreal Engine",
+      "extensoes": [
+        ".utoc"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "2d3d3d2d2d3d3d2d2d3d3d2d2d3d3d2d",
+        "texto": "-==--==--==--==-"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "conteiner",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "saida": "pasta"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Craft Anything",
+          "url": "https://github.com/storytold/craft-anything",
+          "verificado_em": "2026-11-20",
+          "nota": "game_pak_list, game_iostore_list, game_unity_list, game_unity_bundle_list, game_unity_asset_export, game_unreal_texture_export confirmados em docs/tools.md (commit 44c89ba)"
+        },
+        {
+          "nome": "FModel",
+          "url": "https://github.com/4sval/FModel",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "CUE4Parse",
+          "url": "https://github.com/FabianFG/CUE4Parse",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "cifrado_comum": true,
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "epic.unreal.ucas",
+      "empresa_ou_motor": "Epic Unreal Engine",
+      "extensoes": [
+        ".ucas"
+      ],
+      "assinatura": null,
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "dados",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "saida": "lido junto com o .utoc"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Craft Anything",
+          "url": "https://github.com/storytold/craft-anything",
+          "verificado_em": "2026-11-20",
+          "nota": "game_pak_list, game_iostore_list, game_unity_list, game_unity_bundle_list, game_unity_asset_export, game_unreal_texture_export confirmados em docs/tools.md (commit 44c89ba)"
+        },
+        {
+          "nome": "FModel",
+          "url": "https://github.com/4sval/FModel",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "epic.unreal.uasset",
+      "empresa_ou_motor": "Epic Unreal Engine",
+      "extensoes": [
+        ".uasset",
+        ".umap"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "c1832a9e",
+        "texto": null
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "dados",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "modelo": "glb",
+        "textura": "png|ktx2"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "FModel",
+          "url": "https://github.com/4sval/FModel",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "CUE4Parse",
+          "url": "https://github.com/FabianFG/CUE4Parse",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "valve.source.vpk",
+      "empresa_ou_motor": "Valve (Source)",
+      "extensoes": [
+        ".vpk"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "3412aa55",
+        "texto": null
+      },
+      "verificador_estrutura": "vpk",
+      "ordem_de_bytes": "little",
+      "tipo": "conteiner",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "saida": "pasta"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "vpk (Python)",
+          "url": "https://github.com/ValvePython/vpk",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "ValveResourceFormat",
+          "url": "https://github.com/ValveResourceFormat/ValveResourceFormat",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": "converters/valve/vpk_to_dir.py",
+      "documentacao": [
+        "https://developer.valvesoftware.com/wiki/VPK_(file_format)"
+      ],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "fixtures_sinteticas",
+        "verificado_em": "2026-11-20",
+        "por": "cew (IA principal)",
+        "evidencia": "conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "valve.source.mdl",
+      "empresa_ou_motor": "Valve (Source)",
+      "extensoes": [
+        ".mdl"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "49445354",
+        "texto": "IDST"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "modelo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "modelo": "glb"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Crowbar",
+          "url": "https://github.com/ZeqMacaw/Crowbar",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "Le junto com .vtx/.vvd."
+    },
+    {
+      "id": "valve.source.vvd",
+      "empresa_ou_motor": "Valve (Source)",
+      "extensoes": [
+        ".vvd"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "49445356",
+        "texto": "IDSV"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "modelo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "modelo": "glb"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Crowbar",
+          "url": "https://github.com/ZeqMacaw/Crowbar",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "valve.source.vtx",
+      "empresa_ou_motor": "Valve (Source)",
+      "extensoes": [
+        ".vtx",
+        ".dx90.vtx"
+      ],
+      "assinatura": null,
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "modelo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "modelo": "glb"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Crowbar",
+          "url": "https://github.com/ZeqMacaw/Crowbar",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "valve.source.vtf",
+      "empresa_ou_motor": "Valve (Source)",
+      "extensoes": [
+        ".vtf"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "56544600",
+        "texto": "VTF"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "textura",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "textura": "png|ktx2"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "VTFLib",
+          "url": "https://github.com/NeilJed/VTFLib",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "ValveResourceFormat",
+          "url": "https://github.com/ValveResourceFormat/ValveResourceFormat",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "valve.source.bsp",
+      "empresa_ou_motor": "Valve (Source)",
+      "extensoes": [
+        ".bsp"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "56425350",
+        "texto": "VBSP"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "mapa",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "mapa": "glb + json"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "ValveResourceFormat",
+          "url": "https://github.com/ValveResourceFormat/ValveResourceFormat",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "renderware.dff",
+      "empresa_ou_motor": "Criterion RenderWare",
+      "extensoes": [
+        ".dff"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "10000000",
+        "texto": null
+      },
+      "verificador_estrutura": "renderware_chunk",
+      "ordem_de_bytes": "little",
+      "tipo": "modelo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "modelo": "glb"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "DragonFF",
+          "url": "https://github.com/Parik27/DragonFF",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "librw",
+          "url": "https://github.com/aap/librw",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "Chunk Clump (0x10); mesma assinatura do TIM: estrutura desempata."
+    },
+    {
+      "id": "renderware.txd",
+      "empresa_ou_motor": "Criterion RenderWare",
+      "extensoes": [
+        ".txd"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "16000000",
+        "texto": null
+      },
+      "verificador_estrutura": "renderware_chunk",
+      "ordem_de_bytes": "little",
+      "tipo": "conteiner",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "textura": "png|ktx2"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "DragonFF",
+          "url": "https://github.com/Parik27/DragonFF",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "librw",
+          "url": "https://github.com/aap/librw",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "idtech.quake.pak",
+      "empresa_ou_motor": "id Software (Quake/Quake II)",
+      "extensoes": [
+        ".pak"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "5041434b",
+        "texto": "PACK"
+      },
+      "verificador_estrutura": "pak_quake",
+      "ordem_de_bytes": "little",
+      "tipo": "conteiner",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "saida": "pasta"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Quake II (codigo-fonte id Software)",
+          "url": "https://github.com/id-Software/Quake-2",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado em 2026-11-20; qcommon/qfiles.h define PACK e MD2 (IDP2, versao 8) (lido)"
+        },
+        {
+          "nome": "Quake (codigo-fonte id Software)",
+          "url": "https://github.com/id-Software/Quake",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado em 2026-11-20; WinQuake/bspfile.h define BSPVERSION 29 e 15 lumps (lido)"
+        }
+      ],
+      "conversor": "converters/idtech/pak_to_dir.py",
+      "documentacao": [
+        "https://github.com/id-Software/Quake-2/blob/master/qcommon/qfiles.h"
+      ],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "fixtures_sinteticas",
+        "verificado_em": "2026-11-20",
+        "por": "cew (IA principal)",
+        "evidencia": "conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia; estrutura conferida em qcommon/qfiles.h"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "idtech.quake.bsp",
+      "empresa_ou_motor": "id Software (Quake)",
+      "extensoes": [
+        ".bsp"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "1d000000",
+        "texto": null
+      },
+      "verificador_estrutura": "quake1_bsp",
+      "ordem_de_bytes": "little",
+      "tipo": "mapa",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "mapa": "glb + json"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Quake (codigo-fonte id Software)",
+          "url": "https://github.com/id-Software/Quake",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado em 2026-11-20; WinQuake/bspfile.h define BSPVERSION 29 e 15 lumps (lido)"
+        },
+        {
+          "nome": "ericw-tools",
+          "url": "https://github.com/ericwa/ericw-tools",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [
+        "https://github.com/id-Software/Quake/blob/master/WinQuake/bspfile.h"
+      ],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "BSPVERSION 29 com 15 lumps (bspfile.h)."
+    },
+    {
+      "id": "idtech.quake2.bsp",
+      "empresa_ou_motor": "id Software (Quake II)",
+      "extensoes": [
+        ".bsp"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "49425350",
+        "texto": "IBSP"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "mapa",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "mapa": "glb + json"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Quake II (codigo-fonte id Software)",
+          "url": "https://github.com/id-Software/Quake-2",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado em 2026-11-20; qcommon/qfiles.h define PACK e MD2 (IDP2, versao 8) (lido)"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "idtech.quake.mdl",
+      "empresa_ou_motor": "id Software (Quake)",
+      "extensoes": [
+        ".mdl"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "4944504f",
+        "texto": "IDPO"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "modelo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "modelo": "glb"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Quake (codigo-fonte id Software)",
+          "url": "https://github.com/id-Software/Quake",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado em 2026-11-20; WinQuake/bspfile.h define BSPVERSION 29 e 15 lumps (lido)"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "idtech.quake2.md2",
+      "empresa_ou_motor": "id Software (Quake II)",
+      "extensoes": [
+        ".md2"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "49445032",
+        "texto": "IDP2"
+      },
+      "verificador_estrutura": "md2",
+      "ordem_de_bytes": "little",
+      "tipo": "modelo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "modelo": "glb",
+        "animacao": "glb (morph targets)"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Quake II (codigo-fonte id Software)",
+          "url": "https://github.com/id-Software/Quake-2",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado em 2026-11-20; qcommon/qfiles.h define PACK e MD2 (IDP2, versao 8) (lido)"
+        }
+      ],
+      "conversor": "converters/idtech/md2_to_glb.py",
+      "documentacao": [
+        "https://github.com/id-Software/Quake-2/blob/master/qcommon/qfiles.h"
+      ],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "fixtures_sinteticas",
+        "verificado_em": "2026-11-20",
+        "por": "cew (IA principal)",
+        "evidencia": "conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia; estrutura conferida em qcommon/qfiles.h; GLB aprovado pelo glTF Validator 2.0.0-dev.3.10"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "idtech.quake3.md3",
+      "empresa_ou_motor": "id Software (Quake III)",
+      "extensoes": [
+        ".md3"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "49445033",
+        "texto": "IDP3"
+      },
+      "verificador_estrutura": "md3",
+      "ordem_de_bytes": "little",
+      "tipo": "modelo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "modelo": "glb"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Quake III Arena (codigo-fonte id Software)",
+          "url": "https://github.com/id-Software/Quake-III-Arena",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "idtech.quake.wad2",
+      "empresa_ou_motor": "id Software (Quake)",
+      "extensoes": [
+        ".wad"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "57414432",
+        "texto": "WAD2"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "conteiner",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "textura": "png"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Quake (codigo-fonte id Software)",
+          "url": "https://github.com/id-Software/Quake",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado em 2026-11-20; WinQuake/bspfile.h define BSPVERSION 29 e 15 lumps (lido)"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "idtech.quake3.pk3",
+      "empresa_ou_motor": "id Software (Quake III)",
+      "extensoes": [
+        ".pk3"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "504b0304",
+        "texto": "PK"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "conteiner",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "saida": "pasta"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Quake III Arena (codigo-fonte id Software)",
+          "url": "https://github.com/id-Software/Quake-III-Arena",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": "converters/generico/zip_to_dir.py",
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "PK3 e um ZIP."
+    },
+    {
+      "id": "generico.dds",
+      "empresa_ou_motor": "Microsoft DirectX",
+      "extensoes": [
+        ".dds"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "44445320",
+        "texto": "DDS "
+      },
+      "verificador_estrutura": "dds",
+      "ordem_de_bytes": "little",
+      "tipo": "textura",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "textura": "png|ktx2"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "DirectXTex",
+          "url": "https://github.com/microsoft/DirectXTex",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": "converters/generico/dds_to_png.py",
+      "documentacao": [
+        "https://learn.microsoft.com/windows/win32/direct3ddds/dx-graphics-dds-pguide"
+      ],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "fixtures_sinteticas",
+        "verificado_em": "2026-11-20",
+        "por": "cew (IA principal)",
+        "evidencia": "conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "generico.ktx",
+      "empresa_ou_motor": "Khronos",
+      "extensoes": [
+        ".ktx"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "ab4b5458203131bb0d0a1a0a",
+        "texto": null
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "nenhuma",
+      "tipo": "textura",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "textura": "ktx2"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "KTX-Software",
+          "url": "https://github.com/KhronosGroup/KTX-Software",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "generico.ktx2",
+      "empresa_ou_motor": "Khronos",
+      "extensoes": [
+        ".ktx2"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "ab4b5458203230bb0d0a1a0a",
+        "texto": null
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "nenhuma",
+      "tipo": "textura",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "textura": "ktx2"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "KTX-Software",
+          "url": "https://github.com/KhronosGroup/KTX-Software",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": "converters/generico/copiar_web.py",
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "Ja e formato web."
+    },
+    {
+      "id": "generico.tga",
+      "empresa_ou_motor": "Truevision",
+      "extensoes": [
+        ".tga"
+      ],
+      "assinatura": null,
+      "verificador_estrutura": "tga",
+      "ordem_de_bytes": "little",
+      "tipo": "textura",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "textura": "png"
+      },
+      "ferramentas_conhecidas": [],
+      "conversor": "converters/generico/tga_to_png.py",
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "fixtures_sinteticas",
+        "verificado_em": "2026-11-20",
+        "por": "cew (IA principal)",
+        "evidencia": "conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia"
+      },
+      "observacoes": "Sem assinatura no inicio; rodape TRUEVISION-XFILE na versao 2."
+    },
+    {
+      "id": "generico.wav",
+      "empresa_ou_motor": "Microsoft/IBM RIFF",
+      "extensoes": [
+        ".wav"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "52494646",
+        "texto": "RIFF"
+      },
+      "verificador_estrutura": "wav_pcm",
+      "ordem_de_bytes": "little",
+      "tipo": "audio",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "audio": "ogg (musica) | wav (efeito curto)"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "FFmpeg",
+          "url": "https://github.com/FFmpeg/FFmpeg",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": "converters/generico/wav_to_ogg.py",
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "fixtures_sinteticas",
+        "verificado_em": "2026-11-20",
+        "por": "cew (IA principal)",
+        "evidencia": "conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia; saida OGG deterministica com ffmpeg 6.1.1"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "generico.ogg",
+      "empresa_ou_motor": "Xiph.Org",
+      "extensoes": [
+        ".ogg",
+        ".oga"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "4f676753",
+        "texto": "OggS"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "nenhuma",
+      "tipo": "audio",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "audio": "ogg"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "FFmpeg",
+          "url": "https://github.com/FFmpeg/FFmpeg",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": "converters/generico/copiar_web.py",
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "generico.midi",
+      "empresa_ou_motor": "MIDI Manufacturers Association",
+      "extensoes": [
+        ".mid",
+        ".midi"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "4d546864",
+        "texto": "MThd"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "audio",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "audio": "mid + banco de sons | ogg renderizado"
+      },
+      "ferramentas_conhecidas": [],
+      "conversor": "converters/generico/copiar_web.py",
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "generico.mp3",
+      "empresa_ou_motor": "MPEG",
+      "extensoes": [
+        ".mp3"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "494433",
+        "texto": "ID3"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "nenhuma",
+      "tipo": "audio",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "audio": "mp3"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "FFmpeg",
+          "url": "https://github.com/FFmpeg/FFmpeg",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": "converters/generico/copiar_web.py",
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "generico.flac",
+      "empresa_ou_motor": "Xiph.Org",
+      "extensoes": [
+        ".flac"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "664c6143",
+        "texto": "fLaC"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "nenhuma",
+      "tipo": "audio",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "audio": "ogg"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "FFmpeg",
+          "url": "https://github.com/FFmpeg/FFmpeg",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "generico.png",
+      "empresa_ou_motor": "W3C/PNG",
+      "extensoes": [
+        ".png"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "89504e470d0a1a0a",
+        "texto": null
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "imagem",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "textura": "png"
+      },
+      "ferramentas_conhecidas": [],
+      "conversor": "converters/generico/copiar_web.py",
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "generico.jpeg",
+      "empresa_ou_motor": "JPEG",
+      "extensoes": [
+        ".jpg",
+        ".jpeg"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "ffd8ff",
+        "texto": null
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "imagem",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "textura": "jpg"
+      },
+      "ferramentas_conhecidas": [],
+      "conversor": "converters/generico/copiar_web.py",
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "generico.webp",
+      "empresa_ou_motor": "Google",
+      "extensoes": [
+        ".webp"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "52494646",
+        "texto": "RIFF"
+      },
+      "verificador_estrutura": "riff_webp",
+      "ordem_de_bytes": "little",
+      "tipo": "imagem",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "textura": "webp"
+      },
+      "ferramentas_conhecidas": [],
+      "conversor": "converters/generico/copiar_web.py",
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "generico.zip",
+      "empresa_ou_motor": "PKWARE",
+      "extensoes": [
+        ".zip",
+        ".apk",
+        ".ipa",
+        ".jar",
+        ".xapk"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "504b0304",
+        "texto": "PK"
+      },
+      "verificador_estrutura": "zip_local",
+      "ordem_de_bytes": "little",
+      "tipo": "conteiner",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "saida": "pasta"
+      },
+      "ferramentas_conhecidas": [],
+      "conversor": "converters/generico/zip_to_dir.py",
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "fixtures_sinteticas",
+        "verificado_em": "2026-11-20",
+        "por": "cew (IA principal)",
+        "evidencia": "conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "generico.json",
+      "empresa_ou_motor": "ECMA-404",
+      "extensoes": [
+        ".json"
+      ],
+      "assinatura": null,
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "nenhuma",
+      "tipo": "dados",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "dados": "json"
+      },
+      "ferramentas_conhecidas": [],
+      "conversor": "converters/generico/copiar_web.py",
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "generico.tabela_texto",
+      "empresa_ou_motor": "generico",
+      "extensoes": [
+        ".txt",
+        ".msg",
+        ".str"
+      ],
+      "assinatura": null,
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "nenhuma",
+      "tipo": "dados",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "dados": "json (dados/dialogos)"
+      },
+      "ferramentas_conhecidas": [],
+      "conversor": "converters/dados/texto_to_json.py",
+      "documentacao": [],
+      "confianca": "hipotese",
+      "verificacao": {
+        "estado": "fixtures_sinteticas",
+        "verificado_em": "2026-11-20",
+        "por": "cew (IA principal)",
+        "evidencia": "conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia"
+      },
+      "observacoes": "Atribuido por contexto (analise/contexto.json) ou manualmente: extensoes genericas nao bastam."
+    },
+    {
+      "id": "khronos.gltf.glb",
+      "empresa_ou_motor": "Khronos",
+      "extensoes": [
+        ".glb"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "676c5446",
+        "texto": "glTF"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "modelo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "modelo": "glb"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "glTF-Validator",
+          "url": "https://github.com/KhronosGroup/glTF-Validator",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": "converters/generico/copiar_web.py",
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "generico.elf",
+      "empresa_ou_motor": "Unix/System V",
+      "extensoes": [
+        ".elf",
+        ".so",
+        ".prx",
+        ".self"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "7f454c46",
+        "texto": null
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "codigo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "codigo": "analise (Ghidra/Craft Anything)"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Ghidra",
+          "url": "https://github.com/NationalSecurityAgency/ghidra",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "Craft Anything",
+          "url": "https://github.com/storytold/craft-anything",
+          "verificado_em": "2026-11-20",
+          "nota": "game_pak_list, game_iostore_list, game_unity_list, game_unity_bundle_list, game_unity_asset_export, game_unreal_texture_export confirmados em docs/tools.md (commit 44c89ba)"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "microsoft.pe",
+      "empresa_ou_motor": "Microsoft",
+      "extensoes": [
+        ".exe",
+        ".dll"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "4d5a",
+        "texto": "MZ"
+      },
+      "verificador_estrutura": "pe_windows",
+      "ordem_de_bytes": "little",
+      "tipo": "codigo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "codigo": "analise (Ghidra/Craft Anything)"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Ghidra",
+          "url": "https://github.com/NationalSecurityAgency/ghidra",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "Craft Anything",
+          "url": "https://github.com/storytold/craft-anything",
+          "verificado_em": "2026-11-20",
+          "nota": "game_pak_list, game_iostore_list, game_unity_list, game_unity_bundle_list, game_unity_asset_export, game_unreal_texture_export confirmados em docs/tools.md (commit 44c89ba)"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "apple.macho",
+      "empresa_ou_motor": "Apple",
+      "extensoes": [
+        ".dylib",
+        ".bundle"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "cffaedfe",
+        "texto": null
+      },
+      "assinaturas_alternativas": [
+        {
+          "offset": 0,
+          "bytes_hex": "cefaedfe",
+          "texto": null
+        }
+      ],
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "codigo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "codigo": "analise (Ghidra/Craft Anything)"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Ghidra",
+          "url": "https://github.com/NationalSecurityAgency/ghidra",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "Craft Anything",
+          "url": "https://github.com/storytold/craft-anything",
+          "verificado_em": "2026-11-20",
+          "nota": "game_pak_list, game_iostore_list, game_unity_list, game_unity_bundle_list, game_unity_asset_export, game_unreal_texture_export confirmados em docs/tools.md (commit 44c89ba)"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "apple.macho_universal",
+      "empresa_ou_motor": "Apple",
+      "extensoes": [],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "cafebabe",
+        "texto": null
+      },
+      "verificador_estrutura": "macho_universal",
+      "ordem_de_bytes": "big",
+      "tipo": "codigo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "codigo": "analise"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Ghidra",
+          "url": "https://github.com/NationalSecurityAgency/ghidra",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        },
+        {
+          "nome": "Craft Anything",
+          "url": "https://github.com/storytold/craft-anything",
+          "verificado_em": "2026-11-20",
+          "nota": "game_pak_list, game_iostore_list, game_unity_list, game_unity_bundle_list, game_unity_asset_export, game_unreal_texture_export confirmados em docs/tools.md (commit 44c89ba)"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "oracle.java.class",
+      "empresa_ou_motor": "Java",
+      "extensoes": [
+        ".class"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "cafebabe",
+        "texto": null
+      },
+      "verificador_estrutura": "java_class",
+      "ordem_de_bytes": "big",
+      "tipo": "codigo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "codigo": "analise"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Craft Anything",
+          "url": "https://github.com/storytold/craft-anything",
+          "verificado_em": "2026-11-20",
+          "nota": "game_pak_list, game_iostore_list, game_unity_list, game_unity_bundle_list, game_unity_asset_export, game_unreal_texture_export confirmados em docs/tools.md (commit 44c89ba)"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "w3c.wasm",
+      "empresa_ou_motor": "W3C WebAssembly",
+      "extensoes": [
+        ".wasm"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "0061736d",
+        "texto": null
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "codigo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "codigo": "wasm"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Craft Anything",
+          "url": "https://github.com/storytold/craft-anything",
+          "verificado_em": "2026-11-20",
+          "nota": "game_pak_list, game_iostore_list, game_unity_list, game_unity_bundle_list, game_unity_asset_export, game_unreal_texture_export confirmados em docs/tools.md (commit 44c89ba)"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "nintendo.nes.ines",
+      "empresa_ou_motor": "Nintendo (NES)",
+      "extensoes": [
+        ".nes"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "4e45531a",
+        "texto": "NES"
+      },
+      "verificador_estrutura": "nes_ines",
+      "ordem_de_bytes": "little",
+      "tipo": "codigo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "codigo": "analise"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Ghidra",
+          "url": "https://github.com/NationalSecurityAgency/ghidra",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "nintendo.gba.rom",
+      "empresa_ou_motor": "Nintendo (GBA)",
+      "extensoes": [
+        ".gba"
+      ],
+      "assinatura": null,
+      "verificador_estrutura": "gba_rom",
+      "ordem_de_bytes": "little",
+      "tipo": "codigo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "codigo": "analise"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Ghidra",
+          "url": "https://github.com/NationalSecurityAgency/ghidra",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "Sem assinatura simples: confere o byte fixo 0x96 em 0xB2 e o checksum do cabecalho em 0xBD."
+    },
+    {
+      "id": "nintendo.gb.rom",
+      "empresa_ou_motor": "Nintendo (Game Boy/Color)",
+      "extensoes": [
+        ".gb",
+        ".gbc"
+      ],
+      "assinatura": null,
+      "verificador_estrutura": "gameboy_rom",
+      "ordem_de_bytes": "little",
+      "tipo": "codigo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "codigo": "analise"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Ghidra",
+          "url": "https://github.com/NationalSecurityAgency/ghidra",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "Checksum do cabecalho em 0x14D."
+    },
+    {
+      "id": "nintendo.n64.rom",
+      "empresa_ou_motor": "Nintendo (N64)",
+      "extensoes": [
+        ".z64",
+        ".n64",
+        ".v64"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "80371240",
+        "texto": null
+      },
+      "assinaturas_alternativas": [
+        {
+          "offset": 0,
+          "bytes_hex": "37804012",
+          "texto": null
+        },
+        {
+          "offset": 0,
+          "bytes_hex": "40123780",
+          "texto": null
+        }
+      ],
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "big",
+      "tipo": "codigo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "codigo": "analise"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Ghidra",
+          "url": "https://github.com/NationalSecurityAgency/ghidra",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "As tres ordens de bytes dos dumps (z64/v64/n64)."
+    },
+    {
+      "id": "nintendo.nds.rom",
+      "empresa_ou_motor": "Nintendo (DS)",
+      "extensoes": [
+        ".nds"
+      ],
+      "assinatura": null,
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "codigo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "codigo": "analise"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Ghidra",
+          "url": "https://github.com/NationalSecurityAgency/ghidra",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "nintendo.switch.nso",
+      "empresa_ou_motor": "Nintendo (Switch)",
+      "extensoes": [
+        ".nso"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "4e534f30",
+        "texto": "NSO0"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "codigo",
+      "contem": [],
+      "compressao_comum": [
+        "lz4"
+      ],
+      "destino_web": {
+        "codigo": "analise"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Ghidra",
+          "url": "https://github.com/NationalSecurityAgency/ghidra",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "nintendo.switch.nca",
+      "empresa_ou_motor": "Nintendo (Switch)",
+      "extensoes": [
+        ".nca"
+      ],
+      "assinatura": null,
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "conteiner",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "saida": "nao suportado"
+      },
+      "ferramentas_conhecidas": [],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "cifrado_comum": true,
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "Conteiner cifrado: o CEW identifica e nao decifra."
+    },
+    {
+      "id": "sony.psx.exe",
+      "empresa_ou_motor": "Sony (PlayStation)",
+      "extensoes": [
+        ".exe",
+        ".psx"
+      ],
+      "assinatura": {
+        "offset": 0,
+        "bytes_hex": "50532d5820455845",
+        "texto": "PS-X EXE"
+      },
+      "verificador_estrutura": null,
+      "ordem_de_bytes": "little",
+      "tipo": "codigo",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "codigo": "analise"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Ghidra",
+          "url": "https://github.com/NationalSecurityAgency/ghidra",
+          "verificado_em": "2026-11-20",
+          "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
+        }
+      ],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": ""
+    },
+    {
+      "id": "iso.9660",
+      "empresa_ou_motor": "ISO 9660",
+      "extensoes": [
+        ".iso",
+        ".bin"
+      ],
+      "assinatura": {
+        "offset": 32769,
+        "bytes_hex": "4344303031",
+        "texto": "CD001"
+      },
+      "verificador_estrutura": "iso9660",
+      "ordem_de_bytes": "nenhuma",
+      "tipo": "conteiner",
+      "contem": [],
+      "compressao_comum": [],
+      "destino_web": {
+        "saida": "pasta"
+      },
+      "ferramentas_conhecidas": [],
+      "conversor": null,
+      "documentacao": [],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "a_verificar"
+      },
+      "observacoes": "Imagem de disco; extracao ainda nao implementada."
+    }
+  ]
+}

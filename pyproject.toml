@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools==80.9.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cew"
+version = "0.1.0"
+description = "CEW - Convert Everything for the Web: inventario, engenharia reversa e conversao de assets para a web, com Craft Anything e Gemini."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+# Dependencias de execucao com versao fixa (mesmas de requirements.txt).
+dependencies = [
+    "jsonschema==4.26.0",
+    "referencing==0.37.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==9.1.1",
+]
+# Opcional: WebP e leitura de imagens de referencia em formatos que o CEW nao decodifica sozinho.
+imagem = [
+    "Pillow==12.3.0",
+]
+
+[project.scripts]
+cew = "cew.cli:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["cew*", "converters*"]
+
+[tool.setuptools.package-data]
+cew = ["modelos_web/**/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

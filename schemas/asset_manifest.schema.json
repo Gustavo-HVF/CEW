@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/asset_manifest.schema.json",
+  "title": "asset_manifest.json - o que o jogo web carrega",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["projeto", "raiz_web", "assets"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "projeto": { "type": "string" },
+    "raiz_web": { "type": "string", "description": "Pasta servida pelo jogo; caminho_web e relativo a ela." },
+    "assets": { "type": "array", "items": { "$ref": "#/$defs/asset" } }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "loop": {
+      "type": "object", "required": ["inicio_amostra", "fim_amostra"], "additionalProperties": false,
+      "properties": { "inicio_amostra": { "type": "integer", "minimum": 0 }, "fim_amostra": { "type": "integer", "minimum": 0 } }
+    },
+    "asset": {
+      "type": "object",
+      "required": ["id", "caminho_web", "tipo", "mime", "hash_sha256", "tamanho_bytes", "origem", "metadados"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "comum.schema.json#/$defs/id_asset" },
+        "caminho_web": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._/-]*$" },
+        "tipo": { "$ref": "comum.schema.json#/$defs/tipo_asset" },
+        "mime": { "type": "string" },
+        "hash_sha256": { "$ref": "comum.schema.json#/$defs/sha256" },
+        "tamanho_bytes": { "type": "integer", "minimum": 0 },
+        "origem": {
+          "type": "object", "required": ["item_inventario", "caminho", "formato"], "additionalProperties": false,
+          "properties": {
+            "item_inventario": { "$ref": "comum.schema.json#/$defs/id_inventario" },
+            "caminho": { "type": "string" },
+            "formato": { "anyOf": [{ "$ref": "comum.schema.json#/$defs/id_formato" }, { "type": "null" }] },
+            "conversor": { "type": ["string", "null"] }
+          }
+        },
+        "metadados": {
+          "type": "object",
+          "properties": {
+            "largura_px": { "type": "integer", "minimum": 0 },
+            "altura_px": { "type": "integer", "minimum": 0 },
+            "espaco_cor": { "type": "string", "enum": ["srgb", "linear"] },
+            "tem_alfa": { "type": "boolean" },
+            "potencia_de_2": { "type": "boolean" },
+            "taxa_amostragem_hz": { "type": "integer", "minimum": 1 },
+            "canais": { "type": "integer", "minimum": 1 },
+            "duracao_s": { "type": "number", "minimum": 0 },
+            "amostras": { "type": "integer", "minimum": 0 },
+            "loop": { "anyOf": [{ "$ref": "#/$defs/loop" }, { "type": "null" }] },
+            "escala_metros": { "type": "number", "exclusiveMinimum": 0 },
+            "eixo_para_cima": { "type": "string", "enum": ["Y"] },
+            "vertices": { "type": "integer", "minimum": 0 },
+            "ossos": { "type": "integer", "minimum": 0 },
+            "fps_original": { "type": "number", "exclusiveMinimum": 0 },
+            "extras": { "type": "object" }
+          }
+        }
+      }
+    }
+  }
+}

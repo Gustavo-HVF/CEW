@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/gemini/tarefa_comparacao_visual.schema.json",
+  "title": "Tarefa Gemini: segunda opiniao visual (captura original x captura web)",
+  "type": "object",
+  "required": ["schema_version", "gerado_por", "tarefa", "id", "cena", "imagem_original", "imagem_web", "metricas"],
+  "properties": {
+    "schema_version": { "$ref": "../comum.schema.json#/$defs/schema_version" },
+    "gerado_por": { "const": "cew" },
+    "tarefa": { "const": "comparacao_visual" },
+    "id": { "type": "string" },
+    "cena": { "type": "string" },
+    "imagem_original": { "type": "object", "required": ["caminho", "sha256"], "properties": { "caminho": { "type": "string" }, "sha256": { "$ref": "../comum.schema.json#/$defs/sha256" } } },
+    "imagem_web": { "type": "object", "required": ["caminho", "sha256"], "properties": { "caminho": { "type": "string" }, "sha256": { "$ref": "../comum.schema.json#/$defs/sha256" } } },
+    "metricas": { "type": "object", "properties": { "ssim": { "type": "number" }, "diferenca_media": { "type": "number" } } }
+  },
+  "additionalProperties": false
+}

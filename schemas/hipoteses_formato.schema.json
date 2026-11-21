@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/hipoteses_formato.schema.json",
+  "title": "analise/hipoteses.json - hipoteses de formato com evidencia (etapa 4)",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["projeto", "hipoteses"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "projeto": { "type": "string" },
+    "hipoteses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["formato_id", "descricao", "estado", "evidencias"],
+        "additionalProperties": false,
+        "properties": {
+          "formato_id": { "$ref": "comum.schema.json#/$defs/id_formato" },
+          "itens_inventario": { "type": "array", "items": { "$ref": "comum.schema.json#/$defs/id_inventario" } },
+          "descricao": { "type": "string" },
+          "estado": { "type": "string", "enum": ["hipotese", "confirmada", "refutada"] },
+          "especificacao": { "type": "string", "description": "docs/especificacoes/<arquivo>.md" },
+          "carregador": { "type": "string", "description": "funcao que carrega o formato no programa original" },
+          "evidencias": { "type": "array", "minItems": 1, "items": { "$ref": "comum.schema.json#/$defs/evidencia" } }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

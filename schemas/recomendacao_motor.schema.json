@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/recomendacao_motor.schema.json",
+  "title": "recomendacao_motor.json - nota 0 a 10 por motor e o motivo (etapa 6)",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["projeto", "perfil", "motores", "recomendado", "escolha_usuario"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "gerado_em": { "$ref": "comum.schema.json#/$defs/data_hora" },
+    "projeto": { "type": "string" },
+    "perfil": {
+      "type": "object",
+      "required": ["dimensao", "fisica", "peso_assets_mb", "quantidade_assets", "interface", "multijogador", "dispositivos", "experiencia_equipe"],
+      "additionalProperties": false,
+      "properties": {
+        "dimensao": { "type": "string", "enum": ["2d", "3d", "misto"] },
+        "fisica": { "type": "string", "enum": ["nenhuma", "simples", "complexa"] },
+        "peso_assets_mb": { "type": "number", "minimum": 0 },
+        "quantidade_assets": { "type": "integer", "minimum": 0 },
+        "interface": { "type": "string", "enum": ["simples", "rica"] },
+        "multijogador": { "type": "boolean" },
+        "dispositivos": { "type": "array", "items": { "type": "string", "enum": ["desktop", "celular", "vr"] }, "minItems": 1 },
+        "experiencia_equipe": { "type": "array", "items": { "type": "string" } },
+        "sem_codigo": { "type": "boolean" },
+        "evidencia": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "motores": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "required": ["id", "nome", "nota", "motivos"], "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "enum": ["phaser", "pixijs", "threejs", "babylonjs", "playcanvas", "godot", "unity_webgl", "construct3", "gdevelop"] },
+          "nome": { "type": "string" },
+          "nota": { "type": "number", "minimum": 0, "maximum": 10 },
+          "motivos": { "type": "array", "items": { "type": "string" } },
+          "alertas": { "type": "array", "items": { "type": "string" } },
+          "modelo_gerado_pelo_cew": { "type": "boolean" }
+        }
+      }
+    },
+    "recomendado": { "type": "string" },
+    "escolha_usuario": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object", "required": ["motor", "escolhido_em"], "additionalProperties": false,
+          "properties": { "motor": { "type": "string" }, "escolhido_em": { "$ref": "comum.schema.json#/$defs/data_hora" }, "motivo": { "type": "string" } }
+        }
+      ]
+    }
+  },
+  "additionalProperties": false
+}

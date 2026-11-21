@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/dados/fases.schema.json",
+  "title": "dados/fases.json - fases/mapas: geometria em glTF + entidades, gatilhos, colisao e spawn em JSON",
+  "type": "object",
+  "allOf": [{ "$ref": "../comum.schema.json#/$defs/cabecalho" }],
+  "required": ["fases"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "unidade_distancia": { "type": "string", "enum": ["metros"] },
+    "fases": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["id", "nome", "entidades"], "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "nome": { "type": "string" },
+          "geometria_asset_id": { "$ref": "../comum.schema.json#/$defs/id_asset" },
+          "musica_asset_id": { "$ref": "../comum.schema.json#/$defs/id_asset" },
+          "tempo_limite_s": { "type": "number", "minimum": 0 },
+          "proxima_fase_id": { "type": ["string", "null"] },
+          "spawns": {
+            "type": "array",
+            "items": {
+              "type": "object", "required": ["id", "posicao_m"], "additionalProperties": false,
+              "properties": { "id": { "type": "string" }, "posicao_m": { "$ref": "#/$defs/vec3" }, "rotacao_y_graus": { "type": "number" } }
+            }
+          },
+          "entidades": {
+            "type": "array",
+            "items": {
+              "type": "object", "required": ["id", "tipo", "posicao_m"], "additionalProperties": false,
+              "properties": {
+                "id": { "type": "string" }, "tipo": { "type": "string" }, "posicao_m": { "$ref": "#/$defs/vec3" },
+                "rotacao_graus": { "$ref": "#/$defs/vec3" }, "escala": { "$ref": "#/$defs/vec3" },
+                "modelo_asset_id": { "$ref": "../comum.schema.json#/$defs/id_asset" }, "propriedades": { "type": "object" }
+              }
+            }
+          },
+          "gatilhos": {
+            "type": "array",
+            "items": {
+              "type": "object", "required": ["id", "forma", "acao"], "additionalProperties": false,
+              "properties": {
+                "id": { "type": "string" }, "forma": { "type": "string", "enum": ["caixa", "esfera"] },
+                "centro_m": { "$ref": "#/$defs/vec3" }, "tamanho_m": { "$ref": "#/$defs/vec3" }, "raio_m": { "type": "number" },
+                "acao": { "type": "string" }, "parametros": { "type": "object" }
+              }
+            }
+          },
+          "colisao": {
+            "type": "object", "additionalProperties": false,
+            "properties": { "malha_asset_id": { "$ref": "../comum.schema.json#/$defs/id_asset" }, "materiais": { "type": "object", "additionalProperties": { "type": "string" } } }
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "vec3": { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3 }
+  }
+}

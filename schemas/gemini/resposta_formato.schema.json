@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/gemini/resposta_formato.schema.json",
+  "title": "Resposta Gemini: hipotese de estrutura de formato e rascunho de conversor",
+  "description": "Usa so palavras-chave aceitas por responseJsonSchema da API do Gemini.",
+  "type": "object",
+  "properties": {
+    "schema_version": { "type": "string", "enum": ["1.0"] },
+    "gerado_por": { "type": "string", "enum": ["cew-gemini-worker"] },
+    "formato_id_proposto": { "type": "string", "description": "empresa.familia.nome, minusculas, separado por pontos" },
+    "confianca": { "type": "number", "minimum": 0, "maximum": 1 },
+    "ordem_de_bytes": { "type": "string", "enum": ["big", "little", "nenhuma", "desconhecida"] },
+    "tipo": { "type": "string", "enum": ["conteiner", "compressao", "modelo", "textura", "animacao", "audio", "video", "mapa", "dados", "codigo", "fonte", "imagem"] },
+    "cabecalho": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "campo": { "type": "string" },
+          "offset": { "type": "integer", "minimum": 0 },
+          "tipo": { "type": "string", "description": "u8, u16, u32, s32, f32, char[4], ..." },
+          "evidencia": { "type": "string", "description": "que bytes da amostra sustentam isto" }
+        },
+        "required": ["campo", "offset", "tipo", "evidencia"]
+      }
+    },
+    "secoes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": { "nome": { "type": "string" }, "offset_campo": { "type": "string" }, "descricao": { "type": "string" } },
+        "required": ["nome", "offset_campo", "descricao"]
+      }
+    },
+    "duvidas": { "type": "array", "items": { "type": "string" } },
+    "rascunho_conversor": {
+      "type": "object",
+      "properties": {
+        "linguagem": { "type": "string", "enum": ["python"] },
+        "arquivo": { "type": "string" },
+        "codigo": { "type": "string" }
+      },
+      "required": ["linguagem", "arquivo", "codigo"]
+    }
+  },
+  "required": ["schema_version", "gerado_por", "formato_id_proposto", "confianca", "ordem_de_bytes", "cabecalho", "secoes", "duvidas"]
+}

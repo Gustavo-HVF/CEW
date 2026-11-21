@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/conversor_resultado.schema.json",
+  "title": "Resultado de um conversor (contrato conversor -> orquestrador)",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["conversor", "entrada", "dry_run", "ok", "saidas", "avisos"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "conversor": { "type": "string" },
+    "versao_conversor": { "type": "string" },
+    "entrada": {
+      "type": "object", "required": ["caminho", "sha256", "tamanho_bytes"], "additionalProperties": false,
+      "properties": { "caminho": { "type": "string" }, "sha256": { "$ref": "comum.schema.json#/$defs/sha256" }, "tamanho_bytes": { "type": "integer", "minimum": 0 } }
+    },
+    "dry_run": { "type": "boolean" },
+    "ok": { "type": "boolean" },
+    "erro": { "type": ["string", "null"] },
+    "saidas": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["caminho", "tipo", "formato"], "additionalProperties": false,
+        "properties": {
+          "caminho": { "type": "string", "description": "relativo a pasta de saida" },
+          "tipo": { "type": "string", "enum": ["modelo", "textura", "animacao", "audio", "video", "mapa", "dados", "fonte", "outro", "arquivo_extraido"] },
+          "formato": { "type": "string" },
+          "sha256": { "$ref": "comum.schema.json#/$defs/sha256" },
+          "tamanho_bytes": { "type": "integer", "minimum": 0 },
+          "metadados": { "type": "object" }
+        }
+      }
+    },
+    "avisos": { "type": "array", "items": { "type": "string" } },
+    "estatisticas": { "type": "object" }
+  },
+  "additionalProperties": false
+}

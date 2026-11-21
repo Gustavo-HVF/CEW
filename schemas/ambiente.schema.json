@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/ambiente.schema.json",
+  "title": "reports/ambiente.json - verificacao do ambiente (etapa 1)",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["gerado_em", "sistema", "ferramentas", "gemini", "obrigatorios_faltando", "pronto"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "gerado_em": { "$ref": "comum.schema.json#/$defs/data_hora" },
+    "sistema": {
+      "type": "object", "required": ["os", "arquitetura", "python"],
+      "properties": { "os": { "type": "string" }, "arquitetura": { "type": "string" }, "python": { "type": "string" } }
+    },
+    "ferramentas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "obrigatoria", "encontrada", "ok"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "obrigatoria": { "type": "boolean" },
+          "encontrada": { "type": "boolean" },
+          "ok": { "type": "boolean", "description": "encontrada e na versao minima" },
+          "caminho": { "type": ["string", "null"] },
+          "versao": { "type": ["string", "null"] },
+          "versao_minima": { "type": ["string", "null"] },
+          "mensagem": { "type": "string" }
+        }
+      }
+    },
+    "craft_anything": {
+      "type": "object",
+      "properties": {
+        "repositorio": { "type": ["string", "null"] },
+        "ref": { "type": ["string", "null"] },
+        "cli": { "type": ["string", "null"] },
+        "doctor": { "description": "saida JSON real de 'craft-anything-cli doctor' (ou null)" },
+        "mensagem": { "type": "string" }
+      }
+    },
+    "gemini": {
+      "type": "object", "required": ["chave_presente", "teste_ok"],
+      "additionalProperties": false,
+      "properties": {
+        "chave_presente": { "type": "boolean" },
+        "teste_ok": { "type": "boolean" },
+        "modelo": { "type": "string" },
+        "erro": { "type": ["string", "null"] },
+        "tipo_erro": { "type": ["string", "null"], "enum": [null, "sem_chave", "chave_invalida", "permissao", "cota", "modelo", "rede", "servico", "resposta_invalida", "desconhecido"] },
+        "latencia_ms": { "type": ["integer", "null"] }
+      }
+    },
+    "obrigatorios_faltando": { "type": "array", "items": { "type": "string" } },
+    "pronto": { "type": "boolean" }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/config_versoes.schema.json",
+  "title": "config/versoes.json",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["craft_anything", "ghidra", "rust", "python", "node", "java"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "craft_anything": {
+      "type": "object",
+      "required": ["repositorio_https", "repositorio_ssh", "ref", "versao", "binario_cli"],
+      "properties": {
+        "repositorio_https": { "type": "string", "pattern": "^https://" },
+        "repositorio_ssh": { "type": "string" },
+        "ref": { "type": "string", "minLength": 1 },
+        "versao": { "type": "string" },
+        "binario_cli": { "type": "string" },
+        "verificado_em": { "$ref": "comum.schema.json#/$defs/data" },
+        "observacoes": { "type": "string" }
+      }
+    },
+    "ghidra": {
+      "type": "object",
+      "required": ["versao", "url", "sha256", "java_minimo"],
+      "properties": {
+        "versao": { "type": "string" }, "tag": { "type": "string" }, "arquivo": { "type": "string" },
+        "url": { "type": "string", "pattern": "^https://" },
+        "sha256": { "$ref": "comum.schema.json#/$defs/sha256" },
+        "java_minimo": { "type": "integer", "minimum": 8 },
+        "verificado_em": { "$ref": "comum.schema.json#/$defs/data" },
+        "observacoes": { "type": "string" }
+      }
+    },
+    "rust": { "type": "object", "required": ["minimo"], "properties": { "minimo": { "type": "string" } } },
+    "python": { "type": "object", "required": ["minimo"], "properties": { "minimo": { "type": "string" } } },
+    "node": { "type": "object", "required": ["minimo"], "properties": { "minimo": { "type": "string" } } },
+    "java": { "type": "object", "required": ["minimo"], "properties": { "minimo": { "type": "integer" } } }
+  },
+  "additionalProperties": false
+}
