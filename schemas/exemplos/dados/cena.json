@@ -1,0 +1,262 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "id_cena": "e1m1",
+  "nome": "Fase de Teste do CEW",
+  "origem": "",
+  "estado": "normalizada",
+  "dimensao": "3d",
+  "sistema_coordenadas": {
+    "eixo_para_cima": "Y",
+    "mao": "direita",
+    "metros_por_unidade": 1.0
+  },
+  "geometria_asset_id": null,
+  "limites": {
+    "min_m": [
+      -1.6256,
+      0.0,
+      -2.0
+    ],
+    "max_m": [
+      3.2512,
+      0.6096,
+      1.6256
+    ]
+  },
+  "entidades": [
+    {
+      "id": "e_3cb479043708f6b0",
+      "id_original": null,
+      "nome": null,
+      "tipo_original": "info_player_start",
+      "camada": null,
+      "pai": null,
+      "categoria": "spawn",
+      "categoria_por": "heuristica",
+      "posicao": [
+        0.0,
+        0.6096,
+        0.0
+      ],
+      "posicao_m": [
+        0.0,
+        0.6096,
+        0.0
+      ],
+      "guinada_graus": 90.0,
+      "rotacao": [
+        0.0,
+        0.7071068,
+        0.0,
+        0.7071068
+      ],
+      "escala": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "asset_id": null,
+      "asset_por": null
+    },
+    {
+      "id": "e_d254acade6ee37c9",
+      "id_original": null,
+      "nome": null,
+      "tipo_original": "monster_ogre",
+      "camada": null,
+      "pai": null,
+      "categoria": "inimigo",
+      "categoria_por": "regra",
+      "posicao": [
+        1.0,
+        0.0,
+        -2.0
+      ],
+      "posicao_m": [
+        1.0,
+        0.0,
+        -2.0
+      ],
+      "guinada_graus": 180.0,
+      "rotacao": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "escala": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "asset_id": "a_2dc1a6369038394e",
+      "asset_por": "regra",
+      "ajustado": true
+    },
+    {
+      "id": "e_a29196a0d818c8b4",
+      "id_original": null,
+      "nome": null,
+      "tipo_original": "monster_tetra",
+      "camada": null,
+      "pai": null,
+      "categoria": "inimigo",
+      "categoria_por": "regra",
+      "posicao": [
+        -1.6256,
+        0.0,
+        -0.8128
+      ],
+      "posicao_m": [
+        -1.6256,
+        0.0,
+        -0.8128
+      ],
+      "guinada_graus": 0.0,
+      "rotacao": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "escala": [
+        2.0,
+        2.0,
+        2.0
+      ],
+      "asset_id": "a_2dc1a6369038394e",
+      "asset_por": "regra"
+    },
+    {
+      "id": "e_d764f13f66a69036",
+      "id_original": null,
+      "nome": null,
+      "tipo_original": "item_health",
+      "camada": null,
+      "pai": null,
+      "categoria": "item",
+      "categoria_por": "heuristica",
+      "posicao": [
+        3.2512,
+        0.4064,
+        1.6256
+      ],
+      "posicao_m": [
+        3.2512,
+        0.4064,
+        1.6256
+      ],
+      "guinada_graus": 0.0,
+      "rotacao": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "escala": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "asset_id": null,
+      "asset_por": null,
+      "propriedades": {
+        "spawnflags": "1"
+      }
+    },
+    {
+      "id": "e_aaf55b58bbc421b1",
+      "id_original": null,
+      "nome": "porta1",
+      "tipo_original": "func_door",
+      "camada": null,
+      "pai": null,
+      "categoria": "porta",
+      "categoria_por": "heuristica",
+      "posicao": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "posicao_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "guinada_graus": 0.0,
+      "rotacao": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "escala": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "posicao_estimada": true,
+      "asset_id": null,
+      "asset_por": null,
+      "propriedades": {
+        "model": "*1",
+        "direcao": "cima"
+      }
+    },
+    {
+      "id": "e_4147cac28f129efa",
+      "id_original": null,
+      "nome": null,
+      "tipo_original": "trigger_once",
+      "camada": null,
+      "pai": null,
+      "categoria": "gatilho",
+      "categoria_por": "heuristica",
+      "posicao": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "posicao_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "guinada_graus": 0.0,
+      "rotacao": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "escala": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "posicao_estimada": true,
+      "asset_id": null,
+      "asset_por": null,
+      "propriedades": {
+        "model": "*2",
+        "target": "porta1"
+      }
+    }
+  ],
+  "estatisticas": {
+    "bruta": 7,
+    "entidades": 6,
+    "removidas_por_regra": 1,
+    "ajustes_aplicados": 1,
+    "adicionadas": 0,
+    "sem_asset": 4,
+    "por_categoria": {
+      "gatilho": 1,
+      "inimigo": 2,
+      "item": 1,
+      "porta": 1,
+      "spawn": 1
+    }
+  }
+}

@@ -190,6 +190,38 @@ def verificar_assets(p: Projeto, r: Relatorio) -> None:
             r.add(f"audio:{a['id']}", "audio", a["caminho_web"], ok, f"ffprobe: {st.get('sample_rate')} Hz, {st.get('channels')} canais, {dur:.3f} s (manifesto {m.get('duracao_s')} s, loop {loop})")
 
 
+def verificar_cenas(p: Projeto, r: Relatorio) -> None:
+    """Cada cena publicada: esquema, links de asset validos, ids unicos e posicoes finitas."""
+    import math
+
+    from .cenas import cenas_publicadas
+
+    ids_manifesto = {a["id"] for a in p.ler("manifesto")["assets"]} if p.existe("manifesto") else set()
+    for a, cena in cenas_publicadas(p):
+        problemas = erros_esquema(cena, "dados/cena")
+        if cena.get("estado") != "normalizada":
+            problemas.append("cena publicada sem normalizar")
+        ents = cena.get("entidades", [])
+        ids = [e["id"] for e in ents]
+        if len(ids) != len(set(ids)):
+            problemas.append("ids de entidade repetidos")
+        quebrados = sorted({e["asset_id"] for e in ents if e.get("asset_id") and e["asset_id"] not in ids_manifesto})
+        if quebrados:
+            problemas.append(f"assets inexistentes no manifesto: {quebrados[:5]}")
+        if cena.get("geometria_asset_id") and cena["geometria_asset_id"] not in ids_manifesto:
+            problemas.append("geometria_asset_id fora do manifesto")
+        if any(not all(math.isfinite(c) for c in e["posicao"]) for e in ents):
+            problemas.append("posicao nao finita")
+        est = cena.get("estatisticas", {})
+        if est.get("entidades") != len(ents):
+            problemas.append("estatisticas.entidades nao confere com a lista")
+        cats = ", ".join(f"{k} {v}" for k, v in est.get("por_categoria", {}).items())
+        r.add(f"cena:{cena['id_cena']}", "cena", a["caminho_web"], not problemas,
+              "; ".join(problemas[:4]) if problemas else f"{len(ents)} elementos ({cats}); {est.get('sem_asset', 0)} sem asset (placeholder no jogo); "
+              f"{sum(1 for e in ents if e.get('ajustado'))} ajustados; {sum(1 for e in ents if e.get('posicao_estimada'))} com posicao estimada",
+              metricas={"entidades": len(ents), "sem_asset": est.get("sem_asset", 0), "removidas_por_regra": est.get("removidas_por_regra", 0)})
+
+
 def _npm(app: Path, args: list[str], tempo: int = 900) -> subprocess.CompletedProcess:
     npx = shutil.which("npm")
     if not npx:
@@ -339,6 +371,7 @@ def executar(p: Projeto, web: bool = True, instalar: bool = False, gemini: bool 
         verificar_determinismo(p, r)
     if p.existe("manifesto"):
         verificar_assets(p, r)
+        verificar_cenas(p, r)
     if web:
         verificar_web(p, r, instalar, chromium)
         verificar_capturas(p, r, gemini)

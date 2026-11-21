@@ -65,6 +65,9 @@ def converter(dados: bytes, esc: Escritor, opcoes: dict) -> dict:
     # n = contagem_plausivel(r.u32_em(4), 16, len(dados) - 8, "entradas")
     # 2) decodifique e grave cada saida com o tipo e os metadados do manifesto:
     # esc.gravar("textura.png", png_bytes(img), "textura", "png", img.metadados("srgb"))
+    # MAPA (elementos posicionados): grave uma cena bruta (schemas/dados/cena.schema.json, estado "bruta")
+    # com o sistema de coordenadas do jogo; o CEW normaliza, categoriza e liga os assets (skill 08):
+    # esc.gravar("cena_bruta.json", json.dumps(cena).encode(), "mapa", "cena_bruta")
     raise ErroFormato("conversor ainda nao implementado")
 
 
@@ -72,7 +75,7 @@ if __name__ == "__main__":
     raise SystemExit(executar(INFO, converter))
 '''
 
-TIPOS_SAIDA = {"png": "textura", "webp": "textura", "ktx2": "textura", "glb": "modelo", "ogg": "audio", "wav": "audio", "mp3": "audio", "json": "dados", "pasta": "arquivo_extraido"}
+TIPOS_SAIDA = {"cena": "mapa", "png": "textura", "webp": "textura", "ktx2": "textura", "glb": "modelo", "ogg": "audio", "wav": "audio", "mp3": "audio", "json": "dados", "pasta": "arquivo_extraido"}
 
 
 def _ref_projeto(projeto: Projeto, arq: Path) -> str:

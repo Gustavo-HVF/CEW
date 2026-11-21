@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/dados/cena.schema.json",
+  "title": "Cena de um mapa: elementos posicionados (inimigos, vegetacao, estruturas, itens...)",
+  "description": "estado 'bruta': como o conversor leu (unidades e eixos originais). estado 'normalizada': metros, Y para cima, mao direita (3D) ou pixels com origem no topo esquerdo (2D), categoria e asset resolvidos, ajustes aplicados. Publicada em web/dados/cenas/ e carregada junto com o mapa.",
+  "type": "object",
+  "allOf": [{ "$ref": "../comum.schema.json#/$defs/cabecalho" }],
+  "required": ["id_cena", "estado", "dimensao", "sistema_coordenadas", "entidades"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "id_cena": { "type": "string", "minLength": 1 },
+    "nome": { "type": "string" },
+    "origem": { "type": "string", "description": "caminho logico do mapa original" },
+    "estado": { "type": "string", "enum": ["bruta", "normalizada"] },
+    "dimensao": { "type": "string", "enum": ["2d", "3d"] },
+    "sistema_coordenadas": {
+      "type": "object",
+      "required": ["eixo_para_cima", "mao", "metros_por_unidade"],
+      "additionalProperties": false,
+      "properties": {
+        "eixo_para_cima": { "type": "string", "enum": ["Y", "Z", "-Y"], "description": "-Y = 2D com y crescendo para baixo" },
+        "mao": { "type": "string", "enum": ["direita", "esquerda"] },
+        "metros_por_unidade": { "type": "number", "exclusiveMinimum": 0 },
+        "origem_2d": { "type": "string", "enum": ["topo_esquerdo", "base_esquerda"] },
+        "pixels_por_unidade": { "type": "number", "exclusiveMinimum": 0 },
+        "rotacao": { "type": "string", "enum": ["anti_horaria", "horaria"], "description": "sentido positivo da guinada/rotacao 2D na origem" }
+      }
+    },
+    "limites": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "largura_px": { "type": "number", "minimum": 0 }, "altura_px": { "type": "number", "minimum": 0 },
+        "min_m": { "$ref": "#/$defs/vec3" }, "max_m": { "$ref": "#/$defs/vec3" }
+      }
+    },
+    "geometria_asset_id": { "anyOf": [{ "$ref": "../comum.schema.json#/$defs/id_asset" }, { "type": "null" }] },
+    "geometria_origem": { "type": "string", "description": "bruta: nome/glob da geometria do mapa (ex.: saida GLB do mesmo conversor)" },
+    "camadas": { "type": "array", "items": { "type": "object", "required": ["id", "nome"], "additionalProperties": false, "properties": { "id": { "type": "string" }, "nome": { "type": "string" }, "ordem": { "type": "integer" }, "visivel": { "type": "boolean" } } } },
+    "tiles": {
+      "type": "array", "description": "camadas de grade (2D): GIDs por linha; o motor desenha com o tileset",
+      "items": {
+        "type": "object", "required": ["camada", "largura", "altura", "tamanho_tile_px", "dados"], "additionalProperties": false,
+        "properties": {
+          "camada": { "type": "string" }, "largura": { "type": "integer", "minimum": 1 }, "altura": { "type": "integer", "minimum": 1 },
+          "tamanho_tile_px": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2 },
+          "dados": { "type": "array", "items": { "type": "integer", "minimum": 0 } },
+          "tileset_asset_id": { "anyOf": [{ "$ref": "../comum.schema.json#/$defs/id_asset" }, { "type": "null" }] }
+        }
+      }
+    },
+    "entidades": { "type": "array", "items": { "$ref": "#/$defs/entidade" } },
+    "estatisticas": { "type": "object" },
+    "avisos": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "vec3": { "type": "array", "items": { "type": "number" }, "minItems": 3, "maxItems": 3 },
+    "vec2": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2 },
+    "quat": { "type": "array", "items": { "type": "number" }, "minItems": 4, "maxItems": 4, "description": "[x, y, z, w]" },
+    "categoria": {
+      "type": "string",
+      "enum": ["inimigo", "npc", "jogador", "spawn", "vegetacao", "estrutura", "decoracao", "item", "porta", "plataforma", "gatilho", "luz", "som", "camera", "veiculo", "efeito", "regiao", "outro"]
+    },
+    "entidade": {
+      "type": "object",
+      "required": ["id", "tipo_original", "categoria", "posicao"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^e_[0-9a-f]{16}$|^bruta_[0-9]+$", "description": "normalizada: e_<16 hex> estavel; bruta: bruta_<n>" },
+        "id_original": { "type": ["string", "null"] },
+        "nome": { "type": ["string", "null"] },
+        "tipo_original": { "type": "string", "description": "classe/tipo no jogo original (classname, type, prefab...)" },
+        "categoria": { "anyOf": [{ "$ref": "#/$defs/categoria" }, { "type": "null" }] },
+        "categoria_por": { "type": "string", "enum": ["conversor", "regra", "heuristica", "ajuste", "padrao"] },
+        "camada": { "type": ["string", "null"] },
+        "pai": { "type": ["string", "null"] },
+        "posicao": { "anyOf": [{ "$ref": "#/$defs/vec3" }, { "$ref": "#/$defs/vec2" }], "description": "bruta: unidades originais; normalizada 3D: metros (Y para cima); normalizada 2D: pixels (topo esquerdo)" },
+        "posicao_m": { "$ref": "#/$defs/vec3" },
+        "guinada_graus": { "type": "number", "description": "rotacao em torno do eixo para cima (3D) ou rotacao 2D" },
+        "angulos_graus": { "$ref": "#/$defs/vec3", "description": "bruta 3D: [arfagem, guinada, rolagem] da origem" },
+        "rotacao": { "$ref": "#/$defs/quat" },
+        "escala": { "anyOf": [{ "$ref": "#/$defs/vec3" }, { "$ref": "#/$defs/vec2" }] },
+        "tamanho": { "anyOf": [{ "$ref": "#/$defs/vec3" }, { "$ref": "#/$defs/vec2" }] },
+        "ancora": { "type": "string", "enum": ["centro", "topo_esquerdo", "base_esquerda", "base_centro"] },
+        "posicao_estimada": { "type": "boolean" },
+        "asset_id": { "anyOf": [{ "$ref": "../comum.schema.json#/$defs/id_asset" }, { "type": "null" }] },
+        "asset_por": { "type": ["string", "null"], "enum": ["conversor", "regra", "propriedade_modelo", "nome", "ajuste", null] },
+        "modelo_original": { "type": ["string", "null"], "description": "referencia do original ao modelo/sprite (ex.: progs/ogre.mdl, gid 12)" },
+        "propriedades": { "type": "object" },
+        "ajustado": { "type": "boolean" }
+      }
+    }
+  }
+}

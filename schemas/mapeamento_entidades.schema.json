@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/mapeamento_entidades.schema.json",
+  "title": "projects/<p>/mapeamento_entidades.json - regras de reorganizacao: tipo original -> categoria, asset e transformacao",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["regras"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "usar_heuristica": { "type": "boolean", "description": "categoriza por palavras-chave quando nenhuma regra casar (padrao true)" },
+    "categoria_padrao": { "$ref": "dados/cena.schema.json#/$defs/categoria" },
+    "regras": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["quando"], "additionalProperties": false,
+        "properties": {
+          "quando": {
+            "type": "object", "minProperties": 1, "additionalProperties": false,
+            "properties": {
+              "tipo_original": { "type": "string", "description": "glob, ex.: monster_*" },
+              "nome": { "type": "string" }, "camada": { "type": "string" }, "cena": { "type": "string" },
+              "propriedades": { "type": "object", "additionalProperties": { "type": "string" }, "description": "propriedade -> glob do valor" }
+            }
+          },
+          "categoria": { "$ref": "dados/cena.schema.json#/$defs/categoria" },
+          "asset": {
+            "type": "object", "additionalProperties": false,
+            "properties": { "asset_id": { "$ref": "comum.schema.json#/$defs/id_asset" }, "origem_glob": { "type": "string", "description": "glob sobre origem.caminho dos assets do manifesto" } }
+          },
+          "escala": { "type": "number", "exclusiveMinimum": 0 },
+          "deslocamento_m": { "$ref": "dados/cena.schema.json#/$defs/vec3" },
+          "guinada_extra_graus": { "type": "number" },
+          "remover": { "type": "boolean" },
+          "propriedades": { "type": "object" },
+          "nota": { "type": "string" }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

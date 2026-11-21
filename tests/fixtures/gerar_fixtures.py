@@ -372,6 +372,83 @@ def wav_tom(segundos: float, taxa: int = 22050, loop: tuple[int, int] | None = N
     return wav_bytes(Pcm(taxa, 1, [amostras], loop))
 
 
+ENTIDADES_BSP = """{
+"classname" "worldspawn"
+"message" "Fase de Teste do CEW"
+"wad" "gfx/base.wad"
+}
+{
+"classname" "info_player_start"
+"origin" "0 0 24"
+"angle" "90"
+}
+{
+"classname" "monster_ogre"
+"origin" "256 128 24"
+"angle" "180"
+}
+{
+"classname" "monster_tetra"
+"origin" "-64 32 0"
+}
+{
+"classname" "light"
+"origin" "0 0 128"
+"light" "300"
+}
+{
+"classname" "item_health"
+"origin" "128 -64 16"
+"spawnflags" "1"
+}
+// porta que sobe (angle -1) e o gatilho que a abre
+{
+"classname" "func_door"
+"model" "*1"
+"angle" "-1"
+"targetname" "porta1"
+}
+{
+"classname" "trigger_once"
+"model" "*2"
+"target" "porta1"
+}
+"""
+
+
+def bsp_com_entidades() -> bytes:
+    """BSP v29 so com o lump de entidades preenchido (os outros 14 lumps vazios)."""
+    texto = ENTIDADES_BSP.encode("latin-1") + b"\x00"
+    inicio = 4 + 15 * 8
+    lumps = [(inicio, len(texto))] + [(inicio + len(texto), 0)] * 14
+    return struct.pack("<i", 29) + b"".join(struct.pack("<ii", o, t) for o, t in lumps) + texto
+
+
+def tiled_fase() -> bytes:
+    w, h = 10, 8
+    chao = [1 if y == h - 1 else 0 for y in range(h) for x in range(w)]
+    mapa = {
+        "type": "map", "version": "1.10", "tiledversion": "1.11.0", "orientation": "orthogonal", "renderorder": "right-down",
+        "width": w, "height": h, "tilewidth": 16, "tileheight": 16, "infinite": False, "nextlayerid": 5, "nextobjectid": 7,
+        "properties": [{"name": "nome", "type": "string", "value": "floresta"}],
+        "tilesets": [{"firstgid": 1, "source": "terreno.tsx"}],
+        "layers": [
+            {"id": 1, "name": "chao", "type": "tilelayer", "width": w, "height": h, "data": chao, "visible": True, "opacity": 1, "x": 0, "y": 0},
+            {"id": 2, "name": "objetos", "type": "objectgroup", "visible": True, "opacity": 1, "x": 0, "y": 0, "draworder": "topdown", "objects": [
+                {"id": 1, "name": "arvore grande", "type": "tree", "gid": 3, "x": 32, "y": 112, "width": 16, "height": 32, "rotation": 0, "visible": True},
+                {"id": 2, "name": "", "type": "pillar", "x": 64, "y": 80, "width": 16, "height": 32, "rotation": 0, "visible": True},
+                {"id": 3, "name": "slime1", "type": "enemy_slime", "point": True, "x": 120, "y": 104, "width": 0, "height": 0, "rotation": 0, "visible": True,
+                 "properties": [{"name": "vida", "type": "int", "value": 3}, {"name": "patrulha_px", "type": "float", "value": 48.0}]},
+                {"id": 4, "name": "inicio", "type": "spawn", "point": True, "x": 16, "y": 104, "width": 0, "height": 0, "rotation": 0, "visible": True},
+                {"id": 5, "name": "arbusto", "x": 90, "y": 100, "width": 10, "height": 12, "rotation": 0, "visible": True}]},
+            {"id": 3, "name": "decor", "type": "group", "offsetx": 4, "offsety": -2, "visible": True, "opacity": 1, "layers": [
+                {"id": 4, "name": "flores", "type": "objectgroup", "visible": True, "opacity": 1, "x": 0, "y": 0, "objects": [
+                    {"id": 6, "name": "flor", "type": "flower", "x": 140, "y": 110, "width": 8, "height": 8, "rotation": 45, "visible": True}]}]},
+        ],
+    }
+    return (json.dumps(mapa, ensure_ascii=False, indent=1) + "\n").encode("utf-8")
+
+
 def texto_sjis() -> bytes:
     linhas = ["こんにちは、世界！", "CEW\x01テスト\x0aです", "Fase 1 - Floresta"]
     return b"\x00".join(s.encode("cp932") for s in linhas) + b"\x00"
@@ -421,6 +498,8 @@ def todas() -> dict[str, bytes]:
     a["generico/efeito.wav"] = wav_tom(0.25)
     a["generico/pacote.zip"] = zip_exemplo()
     a["dados/textos_sjis.bin"] = texto_sjis()
+    a["idtech/mapa.bsp"] = bsp_com_entidades()
+    a["generico/fase.tmj"] = tiled_fase()
     a["desconhecido/misterio.xyz"] = b"QZX1" + struct.pack(">IHH", 3, 16, 16) + bytes(range(64))
     from converters.comum.imagem import Imagem, png_bytes
     a["web/pronto.png"] = png_bytes(Imagem(2, 2, bytearray([255, 0, 0, 255] * 4)))

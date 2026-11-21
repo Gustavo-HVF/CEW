@@ -254,6 +254,13 @@ def cabeca_iso(c: bytes) -> bool:
     return c[0x8001:0x8006] == b"CD001"
 
 
+@verificador
+def tiled_json(c: bytes, cauda: bytes, tam: int) -> bool:
+    """Mapa do Tiled em JSON: objeto com "layers" e "tiledversion" ou "type": "map"."""
+    inicio = c.lstrip()[:1]
+    return inicio == b"{" and b'"layers"' in c and (b'"tiledversion"' in c or b'"type":"map"' in c.replace(b" ", b""))
+
+
 def verificar(nome: str | None, cabeca: bytes, cauda: bytes, tamanho: int) -> bool | None:
     """True/False pelo verificador; None se o formato nao tem verificador ou ele falhou ao ler."""
     if not nome:

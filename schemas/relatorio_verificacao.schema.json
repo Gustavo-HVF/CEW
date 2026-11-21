@@ -64,7 +64,8 @@
               "comparacao_visual",
               "segunda_opiniao_gemini",
               "marco",
-              "cobertura"
+              "cobertura",
+              "cena"
             ]
           },
           "alvo": {

@@ -399,6 +399,72 @@ def cmd_log_conversor(a: argparse.Namespace) -> int:
     return 0
 
 
+def _vetor(texto: str | None) -> list[float] | None:
+    return [float(x) for x in texto.replace(";", ",").split(",")] if texto else None
+
+
+def cmd_cena(a: argparse.Namespace) -> int:
+    from . import conversao
+    from .cenas import cenas_publicadas, registrar_ajuste, registrar_regra
+
+    p = Projeto.abrir(a.projeto, criar=False)
+    if a.acao == "listar":
+        for ent, c in cenas_publicadas(p):
+            est = c.get("estatisticas", {})
+            print(f"{c['id_cena']:<24} {c['dimensao']}  {est.get('entidades', 0):>5} elementos  sem asset {est.get('sem_asset', 0):>4}  {ent['caminho_web']}")
+            print("    " + ", ".join(f"{k}: {v}" for k, v in est.get("por_categoria", {}).items()))
+        return 0
+    if a.acao == "mostrar":
+        alvo = next((c for _, c in cenas_publicadas(p) if c["id_cena"] == a.cena), None)
+        if alvo is None:
+            print(f"cena {a.cena} nao publicada (rode a etapa conversao)")
+            return 1
+        for e in alvo["entidades"]:
+            if a.categoria and e["categoria"] != a.categoria:
+                continue
+            pos = ", ".join(f"{c:g}" for c in e["posicao"])
+            print(f"{e['id']}  {e['categoria']:<10} {e['tipo_original'][:28]:<28} ({pos})  rot {e.get('guinada_graus', 0):g}  asset {e.get('asset_id') or '-'}{'  [ajustado]' if e.get('ajustado') else ''}")
+        return 0
+    if a.acao == "regra":
+        quando = {k: v for k, v in (("tipo_original", a.tipo_original), ("nome", a.nome), ("camada", a.camada)) if v}
+        regra: dict = {"quando": quando}
+        if a.categoria:
+            regra["categoria"] = a.categoria
+        if a.asset_glob:
+            regra["asset"] = {"origem_glob": a.asset_glob}
+        if a.fator:
+            regra["escala"] = a.fator
+        if a.delta:
+            regra["deslocamento_m"] = (_vetor(a.delta) + [0, 0, 0])[:3]
+        if a.remover:
+            regra["remover"] = True
+        print(json.dumps(registrar_regra(p.pasta, regra), ensure_ascii=False))
+    else:  # ajustar
+        aj: dict = {"op": a.op, "cena": a.cena or "*"}
+        if a.entidade:
+            aj["entidade"] = a.entidade
+        filtro = {k: v for k, v in (("categoria", a.categoria), ("tipo_original", a.tipo_original), ("camada", a.camada)) if v}
+        if filtro:
+            aj["filtro"] = filtro
+        for campo, valor in (("para", _vetor(a.para)), ("delta", _vetor(a.delta))):
+            if valor:
+                aj[campo] = valor
+        for campo, valor in (("graus", a.graus), ("fator", a.fator), ("passo", a.passo)):
+            if valor is not None:
+                aj[campo] = valor
+        if a.valores:
+            aj["valores"] = json.loads(a.valores)
+        if a.nova:
+            aj["nova"] = json.loads(a.nova)
+        if a.motivo:
+            aj["motivo"] = a.motivo
+        print(json.dumps(registrar_ajuste(p.pasta, aj), ensure_ascii=False))
+    if p.existe("plano") and p.existe("inventario"):
+        conversao.publicar(p, p.ler("plano"), p.ler("inventario"))  # reaplica regras e ajustes nas cenas publicadas
+        print("cenas republicadas em web/dados/cenas/")
+    return 0
+
+
 def cmd_marcos(a: argparse.Namespace) -> int:
     from . import marcos
 
@@ -599,6 +665,26 @@ def parser() -> argparse.ArgumentParser:
     s.add_argument("--modelo", choices=["jogo", "app"], default="jogo")
     s.add_argument("--sobrescrever", action="store_true")
     s.set_defaults(func=cmd_marcos)
+    s = sub.add_parser("cena", help="elementos dos mapas: listar, mostrar, ajustar posicoes, regras de categoria/asset")
+    s.add_argument("acao", choices=["listar", "mostrar", "ajustar", "regra"])
+    s.add_argument("cena", nargs="?", help="id da cena (mostrar/ajustar; glob permitido em ajustar)")
+    s.add_argument("--op", choices=["mover", "deslocar", "girar", "escalar", "grade", "remover", "definir", "adicionar"], default="mover")
+    s.add_argument("--entidade", help="id e_<hex> (veja 'cew cena mostrar')")
+    s.add_argument("--categoria")
+    s.add_argument("--tipo-original")
+    s.add_argument("--nome")
+    s.add_argument("--camada")
+    s.add_argument("--para", help="x,y,z (3D, metros) ou x,y (2D, pixels)")
+    s.add_argument("--delta", help="dx,dy,dz")
+    s.add_argument("--graus", type=float)
+    s.add_argument("--fator", type=float)
+    s.add_argument("--passo", type=float, help="grade: tamanho do passo")
+    s.add_argument("--valores", help="definir: JSON com categoria, asset_id, nome, camada, propriedades")
+    s.add_argument("--nova", help="adicionar: JSON da entidade nova (coordenadas ja normalizadas)")
+    s.add_argument("--asset-glob", help="regra: glob sobre origem.caminho dos assets (ex.: '*ogre*')")
+    s.add_argument("--remover", action="store_true", help="regra: tira estes elementos da cena")
+    s.add_argument("--motivo")
+    s.set_defaults(func=cmd_cena)
     s = sub.add_parser("sandbox", help="roda um rascunho do Gemini isolado")
     s.add_argument("rascunho", help="arquivo .py ou <sha>.resposta.json")
     s.add_argument("--entrada")

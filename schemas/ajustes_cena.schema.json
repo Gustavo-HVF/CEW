@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cew.local/schemas/ajustes_cena.schema.json",
+  "title": "projects/<p>/ajustes_cena.json - reposicionamento nao destrutivo, reaplicado a cada conversao",
+  "type": "object",
+  "allOf": [{ "$ref": "comum.schema.json#/$defs/cabecalho" }],
+  "required": ["ajustes"],
+  "properties": {
+    "schema_version": true, "gerado_por": true,
+    "ajustes": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["op", "cena"], "additionalProperties": false,
+        "properties": {
+          "op": { "type": "string", "enum": ["mover", "deslocar", "girar", "escalar", "grade", "remover", "definir", "adicionar"] },
+          "cena": { "type": "string", "description": "id_cena ou glob (* = todas)" },
+          "entidade": { "type": "string", "description": "id e_<hex> de uma entidade" },
+          "filtro": {
+            "type": "object", "additionalProperties": false,
+            "properties": { "categoria": { "type": "string" }, "tipo_original": { "type": "string" }, "camada": { "type": "string" } }
+          },
+          "para": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 3 },
+          "delta": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 3 },
+          "graus": { "type": "number" },
+          "fator": { "type": "number", "exclusiveMinimum": 0 },
+          "passo": { "type": "number", "exclusiveMinimum": 0 },
+          "valores": { "type": "object", "description": "definir: categoria, asset_id, nome, camada, propriedades" },
+          "nova": { "$ref": "dados/cena.schema.json#/$defs/entidade" },
+          "motivo": { "type": "string" },
+          "em": { "$ref": "comum.schema.json#/$defs/data_hora" }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

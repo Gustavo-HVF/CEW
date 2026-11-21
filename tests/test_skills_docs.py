@@ -12,11 +12,11 @@ SECOES = ["Gatilho", "Entradas", "Passos com comandos", "Delegacao", "Padroes de
 SKILLS = sorted((RAIZ / "skills").glob("*/SKILL.md"))
 
 
-def test_sete_skills():
+def test_oito_skills():
     assert [p.parent.name for p in SKILLS] == [
         "01-setup-e-validacao-gemini", "02-inventario-e-mapeamento-de-formatos", "03-engenharia-reversa-craft-ghidra",
         "04-criar-conversores", "05-selecao-e-arquitetura-motor-grafico", "06-verificacao-e-refinamento-web",
-        "07-reconstrucao-da-logica-e-marcos"]
+        "07-reconstrucao-da-logica-e-marcos", "08-mapeamento-de-cenas"]
 
 
 @pytest.mark.parametrize("arq", SKILLS, ids=lambda p: p.parent.name)

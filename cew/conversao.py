@@ -19,6 +19,7 @@ from . import GERADO_POR, SCHEMA_VERSION
 from .caminhos import id_estavel, slug
 from .conversores import rodar
 from .logs import Log
+from .cenas import SUFIXO_BRUTA
 from .projeto import Projeto
 
 MIME = {"png": "image/png", "jpg": "image/jpeg", "webp": "image/webp", "ktx2": "image/ktx2", "glb": "model/gltf-binary", "ogg": "audio/ogg",
@@ -111,6 +112,8 @@ def publicar(projeto: Projeto, plano: dict, inv: dict, metas: dict | None = None
             continue
         prefixo = f"build/convertido/{p['id']}/"
         for caminho_saida in p["saidas"]:
+            if caminho_saida.endswith(SUFIXO_BRUTA):
+                continue  # cena bruta: normalizada e publicada depois, quando todos os assets ja existem
             rel = caminho_saida[len(prefixo):] if caminho_saida.startswith(prefixo) else caminho_saida
             arq = projeto.pasta / caminho_saida
             if not arq.is_file():
@@ -139,6 +142,9 @@ def publicar(projeto: Projeto, plano: dict, inv: dict, metas: dict | None = None
                 "origem": {"item_inventario": item["id"], "caminho": item["caminho"], "formato": p["formato_origem"], "conversor": p["conversor"]},
                 "metadados": meta,
             })
+    from .cenas import publicar as publicar_cenas
+
+    assets += publicar_cenas(projeto, plano, inv, assets)  # posicionamento dos elementos viaja com o mapa
     assets.sort(key=lambda a: a["caminho_web"])
     # remove arquivos publicados que sairam do manifesto (rodar de novo refaz so o que mudou)
     validos = {a["caminho_web"] for a in assets}

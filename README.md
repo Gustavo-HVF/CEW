@@ -128,8 +128,25 @@ Para comparar com o original, coloque capturas em `projects/<nome>/referencias/<
 | `cew conversor-copiar <cookbook/...> --projeto P` | traz uma receita do cookbook para adaptar |
 | `cew log-conversor <formato> <passo> --projeto P` | registra pesquisa/amostragem/conferencia em `log_conversores.jsonl` |
 | `cew marcos iniciar\|status --projeto P [--modelo jogo\|app]` | marcos de utilizacao/jogabilidade |
+| `cew cena listar\|mostrar\|ajustar\|regra --projeto P` | elementos dos mapas: ver, reposicionar, reorganizar por regra |
 
 Cada conversor tambem roda sozinho: `python cookbook/nintendo/tpl_to_png.py --help`.
+
+## Elementos dos mapas (cenas)
+
+Inimigos, vegetacao, pilastras, itens, portas, gatilhos, luzes e pontos de spawn sao mapeados e
+carregam **junto com o mapa** no jogo web:
+
+1. o conversor do mapa grava uma cena bruta (posicoes nas unidades e eixos do jogo);
+2. o CEW normaliza (3D: metros, Y para cima, mao direita, quaternion; 2D: pixels, topo esquerdo, graus
+   horarios), categoriza (regras do projeto e palavras-chave), liga cada elemento ao modelo/sprite
+   convertido e aplica os ajustes de reposicionamento (`ajustes_cena.json`, reaplicados a cada conversao);
+3. a cena vai para `web/dados/cenas/` e para o `asset_manifest.json`; `src/cena.js` coloca cada elemento
+   no lugar nos quatro motores (sem asset: marcador colorido pela categoria).
+
+Receitas que ja geram cena: Quake BSP (entidades) e mapas do Tiled (JSON). Para outros formatos o agente
+escreve o conversor (skills 04 e 08). Reposicionar pelo terminal:
+`cew cena ajustar <cena> --projeto P --op mover --entidade e_<id> --para 1,0,-2`.
 
 ## Conversores: tres fontes
 
@@ -138,10 +155,10 @@ A ordem de busca fica em `config/cew.json` (`fontes_conversores`, padrao `projet
 | Fonte | Onde | O que e |
 |---|---|---|
 | projeto | `projects/<nome>/conversores/` | escritos pelo agente para o alvo da pessoa: modulo Python ou comando externo declarado em JSON (embrulha vgmstream-cli, ffmpeg, um binario proprio...). Rodam em subprocesso com tempo e memoria limitados |
-| cookbook | `cookbook/` | receitas testadas e opcionais: Yaz0, U8, SARC, TPL (GX), TIM, VAG, PAK, MD2->GLB, VPK, DDS, TGA. Tire `cookbook` da lista para o agente escrever tudo no projeto |
+| cookbook | `cookbook/` | receitas testadas e opcionais: Yaz0, U8, SARC, TPL (GX), TIM, VAG, PAK, MD2->GLB, VPK, DDS, TGA, entidades de BSP do Quake e mapas do Tiled -> cena. Tire `cookbook` da lista para o agente escrever tudo no projeto |
 | generico | `converters/` | o que quase todo alvo precisa: arquivos que a web ja le, ZIP/APK/PK3, WAV->OGG, tabelas de texto->JSON |
 
-O registro global (`formats/registry.json`, 89 formatos) continua completo, porque identificar e barato e
+O registro global (`formats/registry.json`, 90 formatos) continua completo, porque identificar e barato e
 ajuda todo mundo; o registro do projeto (`projects/<nome>/formatos.json`) completa ou substitui entradas
 (ex.: o agente registra a assinatura do `.xnb` e o conversor que escreveu). Formato sem conversor aparece no
 plano como `falta_conversor`, com prioridade pelo impacto; a pessoa pode decidir `ignorar`, `substituir`
@@ -160,7 +177,7 @@ converters/generico/ conversores genericos (fonte "generico")
 cookbook/<familia>/  receitas opcionais e testadas (fonte "cookbook")
 tests/               pytest (+ tests/js para ajv e glTF Validator) e amostras sinteticas em tests/fixtures/
 docs/                DECISOES.md, formatos/, especificacoes/
-skills/              sete skills para o agente no VS Code
+skills/              oito skills para o agente no VS Code
 projects/<nome>/     criado pelo CEW (estrutura do Craft Anything + JSONs do CEW + conversores/ do agente, formatos.json, marcos.json)
 ```
 

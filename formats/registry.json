@@ -2074,7 +2074,7 @@
       "contem": [],
       "compressao_comum": [],
       "destino_web": {
-        "mapa": "glb + json"
+        "mapa": "json (cena: entidades posicionadas) + glb (geometria, sem receita ainda)"
       },
       "ferramentas_conhecidas": [
         {
@@ -2090,15 +2090,18 @@
           "nota": "repositorio confirmado com git ls-remote em 2026-11-20; suporte ao formato a conferir na documentacao da ferramenta"
         }
       ],
-      "conversor": null,
+      "conversor": "cookbook/idtech/bsp_entidades_to_cena.py",
       "documentacao": [
         "https://github.com/id-Software/Quake/blob/master/WinQuake/bspfile.h"
       ],
       "confianca": "documentado",
       "verificacao": {
-        "estado": "a_verificar"
+        "estado": "fixtures_sinteticas",
+        "verificado_em": "2026-11-21",
+        "por": "cew (IA principal)",
+        "evidencia": "lump de entidades conferido em WinQuake/bspfile.h (LUMP_ENTITIES 0) e pr_edict.c (angle -> angles 0 N 0); testado com BSP sintetico"
       },
-      "observacoes": "BSPVERSION 29 com 15 lumps (bspfile.h)."
+      "observacoes": "BSPVERSION 29 com 15 lumps (bspfile.h). A receita extrai so as entidades (cena); a geometria precisa de outro conversor."
     },
     {
       "id": "idtech.quake2.bsp",
@@ -2745,6 +2748,48 @@
         "evidencia": "conversor testado com amostra sintetica montada pela especificacao publica (tests/fixtures/gerar_fixtures.py); falta conferir com arquivo real e ferramenta de referencia"
       },
       "observacoes": ""
+    },
+    {
+      "id": "tiled.mapa.json",
+      "nome": "Mapa do Tiled (JSON)",
+      "empresa_ou_motor": "Tiled Map Editor (mapeditor.org)",
+      "extensoes": [
+        ".tmj",
+        ".json"
+      ],
+      "assinatura": null,
+      "verificador_estrutura": "tiled_json",
+      "ordem_de_bytes": "nenhuma",
+      "tipo": "mapa",
+      "contem": [],
+      "compressao_comum": [
+        "zlib",
+        "gzip",
+        "zstd"
+      ],
+      "destino_web": {
+        "mapa": "json (cena 2D)"
+      },
+      "ferramentas_conhecidas": [
+        {
+          "nome": "Tiled",
+          "url": "https://github.com/mapeditor/tiled",
+          "verificado_em": "2026-11-21",
+          "nota": "repositorio clonado; docs/reference/json-map-format.rst lido"
+        }
+      ],
+      "conversor": "cookbook/generico/tiled_json_to_cena.py",
+      "documentacao": [
+        "https://github.com/mapeditor/tiled/blob/master/docs/reference/json-map-format.rst"
+      ],
+      "confianca": "documentado",
+      "verificacao": {
+        "estado": "fixtures_sinteticas",
+        "verificado_em": "2026-11-21",
+        "por": "cew (IA principal)",
+        "evidencia": "campos conferidos na documentacao oficial do formato; testado com mapa sintetico"
+      },
+      "observacoes": "Muito usado em jogos 2D independentes; .json generico so e tratado como Tiled quando a estrutura confere."
     },
     {
       "id": "generico.json",

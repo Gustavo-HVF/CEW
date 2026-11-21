@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "ajustes": [
+    {
+      "op": "mover",
+      "cena": "e1m1",
+      "entidade": "e_d254acade6ee37c9",
+      "para": [
+        1.0,
+        0.0,
+        -2.0
+      ],
+      "motivo": "afastar do spawn",
+      "em": "2026-11-21T17:06:27Z"
+    },
+    {
+      "op": "deslocar",
+      "cena": "floresta",
+      "filtro": {
+        "categoria": "vegetacao"
+      },
+      "delta": [
+        0.0,
+        -8.0
+      ],
+      "em": "2026-11-21T17:06:27Z"
+    },
+    {
+      "op": "adicionar",
+      "cena": "floresta",
+      "nova": {
+        "id": "bruta_0",
+        "tipo_original": "pilastra",
+        "categoria": "estrutura",
+        "posicao": [
+          96,
+          80
+        ],
+        "tamanho": [
+          16,
+          32
+        ],
+        "ancora": "base_esquerda"
+      },
+      "motivo": "pilastra que faltava no mapa original"
+    },
+    {
+      "op": "grade",
+      "cena": "*",
+      "filtro": {
+        "categoria": "vegetacao"
+      },
+      "passo": 8
+    }
+  ]
+}

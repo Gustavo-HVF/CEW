@@ -148,6 +148,36 @@ relacao ao prompt original e o que ainda e hipotese. Datas no formato AAAA-MM-DD
 34. **Exemplo de comando externo** (`schemas/exemplos/conversor_comando.json`): flags do vgmstream-cli
     (`-o`, `-V`) conferidas em `cli/vgmstream_cli.c` do repositorio oficial (commit 24ffd6c, 2026-11-10).
 
+## Mapeamento e reposicionamento de elementos de cena
+
+35. **Cena bruta x normalizada.** O conversor so le o que o formato diz (tipo, posicao, rotacao nas
+    unidades e eixos do jogo) e declara o `sistema_coordenadas`; toda conversao de eixos, categoria,
+    ligacao com assets e ajuste fica em `cew/cenas.py`, igual para todos os formatos. Um conversor novo
+    escrito pelo agente nao precisa reimplementar nada disso.
+36. **Rotacao.** Quaternion: parte vetorial transformada como pseudovetor (`v' = det(M) M v`), conferido
+    por teste de propriedade (girar e converter == converter e girar) para as quatro combinacoes de
+    eixo/mao. So guinada: mesmo angulo em torno do novo eixo para cima, sinal invertido na troca de mao.
+    Arfagem e rolagem sem quaternion geram aviso (convencoes de Euler variam por motor).
+37. **Ids de entidade.** `id_original` quando o formato tem (Tiled: id do objeto) - ajustes sobrevivem a
+    nova versao do mapa; sem id (Quake): tipo + posicao original + ordem entre identicos, e um ajuste por
+    entidade se perde se o objeto mudar de lugar no original (os ajustes por filtro continuam valendo; a
+    verificacao avisa "ajuste nao encontrou entidades").
+38. **Ligacao com assets** por ordem: regra (`asset_id`/`origem_glob`) > conversor > referencia de modelo do
+    original (`modelo_original`) > ultimo token do tipo (`monster_ogre` -> arquivo `ogre.*`). Heuristica
+    de nome desligada para spawn, gatilho, luz, som, camera e regiao.
+39. **Quake BSP:** `angle` -1/-2 (portas/plataformas) e direcao, nao rotacao: vai para
+    `propriedades.direcao`. Entidades de brush (`"model" "*n"`) nao tem `origin`: posicao [0,0,0] com
+    `posicao_estimada`. A geometria do BSP nao e convertida (so as entidades).
+40. **Tiled:** objeto-tile (com `gid`) ancorado na base esquerda em mapa ortogonal com alinhamento
+    `unspecified` (comportamento conhecido do Tiled; a documentacao lida so lista as opcoes de
+    `objectalignment` - hipotese a confirmar). Mapas infinitos (chunks) e compressao zstd ainda nao.
+41. **Motores 3D com cena 2D** (e vice-versa): nada e descartado. Three.js/Babylon.js desenham a cena 2D
+    como camada plana (`posicao_m`); Phaser/PixiJS desenham a cena 3D vista de cima (x, z). O teste de
+    navegador exige `instanciadas == entidades` em toda cena (bug encontrado: antes o teste deixava
+    passar cena ignorada).
+42. **Babylon.js** passa a usar `scene.useRightHandedSystem = true`, para posicoes e quaternions das cenas
+    (e do glTF) valerem sem conversao extra.
+
 ## Hipoteses tecnicas nos conversores (a conferir com arquivos reais)
 
 - **MD2:** ordem das faces invertida por padrao (o glquake desenha com `glCullFace(GL_FRONT)`, ou

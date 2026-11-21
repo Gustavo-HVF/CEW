@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "gerado_por": "cew",
+  "usar_heuristica": true,
+  "categoria_padrao": "outro",
+  "regras": [
+    {
+      "quando": {
+        "tipo_original": "monster_*"
+      },
+      "categoria": "inimigo",
+      "asset": {
+        "origem_glob": "*tetra*"
+      },
+      "escala": 2.0
+    },
+    {
+      "quando": {
+        "tipo_original": "light"
+      },
+      "remover": true
+    }
+  ]
+}

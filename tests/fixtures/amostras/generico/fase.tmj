@@ -1,0 +1,236 @@
+{
+ "type": "map",
+ "version": "1.10",
+ "tiledversion": "1.11.0",
+ "orientation": "orthogonal",
+ "renderorder": "right-down",
+ "width": 10,
+ "height": 8,
+ "tilewidth": 16,
+ "tileheight": 16,
+ "infinite": false,
+ "nextlayerid": 5,
+ "nextobjectid": 7,
+ "properties": [
+  {
+   "name": "nome",
+   "type": "string",
+   "value": "floresta"
+  }
+ ],
+ "tilesets": [
+  {
+   "firstgid": 1,
+   "source": "terreno.tsx"
+  }
+ ],
+ "layers": [
+  {
+   "id": 1,
+   "name": "chao",
+   "type": "tilelayer",
+   "width": 10,
+   "height": 8,
+   "data": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "visible": true,
+   "opacity": 1,
+   "x": 0,
+   "y": 0
+  },
+  {
+   "id": 2,
+   "name": "objetos",
+   "type": "objectgroup",
+   "visible": true,
+   "opacity": 1,
+   "x": 0,
+   "y": 0,
+   "draworder": "topdown",
+   "objects": [
+    {
+     "id": 1,
+     "name": "arvore grande",
+     "type": "tree",
+     "gid": 3,
+     "x": 32,
+     "y": 112,
+     "width": 16,
+     "height": 32,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 2,
+     "name": "",
+     "type": "pillar",
+     "x": 64,
+     "y": 80,
+     "width": 16,
+     "height": 32,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 3,
+     "name": "slime1",
+     "type": "enemy_slime",
+     "point": true,
+     "x": 120,
+     "y": 104,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "vida",
+       "type": "int",
+       "value": 3
+      },
+      {
+       "name": "patrulha_px",
+       "type": "float",
+       "value": 48.0
+      }
+     ]
+    },
+    {
+     "id": 4,
+     "name": "inicio",
+     "type": "spawn",
+     "point": true,
+     "x": 16,
+     "y": 104,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true
+    },
+    {
+     "id": 5,
+     "name": "arbusto",
+     "x": 90,
+     "y": 100,
+     "width": 10,
+     "height": 12,
+     "rotation": 0,
+     "visible": true
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "name": "decor",
+   "type": "group",
+   "offsetx": 4,
+   "offsety": -2,
+   "visible": true,
+   "opacity": 1,
+   "layers": [
+    {
+     "id": 4,
+     "name": "flores",
+     "type": "objectgroup",
+     "visible": true,
+     "opacity": 1,
+     "x": 0,
+     "y": 0,
+     "objects": [
+      {
+       "id": 6,
+       "name": "flor",
+       "type": "flower",
+       "x": 140,
+       "y": 110,
+       "width": 8,
+       "height": 8,
+       "rotation": 45,
+       "visible": true
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

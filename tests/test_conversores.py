@@ -40,6 +40,8 @@ CASOS = [
     ("converters/generico/zip_to_dir.py", "generico/pacote.zip"),
     ("converters/generico/copiar_web.py", "web/pronto.png"),
     ("converters/dados/texto_to_json.py", "dados/textos_sjis.bin"),
+    ("cookbook/idtech/bsp_entidades_to_cena.py", "idtech/mapa.bsp"),
+    ("cookbook/generico/tiled_json_to_cena.py", "generico/fase.tmj"),
 ]
 
 
